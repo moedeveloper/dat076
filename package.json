@@ -1,20 +1,37 @@
 {
-   "name": "booking-system-project-backend",
-   "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
-   "devDependencies": {
-      "ts-node": "3.3.0",
-      "@types/node": "^8.0.29",
-      "typescript": "2.5.2"
-   },
-   "dependencies": {
-      "typeorm": "0.1.11",
-      "reflect-metadata": "^0.1.10",
-      "mysql": "^2.14.1",
-      "express": "^4.15.4",
-      "body-parser": "^1.18.1"
-   },
-   "scripts": {
-      "start": "ts-node src/index.ts"
-   }
+  "name": "bookingsystem",
+  "version": "1.0.0",
+  "description": "node typescript express backend service",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "gulp-nodemon": "^2.2.1",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.14.12",
+    "pg": "^7.4.1",
+    "reflect-metadata": "^0.1.12",
+    "typeorm": "^0.1.12",
+    "typescript": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "@types/node": "^9.4.6",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^4.0.1"
+  },
+  "scripts": {
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://moemotto@vs-ssh.visualstudio.com:22/_ssh/Booking%20System"
+  },
+  "keywords": [
+    "tsc",
+    "node"
+  ],
+  "author": "mo3",
+  "license": "ISC"
 }
