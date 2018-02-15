@@ -1,13 +1,19 @@
 import {UserEntity} from "../entities/UserEntity"
-import {getManager} from "typeorm"
+import {getManager, EntityManager} from "typeorm"
+import { Repository } from "typeorm/repository/Repository";
+import {Service} from "typedi";
+import {OrmRepository, OrmManager} from "typeorm-typedi-extensions";
 
-export class UserRepository{
-    getAllUsers(){
-        return getManager().getRepository(UserEntity).find();
+export class UserRepository {
+
+    @OrmManager()
+    private entityManager: EntityManager;
+
+    constructor(@OrmManager() entityManager: EntityManager) {
+        this.entityManager = entityManager;
     }
 
-    saveUser(user: UserEntity){
-        console.log("from repository")
-        return getManager().getRepository(UserEntity).save(user);
+    getUsers(): Promise<UserEntity[]>{
+        return this.entityManager.getRepository(UserEntity).find()
     }
 }

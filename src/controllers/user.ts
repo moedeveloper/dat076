@@ -1,30 +1,35 @@
 import {Response, Request} from "express"
 import {UserRepository} from "../repositories/user"
 import {UserEntity} from "../entities/UserEntity"
+import { Container } from "typedi";
 
-// TODO make dp injection instead
-export let getusers = async (req: Request, res: Response) => {
-    let userRepo: UserRepository = new UserRepository()
+import {OrmRepository, OrmManager} from "typeorm-typedi-extensions";
+import {Service} from "typedi";
 
-    userRepo.getAllUsers().then((result:any)=>{
-        console.log("Result: "+ result)
-        res.send(result)
-    })
-}
+@Service()
+export class UserRoute{
+    repo: UserRepository;
+    constructor(repo:UserRepository){
+        console.log("constructor")
+        //repo = Container.get(UserRepo)
+        this.repo = repo
+        console.log("done..")
+    }
 
-export let saveuser = async (req: Request, res: Response) =>{
-    let userRepo: UserRepository = new UserRepository()
-    let userEntity: UserEntity = new UserEntity()
-
-    console.log("Received SaveEmployee ==> POST: now")
-    console.log(req.body)
-
-    userEntity.firstname = req.body.firstname
-    userEntity.lastname = req.body.lastname
-    userEntity.telefon = req.body.telefon
-
-    userRepo.saveUser(userEntity).then((result: any)=>{
-        console.log("result : "+ result)
-        res.send(result);
-    })
+    getusers = async (req: Request, res: Response) => {
+    
+        var promises = [];
+        
+        //let tr = UserRequests.repo.getUsers()
+        //console.log("After tr " + tr)
+        promises.push(this.repo.getUsers().then(function (data) {
+            return data;
+        }));
+        Promise.all(promises).then(function (values) {
+            var json = JSON.stringify({
+                usersApi: values[0]
+            });
+            res.end(json);
+        });
+    }
 }

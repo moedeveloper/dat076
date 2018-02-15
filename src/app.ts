@@ -1,17 +1,18 @@
-
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import "reflect-metadata"
-import {createConnection} from "typeorm"
+import {createConnection, useContainer} from "typeorm"
 import * as appConfig from "./common/ormconfig"
+import {Container} from "typedi";
 
 import { UserEntity } from "./entities/UserEntity" 
+import {UserRoute} from "./controllers/user"
 
 /**
  * Controllers (route handlers).
  */
-import * as userController from "./controllers/user"
 import { connect } from 'http2';
+
  
 /**
  * Create Express server.
@@ -39,33 +40,21 @@ app.listen(app.get("port"), () => {
   console.log(("  App is running at http://localhost:%d in %s mode"), app.get("port"), app.get("env"));
   console.log("  Press CTRL-C to stop\n")
 });
- 
-/**
- * Primary app routes.
- */
-app.get("/users", userController.getusers)
-app.post("/user", userController.saveuser)
 
 /**
  * Create connection to DB using configuration provided in 
  * appconfig file.
+ * useContainr for DI
  */
+useContainer(Container);
 createConnection(appConfig.dbOptions).then(async connection => {
-  //console.log(__dirname)
   console.log("Connected to DB: ");
-  // let user = new UserEntity()
-  // user.firstname ="moe"
-  // user.lastname = "mmotto"
-  // user.telefon = "0712132565"
-
-  // let repo = connection.getRepository(UserEntity)
-
-  // await repo.save(user)
-
-
-  // let saved = await repo.find();
-  // console.log("All users from the db: ", saved);
-  
 }).catch(error => console.log("TypeORM connection error: ", error));
 
+/**
+ * Primary app routes.
+ */
+let container = Container.get(UserRoute)
+app.get("/users", container.getusers)
+//app.post("/user", userController.saveuser)
 module.exports = app
