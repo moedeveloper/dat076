@@ -22,7 +22,7 @@
     "gulp-typescript": "^4.0.1"
   },
   "scripts": {
-    "start": "node dist/server.js"
+    "start": "node dist/app.js"
   },
   "repository": {
     "type": "git",
