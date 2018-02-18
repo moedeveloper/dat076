@@ -16,4 +16,20 @@ export class UserRepository {
     getUsers(): Promise<UserEntity[]>{
         return this.entityManager.getRepository(UserEntity).find()
     }
+
+    getUserById(userId: string): Promise<UserEntity> {
+        return this.entityManager.getRepository(UserEntity).findOneById(userId)
+    }
+
+    removeUser(userId: string){
+        return this.entityManager.getRepository(UserEntity).removeById(userId)
+    }
+
+    updateUser(request: any) {
+        return this.entityManager.getRepository(UserEntity).save(request)
+    }
+
+    createUser(user:UserEntity){
+        return this.entityManager.getRepository(UserEntity).save(user)
+    }
 }

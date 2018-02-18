@@ -1,6 +1,10 @@
 import "reflect-metadata";
 import {ConnectionOptions} from "typeorm";
 import { UserEntity } from "./../entities/UserEntity";
+import { EventCalendar } from "../entities/EventCalendar";
+import { Customer } from "../entities/Customer";
+import { Treatement } from "../entities/Treatement";
+import { UET } from "../entities/UET";
 
  export let dbOptions: ConnectionOptions = {
     type: "mysql",
@@ -10,7 +14,7 @@ import { UserEntity } from "./../entities/UserEntity";
     password: "89053fff",
     database: "mo3dat076",
     entities: [
-        UserEntity
+        UserEntity, UET, Customer, Treatement, EventCalendar
     ],
     synchronize: true
 }

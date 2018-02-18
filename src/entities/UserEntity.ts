@@ -1,17 +1,21 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, PrimaryColumn} from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("user")
 export class UserEntity extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id: string
+    
+//    @PrimaryColumn("varchar")
+//    @Column({ nullable: false, unique: true })
+//     id:any
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
-    @Column({length:100})
+    @Column("varchar", { nullable: false})
     firstname: string
 
-    @Column({length:100})
+    @Column("varchar", { nullable: false})
     lastname: string
 
-    @Column({length:100})
+    @Column("varchar", { nullable: false})
     telefon: string
 }
