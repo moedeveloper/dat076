@@ -17,6 +17,13 @@ import { Connection } from 'typeorm/connection/Connection';
 import { TreatementRoute } from './controllers/TreatementRoute';
 import { CustomerRoute } from './controllers/CustomerRoute';
 import { EventCalendarRoute } from './controllers/EventCalendarRoute';
+import { UserGroupAuthRoute } from './controllers/UserGroupAuthRoute';
+import { CustomerHistoryRoute } from './controllers/CustomerHistoryRoute';
+import { EmployeeRoute } from './controllers/EmployeeRoute';
+import { ProductRoute } from './controllers/ProductRoute';
+import { SalaryRoute } from './controllers/SalaryRoute';
+import { GroupRoute } from './controllers/GroupRoute';
+import { AuthRoute } from './controllers/authRoute';
 
 
  
@@ -71,26 +78,68 @@ app.delete("/api/uet/:id", uetcontainer.deleteuet)
 app.put("/api/uet", uetcontainer.updateuet)
 
 //
-// let tcontainer = Container.get(TreatementRoute)
-// app.get("/api/treatements", tcontainer.getTreatements)
-// app.get("/api/treatement/:id", tcontainer.gettreatement)
-// app.post("/api/treatement/", tcontainer.createtreatement)
-// app.delete("/api/treatement/:id", tcontainer.deletetreatement)
-// app.put("/api/treatement", tcontainer.updatetreatement)
-// //
-// let ccontainer = Container.get(CustomerRoute)
-// app.get("/api/customers", ccontainer.getCustomers)
-// app.get("/api/customer/:id", ccontainer.getcustomer)
-// app.post("/api/customer/", ccontainer.createcustomer)
-// app.delete("/api/customer/:id", ccontainer.deletecustomer)
-// app.put("/api/customer", ccontainer.updatecustomer)
+let tcontainer = Container.get(TreatementRoute)
+app.get("/api/treatements", tcontainer.getTreatements)
+app.get("/api/treatement/:id", tcontainer.gettreatement)
+app.post("/api/treatement/", tcontainer.createtreatement)
+app.delete("/api/treatement/:id", tcontainer.deletetreatement)
+app.put("/api/treatement", tcontainer.updatetreatement)
+//
+let ccontainer = Container.get(CustomerRoute)
+app.get("/api/customers", ccontainer.getCustomers)
+app.get("/api/customer/:id", ccontainer.getcustomer)
+app.post("/api/customer/", ccontainer.createcustomer)
+app.delete("/api/customer/:id", ccontainer.deletecustomer)
+app.put("/api/customer", ccontainer.updatecustomer)
 
-// let econtainer = Container.get(EventCalendarRoute)
-// app.get("/api/eventcalendars", econtainer.getEventCalendars)
-// app.get("/api/eventcalendar/:id", econtainer.geteventcalendar)
-// app.post("/api/eventcalendar/", econtainer.createeventcalendar)
-// app.delete("/api/eventcalendar/:id", econtainer.deleteeventcalendar)
-// app.put("/api/eventcalendar", econtainer.updateeventcalendar)
+let econtainer = Container.get(EventCalendarRoute)
+app.get("/api/eventcalendars", econtainer.getEventCalendars)
+app.get("/api/eventcalendar/:id", econtainer.geteventcalendar)
+app.post("/api/eventcalendar/", econtainer.createeventcalendar)
+app.delete("/api/eventcalendar/:id", econtainer.deleteeventcalendar)
+app.put("/api/eventcalendar", econtainer.updateeventcalendar)
+
+let acontainer = Container.get(UserGroupAuthRoute)
+app.get("/api/userGroupAuthRoute/:id", acontainer.getUserGroupAuthById)
+app.post("/api/userGroupAuthRoute/", acontainer.createUserGroupAuth)
+app.delete("/api/userGroupAuthRoute/:id", acontainer.deleteUserGroupAuthById)
+app.put("/api/userGroupAuthRoute", acontainer.updateUserGroupAuth)
+
+
+let hcontainer = Container.get(CustomerHistoryRoute)
+app.get("/api/histories/", hcontainer.getHistories)
+app.get("/api/history/:id", hcontainer.getHistory)
+app.post("/api/history/", hcontainer.createHistory)
+app.delete("/api/history/:id", hcontainer.removeHistory)
+app.put("/api/history", hcontainer.updateHistory)
+
+let ercontainer = Container.get(EmployeeRoute)
+app.get("/api/erports/", ercontainer.getReports)
+app.get("/api/erport/:id", ercontainer.getReport)
+app.post("/api/erport/", ercontainer.createReport)
+app.delete("/api/erport/:id", ercontainer.removeReport)
+app.put("/api/erport", ercontainer.updateReport)
+
+let pcontainer = Container.get(ProductRoute)
+app.get("/api/products/", pcontainer.getProducts)
+app.get("/api/product/:id", pcontainer.getProduct)
+app.post("/api/product/", pcontainer.createProduct)
+app.delete("/api/product/:id", pcontainer.removeProduct)
+app.put("/api/product", pcontainer.updateProduct)
+
+let scontainer = Container.get(SalaryRoute)
+app.get("/api/salaries/", scontainer.getSalaries)
+app.get("/api/salary/:id", scontainer.getSalary)
+app.post("/api/salary/", scontainer.createSalary)
+app.put("/api/salary", scontainer.updateSalary)
+
+let rolecontainer = Container.get(GroupRoute)
+app.get("/api/role/:id", rolecontainer.getUserRole)
+app.post("/api/role/", rolecontainer.createUserRole)
+app.delete("/api/role/:id", rolecontainer.removeUserRole)
+
+let authcontainer = Container.get(AuthRoute)
+
 
 /**
  * Start Express server.

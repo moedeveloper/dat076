@@ -25,10 +25,10 @@ export class CustomerHistoryRepo{
     createhistory(ch:CustomerHistory):Promise<CustomerHistory>{
         return this.entityManager.getRepository(CustomerHistory).save(ch)
     }
-    removecustomer(id:string){
+    removehistory(id:string){
         return this.entityManager.getRepository(CustomerHistory).removeById(id)
     }
-    updatecustomer(request:any){
+    updatehistory(request:any){
         return this.entityManager.getRepository(CustomerHistory).save(request)
     }
 }

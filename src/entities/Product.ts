@@ -3,10 +3,10 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("product")
 export class Product extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string
 
-    @Column({length:100})
+    @Column()
     name: string
     @Column("double")
     price: number

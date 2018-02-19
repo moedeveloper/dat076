@@ -22,11 +22,11 @@ export class TreatementRepository{
         return this.entityManager.getRepository(Treatement).findOneById(id)
     }
 
-    updateTreatement(request:any){
-        this.entityManager.getRepository(Treatement).save(request)
+    updateTreatement(request:any):Promise<Treatement>{
+        return this.entityManager.getRepository(Treatement).save(request)
     }
 
     deleteTreatement(id: string){
-        this.entityManager.getRepository(Treatement).removeById(id)
+        return this.entityManager.getRepository(Treatement).removeById(id)
     }
 }

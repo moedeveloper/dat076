@@ -1,64 +1,62 @@
 import {Response, Request} from "express"
-import {UserRepository} from "../repositories/userRepo"
-import {UserEntity} from "../entities/UserEntity"
 import { Container } from "typedi";
-
 import {OrmRepository, OrmManager} from "typeorm-typedi-extensions";
 import {Service} from "typedi";
-import { Guid } from "./../Guid";
+import { EmployeeRepo } from "../repositories/employeeRepo";
+
 @Service()
-export class UserRoute{
-    repo: UserRepository;
-    constructor(repo:UserRepository){
+export class EmployeeRoute{
+    repo: EmployeeRepo;
+    constructor(repo:EmployeeRepo){
         this.repo = repo
     }
 
-    getusers = async (req: Request, res: Response) => {
+    getReports = async (req: Request, res: Response) => {
     
         var promises = [];
-        promises.push(this.repo.getUsers().then(function (data) {
+        promises.push(this.repo.getreports().then(function (data) {
             return data;
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                usersApi: values[0]
+                eReportApi: values[0]
             });
             res.end(result);
         });
     }
 
     //getbyid
-    getuser = async(req: Request, res: Response) => {
-        this.repo.getUserById(req.params["id"]).then((data) =>{
+    getReport = async(req: Request, res: Response) => {
+        this.repo.getreport(req.params["id"]).then((data) =>{
             var result = JSON.stringify({
-                usersApi: data
+                eReportApi: data
             });
             res.end(result);
         })
     }
     // craete
-    createuser = async(req: Request, res: Response) =>{
-        this.repo.createUser(req.body).then((data)=> {
+    createReport = async(req: Request, res: Response) =>{
+        this.repo.createreport(req.body).then((data)=> {
             //res.status(201).send()
             var result = JSON.stringify({
-                usersApi: data
+                eReportApi: data
             });
             res.status(201).end(result);
         })
     }
     //update
-    updateuser = async(req: Request, res: Response) =>{
-        this.repo.updateUser(req.body).then((data)=> {
+    updateReport = async(req: Request, res: Response) =>{
+        this.repo.updatereport(req.body).then((data)=> {
             //res.status(201).send()
             var result = JSON.stringify({
-                usersApi: data
+                eReportApi: data
             });
             res.status(201).end(result);
         })
     }
     //Remove
-    removeuser = async(req: Request, res: Response) =>{
-        this.repo.removeUser(req.params["id"]).then(()=> {
+    removeReport = async(req: Request, res: Response) =>{
+        this.repo.removereport(req.params["id"]).then(()=> {
             res.status(201).send()
         })
     }

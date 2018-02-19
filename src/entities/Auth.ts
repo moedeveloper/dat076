@@ -3,12 +3,12 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("auth")
 export class Auth extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string
 
-    @Column({length:100})
+    @Column()
     username: string
 
-    @Column({length:100})
+    @Column()
     password: string
 }

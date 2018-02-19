@@ -3,7 +3,7 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("log")
 export class Log extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string
 
     @Column()

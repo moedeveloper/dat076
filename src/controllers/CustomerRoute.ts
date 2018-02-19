@@ -17,9 +17,45 @@ export class CustomerRoute {
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                usersApi: values[0]
+                customerApi: values[0]
             });
             res.end(result);
         });
+    }
+
+    getcustomer = async (req:Request, res:Response) => {
+        this.repo.getcustomer(req.params["id"]).then((data) =>{
+            var result = JSON.stringify({
+                customerApi: data
+            });
+            res.end(result);
+        })
+    }
+
+        // craete
+    createcustomer = async(req: Request, res: Response) =>{
+        this.repo.createcustomer(req.body).then((data)=> {
+            //res.status(201).send()
+            var result = JSON.stringify({
+                customerApi: data
+            });
+            res.status(201).end(result);
+        })
+    }
+    //update
+    updatecustomer = async(req: Request, res: Response) =>{
+        this.repo.updatecustomer(req.body).then((data)=> {
+            //res.status(201).send()
+            var result = JSON.stringify({
+                customerApi: data
+            });
+            res.status(201).end(result);
+        })
+    }
+    //Remove
+    deletecustomer = async(req: Request, res: Response) =>{
+        this.repo.removecustomer(req.params["id"]).then(()=> {
+            res.status(201).send()
+        })
     }
 }

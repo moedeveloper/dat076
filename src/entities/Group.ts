@@ -3,11 +3,11 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("group")
 export class Group extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string
 
-    @Column({length:100})
+    @Column()
     role: string
-    @Column({length:100})
+    @Column()
     userId: string
 }

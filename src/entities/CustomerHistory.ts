@@ -3,6 +3,6 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 
 @Entity("customer")
 export class CustomerHistory extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string
 }
