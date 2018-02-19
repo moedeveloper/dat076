@@ -20,9 +20,12 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/fullcalendar/dist/fullcalendar.css",
+        "../node_modules/fullcalendar-scheduler/dist/scheduler.css",
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/moment/moment.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
