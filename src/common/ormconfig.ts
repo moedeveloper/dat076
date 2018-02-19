@@ -21,8 +21,7 @@ import { Auth } from "../entities/Auth";
     password: "89053fff",
     database: "mo3dat076",
     entities: [
-        UserEntity, UET, Customer, Treatement, EventCalendar, Auth,
-         CustomerHistory, EmployeeReport, Group, Product, SalaryReport, UserGroupAuth
+        UserEntity, UET, Customer, Treatement, EventCalendar, Auth, CustomerHistory, Group, Product, SalaryReport, UserGroupAuth //EmployeeReport,
     ],
     synchronize: true
 }

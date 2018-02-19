@@ -4,9 +4,6 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 @Entity("user")
 export class UserEntity extends BaseEntity{
     
-//    @PrimaryColumn("varchar")
-//    @Column({ nullable: false, unique: true })
-//     id:any
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
