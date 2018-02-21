@@ -6,12 +6,7 @@ import { Customer } from "../entities/Customer";
 import { Treatement } from "../entities/Treatement";
 import { UET } from "../entities/UET";
 import { UserGroupAuth } from "../entities/UserGroupAuth";
-import { SalaryReport } from "../entities/SalaryReport";
-import { Product } from "../entities/Product";
 import { Group } from "../entities/group";
-import { EmployeeReport } from "../entities/EmployeeReport";
-import { CustomerHistory } from "../entities/CustomerHistory";
-import { Auth } from "../entities/Auth";
 
  export let dbOptions: ConnectionOptions = {
     type: "mysql",
@@ -21,7 +16,8 @@ import { Auth } from "../entities/Auth";
     password: "89053fff",
     database: "mo3dat076",
     entities: [
-        UserEntity, UET, Customer, Treatement, EventCalendar //, Auth, CustomerHistory, Group, Product, SalaryReport, UserGroupAuth //EmployeeReport,
+        UserEntity, UET, Customer, Treatement, EventCalendar, UserGroupAuth
     ],
-    synchronize: true
+    synchronize: true,
+    dropSchema : true
 }
