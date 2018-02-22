@@ -1,16 +1,43 @@
-<div style="padding: 5px">
-  <ul class="nav nav-tabs">
-    <li routerLinkActive="active">
-      <a routerLink="home">Home</a>
-    </li>
-    <li routerLinkActive="active">
-      <a routerLink="calendar">Calendar</a>
-    </li>
-  </ul>
+<div style="padding: 5px"  >
+  <div class="navbar">
+    <ul class="nav nav-tabs col-6">
+      <li routerLinkActive="active">
+        <a routerLink="home">Home</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="calendar">Calendar</a>
+      </li>
+      <li class="pull-right" >
+        <button class="btn btn-primary btn-outline-success navbar-btn pull-right" id="loginBtn" (click)="toggleLogin($event)" type="submit">{{loginBtnText}}</button>
+      </li>
+    </ul>
+  </div>
 </div>
 
-<h3>Hello!</h3>
+  <div [ngClass]="{'show': isLoginVisible }" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeLoginModal(false)" ><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
 
+          <div class="input-group ">
+            <span class="input-group-addon" id="sizing-addon1">Admin<br><br>Area</span>
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+            <input type="password" class="form-control" placeholder="password" aria-describedby="sizing-addon1">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="closeLoginModal(false)">Close</button>
+          <!-- TODO: route to admin area when created-->
+          <button type="button" class="btn btn-primary" (click)="closeLoginModal(true)"  routerLink="calendar">Login</button>
+        </div>
+      </div><!-- /.modal-content -->
+
+    </div><!-- /.modal-dialog -->
+
+  </div><!-- /.modal -->
 <router-outlet></router-outlet>
-
-
