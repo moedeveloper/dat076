@@ -1,43 +1,40 @@
-<div style="padding: 5px"  >
-  <div class="navbar">
-    <ul class="nav nav-tabs col-6">
-      <li routerLinkActive="active">
-        <a routerLink="home">Home</a>
+<nav class="navbar navbar-expand-lg navbar-light " style="padding-top: 10px">
+  <div class="collapse navbar-collapse" id="nav-menu">
+    <a class="navbar-brand" href="#">Super-Sæx</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li routerLinkActive="active" class="nav-item active">
+        <a routerLink="home" class="nav-link">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a routerLink="calendar">Calendar</a>
-      </li>
-      <li class="pull-right" >
-        <button class="btn btn-primary btn-outline-success navbar-btn pull-right" id="loginBtn" (click)="toggleLogin($event)" type="submit">{{loginBtnText}}</button>
+      <li routerLinkActive="active" class="nav-item">
+        <a routerLink="calendar" class="nav-link" >Calendar</a>
       </li>
     </ul>
+    <div class="inline my-2 my-lg-0">
+      <button class="btn btn-md btn-outline-primary" (click)="toggleLogin(content)">{{loginBtnText}}</button>
+    </div>
   </div>
-</div>
+</nav>
 
-  <div [ngClass]="{'show': isLoginVisible }" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeLoginModal(false)" ><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Login</h4>
-        </div>
-        <div class="modal-body">
+<ng-template #content let-c="close" let-d="dismiss" let-l="submit">
+  <div class="modal-header">
+    <h4 class="modal-title">Log In</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group ">
+      <input type="text" id="userinput" class="form-control" placeholder="Username">
+      <input type="password" id="passinput" class="form-control" placeholder="Password">
+    </div>
 
-          <div class="input-group ">
-            <span class="input-group-addon" id="sizing-addon1">Admin<br><br>Area</span>
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
-            <input type="password" class="form-control" placeholder="password" aria-describedby="sizing-addon1">
-          </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-primary" (click)="c('Login')">Log In</button>
+  </div>
+</ng-template>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="closeLoginModal(false)">Close</button>
-          <!-- TODO: route to admin area when created-->
-          <button type="button" class="btn btn-primary" (click)="closeLoginModal(true)"  routerLink="calendar">Login</button>
-        </div>
-      </div><!-- /.modal-content -->
+<hr>
 
-    </div><!-- /.modal-dialog -->
-
-  </div><!-- /.modal -->
 <router-outlet></router-outlet>
