@@ -55,16 +55,16 @@ export class UETRepository {
     getEventcalendar(id:string): Promise<EventCalendar>{
         return this.eventRepo.geteventcalendarById(id)
     }
-    createUET(userId:string, event:EventCalendar, treatId:string, custId:string): Promise<UET>{
+    createUET(event:EventCalendar, treatId:string, custId:string): Promise<UET>{
         let uet = new UET()
 
         //1. get user -> get its id
         //2. create event  -> get its id
         //3. get Treatemnet  -> get its id
         //4. get Customer -> get its id
-        this.user(userId).then((data)=>{
-            uet.userId = data.id
-        }).catch(error => console.log("no record with provided id: ", error))
+        // this.user(userId).then((data)=>{
+        //     uet.userId = data.id
+        // }).catch(error => console.log("no record with provided id: ", error))
         this.gettreatement(treatId).then((data)=>{
             uet.treatementId = data.id
         }).catch(error => console.log("no record with provided id: ", error))

@@ -21,7 +21,6 @@ export class CustomerRepo{
     getcustomer(id:string):Promise<Customer>{
         return this.entityManager.getRepository(Customer).findOneById(id)
     }
-
     removecustomer(id:string){
         return this.entityManager.getRepository(Customer).removeById(id)
     }

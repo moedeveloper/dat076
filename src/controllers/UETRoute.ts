@@ -37,11 +37,11 @@ export class UETRoute{
 
     createuet = async(req: Request, res: Response) => {
         console.log(req.body)
-        let userId = req.body.userId
+        //let userId = req.body.userId
         let event = req.body.event
         let customerId = req.body.customerId
         let treatId = req.body.treatId
-        this.repo.createUET(userId ,event, customerId, treatId).then((data) =>{
+        this.repo.createUET(event, customerId, treatId).then((data) =>{
             var result = JSON.stringify({
                 uetApi: data
             });

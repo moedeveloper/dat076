@@ -8,10 +8,4 @@ export class Customer extends BaseEntity{
 
     @Column("varchar", { nullable: false})
     userId: string
-    
-    @Column("varchar", { nullable: false})
-    authId: string
-
-    @Column("varchar", { nullable: false})
-    historyId: string
 }

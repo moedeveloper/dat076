@@ -62,12 +62,12 @@ app.post("/api/user", usercContainer.createuser)
 app.get("/api/user/:id", usercContainer.getuser)
 app.delete("/api/user/:id", usercContainer.removeuser)
 app.put("/api/user/", usercContainer.updateuser)
-
+app.get("/api/user/:query", usercContainer.getuserbyQuery)
 
 
 // Event is a user->Event-> treatement
 let uetcontainer = Container.get(UETRoute)
-app.get("/api/uet", uetcontainer.getuets)
+app.get("/api/uets", uetcontainer.getuets)
 app.get("/api/uet/:id", uetcontainer.getuet)
 app.post("/api/uet/", uetcontainer.createuet)
 app.delete("/api/uet/:id", uetcontainer.deleteuet)

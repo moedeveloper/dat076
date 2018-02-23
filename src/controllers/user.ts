@@ -62,4 +62,13 @@ export class UserRoute{
             res.status(201).send()
         })
     }
+    // get user by query
+    getuserbyQuery = async(req: Request, res: Response) => {
+        this.repo.getUserById(req.params["query"]).then((data) =>{
+            var result = JSON.stringify({
+                usersApi: data
+            });
+            res.end(result);
+        })
+    }
 }
