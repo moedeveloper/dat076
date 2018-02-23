@@ -31,7 +31,6 @@ export class AppComponent {
     this.isLoginVisible = false;
   }
   login(){
-    console.log("login");
     this.isLoggedIn = true;
     this.loginBtnText = "Log out";
   }
