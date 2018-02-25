@@ -24,25 +24,25 @@
                 <div class="col-md-8">
                   <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text"  id="inputGroup-sizing-default">ID</span>
+                      <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
                     </div>
-                    <input type="text"  [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    <input type="text" readonly [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                   </div>
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-default">First Name</span>
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
                       </div>
                       <input type="text" [value]="selectedEmployee.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
                   <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-default">Last Name</span>
+                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
                     </div>
                     <input type="text"  [value]="selectedEmployee.lastname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                   </div>
                   <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-default">Telefon</span>
+                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
                     </div>
                     <input type="text"  [value]="selectedEmployee.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                   </div>
@@ -54,7 +54,7 @@
                       <button type="button" (click)="delete(employees, selectedEmployee)" class="btn btn-danger btn">Délét</button>
                       <button type="button" (click)="update(employees, selectedEmployee)" class="btn btn-secondary btn">Update</button>
                       <!--add should pref trigger a modal with input fields-->
-                      <button type="button" (click)="add(employees, selectedEmployee)"class="btn btn-primary btn">Add</button>
+                      <button type="button" (click)="open(content)" class="btn btn-primary btn">Create new</button>
                     </div>
                     <div class="col-md-1">
                     </div>
@@ -97,3 +97,47 @@
   <div class="col-md-1"></div>
 
 </div>
+
+<!--modal with add-input fields-->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add new Employee</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!--gets "submit canceled because form not connected" will fix -->
+  <form #createEmp="ngForm" (ngSubmit)="add(employees, selectedEmployee, selectedEmployee)">
+    <div class="modal-body">
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+      </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
+          </div>
+          <input type="text"  class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
+        </div>
+        <input type="text"  class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" (click)="c('Close click')" class="btn btn-primary btn">Add</button>
+      <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    </div>
+  </form>
+
+</ng-template>

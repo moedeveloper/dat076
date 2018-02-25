@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {User} from './user';
 
 @Component({
@@ -7,8 +8,9 @@ import {User} from './user';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
+  closeResult: string;
 
-  constructor() { }
+  constructor(private modalService: NgbModal) {}
 
   //dummy data
   employees = [
@@ -57,14 +59,38 @@ export class AdminComponent implements OnInit {
     item = list[index+1];
     // TODO: AJAX call
   }
-  update(list, item){
-
+  update(list, oldItem, newItem){
+    let index = list.indexOf(oldItem);
+    list[index] = newItem;
   }
   add(list, item){
     //list.push(item);
   }
 
+  onSubmit(){
+    console.log("onSubmit");
+  }
 
+
+   //modal open
+   open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+}
 
 
 }
