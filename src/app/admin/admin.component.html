@@ -106,38 +106,35 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <!--gets "submit canceled because form not connected" will fix -->
-  <form #createEmp="ngForm" (ngSubmit)="add(employees, selectedEmployee, selectedEmployee)">
     <div class="modal-body">
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
         </div>
-        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        <input type="text" [(ngModel)]="newUser.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
       </div>
         <div class="input-group input-group-sm mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
           </div>
-          <input type="text"  class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+          <input type="text" [(ngModel)]="newUser.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
         </div>
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
         </div>
-        <input type="text"  class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        <input type="text" [(ngModel)]="newUser.lastname"  class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
       </div>
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
         </div>
-        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        <input type="text" [(ngModel)]="newUser.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit" (click)="c('Close click')" class="btn btn-primary btn">Add</button>
+      <button type="submit" (click)="c('Close click');createEmployee();" class="btn btn-primary btn">Add</button>
       <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
     </div>
-  </form>
 
 </ng-template>

@@ -1,2 +1,68 @@
+<div class="container-fluid">
 
-<div id='calendar' class="fc fc-bootstrap3 fc-ltr"></div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div id='calendar' class="fc fc-bootstrap4 fc-ltr col-md-8"></div>
+    <div class="col-md-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-right">
+      <button type="button" (click)="open(content)" class="btn btn-primary btn">Create new</button>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<!-- Add eventmodal -->
+<ng-template #content let-c="close" let-d="dismiss" let-l="submit">
+  <div class="modal-header">
+    <h4 class="modal-title">Create Event</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6>Title</h6>
+
+    <div class="input-group input-group-sm mb-3">
+      <input type="text" [(ngModel)]="eventTitle" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-large">
+    </div>
+
+    <div class="row" style="padding-bottom: 20px">
+      <div class="col-md-6">
+        <label for="employees">Select Employee</label>
+        <select class="form-control" id="employee" [(ngModel)]="eventEmployee" required>
+          <option *ngFor="let employee of employees" [value]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+        </select>
+
+      </div>
+      <div class="col-md-6">
+
+
+        <label for="treatment">Select Treatment</label>
+        <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
+          <option *ngFor="let treatment of treatments" [value]=treatment>{{treatment.name}}</option>
+        </select>
+
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col-md-6 text-left">
+        <h6>Starting time</h6>
+        <ngb-timepicker [(ngModel)]="startTime"></ngb-timepicker>
+      </div>
+      <div class="col-md-6 text-left">
+        <h6>Ending time</h6>
+        <ngb-timepicker [(ngModel)]="endTime"></ngb-timepicker>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    <button type="submit" (click)="c('Close click'); createEvent()" class="btn btn-primary btn">Add</button>
+  </div>
+
+
+</ng-template>

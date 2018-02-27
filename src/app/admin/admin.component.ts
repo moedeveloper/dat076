@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {User} from './user';
+import {User} from '../utils/user';
+import {Treatment} from '../utils/treatment';
+
+import {Db} from '../utils/db';
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +14,7 @@ export class AdminComponent implements OnInit {
   closeResult: string;
 
   constructor(private modalService: NgbModal) {}
-
+  newUser = new User(null, "", "", "");
   //dummy data
   employees = [
     new User(1, "Mo", "Mortada", "0700123123"),
@@ -21,7 +24,14 @@ export class AdminComponent implements OnInit {
     new User(5, "Joachim", "Von Anka", "0700543987")
   ];
   customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
-  treatments = ["Mo", "David", "Simon", "Carl", "Joachim"];
+
+  treatments = [
+    new Treatment(1, "Haircut", "--"),
+    new Treatment(2, "Prep", "--"),
+    new Treatment(3, "Wash", "--"),
+    new Treatment(4, "Trim", "--"),
+    new Treatment(5, "Extensions", "--")
+  ];
   selectedEmployee = this.employees[0];
   selectedCustomer;
   selectedTreatment;
@@ -63,14 +73,16 @@ export class AdminComponent implements OnInit {
     let index = list.indexOf(oldItem);
     list[index] = newItem;
   }
-  add(list, item){
-    //list.push(item);
-  }
 
   onSubmit(){
     console.log("onSubmit");
   }
 
+  createEmployee(){
+    this.employees.push(this.newUser);
+    this.newUser = new User(null, "", "", "");
+    //add this newUser to db
+  }
 
    //modal open
    open(content) {
@@ -90,7 +102,4 @@ export class AdminComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
-}
-
-
 }
