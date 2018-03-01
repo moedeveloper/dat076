@@ -63,12 +63,19 @@ export class UserRoute{
         })
     }
     // get user by query
+    // on telefon case it return just one user
     getuserbyQuery = async(req: Request, res: Response) => {
-        this.repo.getUserById(req.params["query"]).then((data) =>{
+        var promises = [];
+        promises.push(this.repo.getcuserbyquery(req.params["query"]).then(function (data) {
+            console.log("in promise request " + data)
+            return data;
+        }));
+        Promise.all(promises).then(function (values) {
+            console.log("in all " + values[0])
             var result = JSON.stringify({
-                usersApi: data
+                usersApi: values[0]
             });
             res.end(result);
-        })
+        });
     }
 }

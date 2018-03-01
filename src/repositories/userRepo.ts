@@ -33,10 +33,10 @@ export class UserRepository {
         return this.entityManager.getRepository(UserEntity).save(user)
     }
 
-    getcuserbyquery(query:string):Promise<UserEntity>{
+    getcuserbyquery(query:string):Promise<UserEntity[]>{
         return this.entityManager.getRepository(UserEntity)
         .createQueryBuilder("user")
         .where("user.firstname = :firstname OR user.lastname = :lastname OR user.telefon = :telefon", {firstname: query, lastname: query, telefon: query})
-        .getOne()
+        .getMany()
     }
 }

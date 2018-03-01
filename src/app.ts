@@ -62,7 +62,7 @@ app.post("/api/user", usercContainer.createuser)
 app.get("/api/user/:id", usercContainer.getuser)
 app.delete("/api/user/:id", usercContainer.removeuser)
 app.put("/api/user/", usercContainer.updateuser)
-app.get("/api/user/:query", usercContainer.getuserbyQuery)
+app.get("/api/user/query/:query", usercContainer.getuserbyQuery)
 
 
 // Event is a user->Event-> treatement
