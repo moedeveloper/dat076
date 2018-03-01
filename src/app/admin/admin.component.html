@@ -14,38 +14,41 @@
                   <div class="list-group">
                     <button type="button" *ngFor="let employee of employees"
                       (click)="onSelect(employee)"
-                      [ngClass]="{'active': selectedEmployee==employee }"
+                      [ngClass]="{'active': selectedEmployee == employee }"
                       class="list-group-item list-group-item-action">
                       {{ employee.firstname }}
                       {{ employee.lastname }}
                     </button>
                   </div>
                 </div>
-                <div class="col-md-8">
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
-                    </div>
-                    <input type="text" readonly [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                  </div>
+                <div class="container">
+                  <div class="col-md-8">
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
+                        <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
                       </div>
-                      <input type="text" [value]="selectedEmployee.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                      <input type="text" readonly [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
+                      <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
+                        </div>
+                        <input type="text" [value]="selectedEmployee.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                      </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
+                      </div>
+                      <input type="text"  [value]="selectedEmployee.lastname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                    <input type="text"  [value]="selectedEmployee.lastname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
+                      </div>
+                      <input type="text"  [value]="selectedEmployee.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                    <input type="text"  [value]="selectedEmployee.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                  </div>
+                </div>
+                
 
                   <div class="row" style="padding-top: 10px">
                     <div class="col-md-3"></div>
@@ -107,12 +110,7 @@
     </button>
   </div>
     <div class="modal-body">
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
-        </div>
-        <input type="text" [(ngModel)]="newUser.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-      </div>
+      
         <div class="input-group input-group-sm mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>

@@ -8,6 +8,8 @@ import 'fullcalendar';
 import 'fullcalendar/dist/locale/sv.js';
 import 'fullcalendar-scheduler';
 
+import { EmployeeService } from '../utils/employee.service'
+
 @Component({
   selector: 'app-caledar',
   templateUrl: './calendar.component.html',
@@ -24,17 +26,11 @@ export class CalendarComponent implements OnInit {
   eventTreatment: Treatment;
   calendar;
 
-  constructor(private modalService: NgbModal) {  }
+  constructor(private modalService: NgbModal, private employeeService : EmployeeService) {  }
 
   //dummy data until backend connection
 
-  employees = [
-    new User(1, "Mo", "Mortada", "0700123123"),
-    new User(2, "David", "Iliefski", "0700123423"),
-    new User(3, "Simon", "Mare", "0700545543"),
-    new User(4, "Carl", "Albertsson", "0700123759"),
-    new User(5, "Joachim", "Von Anka", "0700543987")
-  ];
+  employees : any;
   treatments = [
     new Treatment(1, "Haircut", "--"),
     new Treatment(2, "Prep", "--"),
@@ -45,10 +41,14 @@ export class CalendarComponent implements OnInit {
 
 
 
-  ngOnInit(
-  ) {
+  ngOnInit() {
 
-  	console.log($);
+    this.employeeService.getEmployees().then(data => {
+      console.log(data);
+      this.employees = data;
+    })
+
+  	
     var self = this;
   	$(function() {
     let containerEl: JQuery = $('#calendar');

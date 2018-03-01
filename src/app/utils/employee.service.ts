@@ -17,7 +17,7 @@ export class EmployeeService {
   		this.http.get(this.url + "/users")
   		.map(res => res.json())
   		.subscribe(data => {
-  			resolve(data);
+  			resolve(data.usersApi);
   		});
 	  });
   };
