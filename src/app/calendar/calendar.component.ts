@@ -19,6 +19,7 @@ export class CalendarComponent implements OnInit {
   @ViewChild('content') private content;
   content2 = this.content;
   closeResult: string;
+  day: string = '2018-03-01T';
   startTime = {hour: 13, minute: 30};
   endTime = {hour: 13, minute: 30};
   eventTitle: string;
@@ -46,43 +47,37 @@ export class CalendarComponent implements OnInit {
     this.employeeService.getEmployees().then(data => {
       console.log(data);
       this.employees = data;
-    })
 
-  	
-    var self = this;
-  	$(function() {
-    let containerEl: JQuery = $('#calendar');
-    self.setCalender(containerEl);
-    	//console.log(containerEl);
+      var self = this;
+    	$(function() {
+      let containerEl: JQuery = $('#calendar');
+      self.setCalender(containerEl);
+      	//console.log(containerEl);
 
-	    containerEl.fullCalendar({
-	    	schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-	    	 // options here
+      containerEl.fullCalendar({
+      	schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+      	 // options here
         locale: 'sv',
-	    	timezone: 'local',
+      	timezone: 'local',
         firstDay: 1,
-		    editable: true, // enable draggable events
-		    aspectRatio: 1.8,
+  	    editable: true, // enable draggable events
+  	    aspectRatio: 1.8,
         minTime: '08:00',
         maxTime: '20:00',
-		    header: {
-		      left: 'today prev,next',
-		      center: 'title',
-		      right: 'agendaDay,agendaWeek,month,listWeek'
-		    },
+  	    header: {
+  	      left: 'today prev,next',
+  	      center: 'title',
+  	      right: 'agendaDay,agendaWeek,month,listWeek'
+  	    },
         allDaySlot: false,
-		    defaultView: 'agendaDay',
-		    resourceLabelText: 'Employees',
-		    resources: [
-		        { id: 'Mo', title: 'Mo' },
-		        { id: 'David', title: 'David' },
-		        { id: 'Simon', title: 'Simon' },
-		        { id: 'Carl', title: 'Carl' }
-		    ],
-        events: [
-          {title: 'abc', description: 'Some insane treatment', resourceId: 'Mo', start: '2018-02-22T11:00:00', end: '2018-02-22T12:30:00'},
-          {title: 'cde', description: 'really shitty treatment over here', resourceId: 'Simon', start: '2018-02-22T10:00:00', end: '2018-02-22T12:00:00'}
-        ],
+  	    defaultView: 'agendaDay',
+  	    resourceLabelText: 'Employees',
+  	    resources: [
+  	        { id: self.employees[0].id, title: self.employees[0].firstname },
+  	        { id: self.employees[1].id, title: self.employees[1].firstname },
+  	        { id: self.employees[2].id, title: self.employees[2].firstname },
+  	        { id: self.employees[3].id, title: self.employees[3].firstname }
+  	    ],
         selectable: true,
         selectHelper: true,
         select: function(start, end, jsEvent, view, resource) {
@@ -107,9 +102,8 @@ export class CalendarComponent implements OnInit {
           });
         }
       });
-	  });
-
-
+    });
+  })
   }
 
   createEvent(){
@@ -118,7 +112,9 @@ export class CalendarComponent implements OnInit {
     console.log(this.eventTreatment)
     console.log(this.startTime)
     console.log(this.endTime)
-    //this.calendar.fullCalendar('renderEvent', {title: "title", description: 'NEW FRESH TREATMENTS', resourceId: resource.id, start: start, end: end});
+    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
+      resourceId: this.eventEmployee.id, start: this.day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
+      end: this.day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
   }
 
   setCalender(calendar){
