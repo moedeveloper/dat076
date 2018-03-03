@@ -111,13 +111,13 @@ export class AdminComponent implements OnInit {
   }
 
   createEmployee(){
-    this.employees.push(this.newUser);
-    var name = ;
-    var lname = ;
-    var phone = ;
-    this.newUser = new User(null, name,lname, phone);
-    add this newUser to db
-    this.employeeService.createEmployee(this.newUser);
+    //this.employees.push(this.newUser);
+    //var name = ;
+    //var lname = ;
+    //var phone = ;
+    //this.newUser = new User(null, name,lname, phone);
+    //add this newUser to db
+    //this.employeeService.createEmployee(this.newUser);
 
   }
 
