@@ -19,7 +19,7 @@ export class CalendarComponent implements OnInit {
   @ViewChild('content') private content;
   content2 = this.content;
   closeResult: string;
-  day: string = '2018-03-01T';
+  day: string = '2018-03-02T';
   startTime = {hour: 13, minute: 30};
   endTime = {hour: 13, minute: 30};
   eventTitle: string;
@@ -75,8 +75,7 @@ export class CalendarComponent implements OnInit {
   	    resources: [
   	        { id: self.employees[0].id, title: self.employees[0].firstname },
   	        { id: self.employees[1].id, title: self.employees[1].firstname },
-  	        { id: self.employees[2].id, title: self.employees[2].firstname },
-  	        { id: self.employees[3].id, title: self.employees[3].firstname }
+  	        { id: self.employees[2].id, title: self.employees[2].firstname }
   	    ],
         selectable: true,
         selectHelper: true,
@@ -108,12 +107,12 @@ export class CalendarComponent implements OnInit {
 
   createEvent(){
     console.log(this.eventTitle)
-    console.log(this.eventEmployee)
+    console.log(this.employees[0].id)
     console.log(this.eventTreatment)
     console.log(this.startTime)
     console.log(this.endTime)
-    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
-      resourceId: this.eventEmployee.id, start: this.day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
+    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: 'waddup',
+      resourceId: this.employees[0].id, start: this.day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
       end: this.day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
   }
 
