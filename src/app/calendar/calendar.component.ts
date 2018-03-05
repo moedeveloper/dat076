@@ -108,33 +108,35 @@ export class CalendarComponent implements OnInit {
   }
 
   createEvent(){
-    console.log(this.eventDate)
-    console.log(this.employees[0].id)
-    console.log(this.eventTreatment)
-    console.log(this.startTime)
-    console.log(this.endTime)
-    if (String(this.eventDate.month).length == 1){
-      this.eventDate.month = "0" + String(this.eventDate.month)
+    var year: string = String(this.eventDate.year)
+    var month: string = String(this.eventDate.month)
+    var day: string = String(this.eventDate.day)
+    var startHour: string = String(this.startTime.hour)
+    var startMinute: string = String(this.startTime.minute)
+    var endHour: string = String(this.endTime.hour)
+    var endMinute: string = String(this.endTime.hour)
+    if (month.length == 1){
+      month = "0" + month
     }
-    if (String(this.eventDate.day).length == 1){
-      this.eventDate.day = "0" + String(this.eventDate.day)
+    if (day.length == 1){
+      day = "0" + day
     }
-    if (String(this.startTime.hour).length == 1){
-      this.startTime.hour = "0" + String(this.startTime.hour)
+    if (startHour.length == 1){
+      startHour = "0" + startHour
     }
-    if (String(this.startTime.minute).length == 1){
-      this.startTime.minute = "0" + String(this.startTime.minute)
+    if (startMinute.length == 1){
+      startMinute = "0" + startMinute
     }
-    if (String(this.endTime.hour).length == 1){
-      this.endTime.hour = "0" + String(this.endTime.hour)
+    if (endHour.length == 1){
+      endHour = "0" + endHour
     }
-    if (String(this.endTime.minute).length == 1){
-      this.endTime.minute = "0" + String(this.endTime.minute)
+    if (endMinute.length == 1){
+      endMinute = "0" + endMinute
     }
-    var day = String(this.eventDate.year)+'-'+String(this.eventDate.month)+'-'+String(this.eventDate.day)+'T'
+    var date = year+'-'+month+'-'+day+'T'
     $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: 'waddup',
-      resourceId: this.employees[0].id, start: day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
-      end: day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
+      resourceId: this.employees[0].id, start: date+startHour+':'+startMinute+':00',
+      end: date+endHour+':'+endMinute+':00'});
   }
 
   getAvailableTimes(){
