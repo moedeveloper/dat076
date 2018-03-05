@@ -21,41 +21,38 @@
                     </button>
                   </div>
                 </div>
-                <div class="container">
-                  <div class="col-md-8">
+                <div class="col-md-8">
+                  <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
+                    </div>
+                    <input type="text" readonly [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text inputtext"  id="inputGroup-sizing-default">ID</span>
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
                       </div>
-                      <input type="text" readonly [value]="selectedEmployee.id" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                      <input type="text" [value]="selectedEmployee.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                      <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
-                        </div>
-                        <input type="text" [value]="selectedEmployee.firstname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                      </div>
-                    <div class="input-group input-group-sm mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
-                      </div>
-                      <input type="text"  [value]="selectedEmployee.lastname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
                     </div>
-                    <div class="input-group input-group-sm mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
-                      </div>
-                      <input type="text"  [value]="selectedEmployee.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    <input type="text"  [value]="selectedEmployee.lastname" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
+                  <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Telefon</span>
                     </div>
-                </div>
-
+                    <input type="text"  [value]="selectedEmployee.telefon" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
 
                   <div class="row" style="padding-top: 10px">
                     <div class="col-md-3"></div>
                     <div class="col-md-8 text-right">
                       <!--Delete should pref trigger a modal with warning and confirmation-->
-                      <button type="button" (click)="delete(employees, selectedEmployee)" class="btn btn-danger btn">Délét</button>
-                      <button type="button" (click)="update(employees, selectedEmployee)" class="btn btn-secondary btn">Update</button>
+                      <button type="button" (click)="deleteEmployee(employees, selectedEmployee)" class="btn btn-danger btn">Délét</button>
+                      <button type="button" (click)="updateEmployee(employees, selectedEmployee)" class="btn btn-secondary btn">Update</button>
                       <!--add should pref trigger a modal with input fields-->
                       <button type="button" (click)="open(employeeModal)" class="btn btn-primary btn">Create new</button>
                     </div>
@@ -100,13 +97,19 @@
                     </div>
                       <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
-                          <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
+                          <span class="input-group-text inputtext" id="inputGroup-sizing-default">Name</span>
                         </div>
                         <input type="text" [value]="selectedTreatment.name" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                       </div>
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Last Name</span>
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Price</span>
+                      </div>
+                      <input type="text"  [value]="selectedTreatment.price" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text inputtext" id="inputGroup-sizing-default">Description</span>
                       </div>
                       <input type="text"  [value]="selectedTreatment.description" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
@@ -117,8 +120,8 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-8 text-right">
                       <!--Delete should pref trigger a modal with warning and confirmation-->
-                      <button type="button" (click)="delete(treatments, selectedTreatment)" class="btn btn-danger btn">Délét</button>
-                      <button type="button" (click)="update(treatment, selectedTreatment)" class="btn btn-secondary btn">Update</button>
+                      <button type="button" (click)="deleteTreatment(treatments, selectedTreatment)" class="btn btn-danger btn">Délét</button>
+                      <button type="button" (click)="updateTreatment(treatment, selectedTreatment)" class="btn btn-secondary btn">Update</button>
                       <!--add should pref trigger a modal with input fields-->
                       <button type="button" (click)="open(treatmentModal)" class="btn btn-primary btn">Create new</button>
                     </div>
