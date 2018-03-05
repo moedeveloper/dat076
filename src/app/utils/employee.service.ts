@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { resolve } from 'q';
+import { User } from './user';
 
 @Injectable()
 export class EmployeeService {
@@ -13,7 +14,7 @@ export class EmployeeService {
 
   // Working request
   getEmployees(){
-  	return new Promise(resolve => {
+  	return new Promise<User[]>(resolve => {
   		this.http.get(this.url + "/users")
   		.map(res => res.json())
   		.subscribe(data => {
@@ -26,7 +27,7 @@ export class EmployeeService {
   // Working request
   getEmployee(id){
 
-  	return new Promise(resolve => {
+  	return new Promise<User>(resolve => {
   		this.http.get(this.url + '/user/' + id)
   		.subscribe(data => {
 			  resolve(data.json());
@@ -40,7 +41,7 @@ export class EmployeeService {
   	let headers = new Headers();
   	headers.append('Content-Type', 'application/json');
 
-	return new Promise( resolve => {
+	return new Promise<User>( resolve => {
 		this.http.post(this.url + '/user', JSON.stringify(employee), {headers: headers})
 		.subscribe(res => {
 			resolve(res.json());
@@ -62,7 +63,7 @@ export class EmployeeService {
 	console.log('Update  Emp-->')
 	console.log(employee);
 	
-	return new Promise( resolve => {
+	return new Promise<User>( resolve => {
 		this.http.put(this.url + '/user/', JSON.stringify(employee))
 		.subscribe(data => {
 			resolve(data.json());
@@ -72,7 +73,7 @@ export class EmployeeService {
 
   //TODO: not working correctly
   searchEmployee(query){
-	  return new Promise( resolve => {
+	  return new Promise<User>( resolve => {
 		  this.http.get(this.url + '/user/' + query)
 		  .subscribe(data => {
 			  resolve(data.json());

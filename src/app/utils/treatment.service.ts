@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { resolve } from 'q';
+import { Treatment } from './treatment';
 
 @Injectable()
 export class TreatmentService {
@@ -12,7 +13,7 @@ export class TreatmentService {
 
   // Working request
   getTreatments(){
-  	return new Promise(resolve => {
+  	return new Promise<Treatment[]>(resolve => {
   		this.http.get(this.url + "/treatements")
   		.map(res => res.json())
   		.subscribe(data => {
@@ -25,7 +26,7 @@ export class TreatmentService {
   // Working request
   getTreatment(id){
 
-  	return new Promise(resolve => {
+  	return new Promise<Treatment>(resolve => {
   		this.http.get(this.url + '/treatement/' + id)
   		.subscribe(data => {
 			  resolve(data.json());
@@ -39,7 +40,7 @@ export class TreatmentService {
   	let headers = new Headers();
 	  headers.append('Content-Type', 'application/json');
 	  
-	return new Promise(resolve => {
+	return new Promise<Treatment>(resolve => {
 		this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
   		.subscribe(res => {
   			resolve(res.json());
@@ -58,7 +59,7 @@ export class TreatmentService {
   //TODO: not working correctly
   updateTreatment(treatement){
 	
-	return new Promise( resolve => {
+	return new Promise<Treatment>( resolve => {
 		this.http.put(this.url + '/treatement', JSON.stringify(treatement))
 		.subscribe(data => {
 			resolve(data.json());

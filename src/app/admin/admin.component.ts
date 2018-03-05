@@ -17,18 +17,21 @@ import { timeout } from 'q';
 })
 export class AdminComponent implements OnInit {
 
-  selectedEmployee : any;
+  selectedEmployee : User;
+  selectedTreatment : Treatment;
+  selectedEvent : Event;
+
+  employees : User[];
+  treatments : Treatment[];
+  events : Event[];
 
   closeResult: string;
+
   newUser = new User(null, "", "", "");
-  newTreatment = new Treatment(null, "", "", 0)
+  newTreatment = new Treatment(null, "", "", 0);
+
   //dummy data
-  employees : any;
-  treatments : any;
-  events : any;
-
-
-  customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
+  //customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
 
   testUser = {
     firstname: "Krille",
@@ -42,8 +45,6 @@ export class AdminComponent implements OnInit {
     id: "8c990364-ed4e-45bc-b3b4-1cd9d3b8a5aa"
   }
 
-  selectedTreatment;
-  selectedEvent;
   constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService,
     private eventService: EventService) {}
 
@@ -60,7 +61,7 @@ export class AdminComponent implements OnInit {
 
       this.treatmentService.getTreatments().then(data => {
         this.treatments = data;
-        this.selectedTreatment = this.treatments[0];
+        this.selectedTreatment = this.treatments[1];
 
         console.log(this.treatments);
       });
@@ -108,11 +109,13 @@ export class AdminComponent implements OnInit {
   createTreatment(){
     this.newTreatment = new Treatment(null, this.newTreatment.name, this.newTreatment.duration, this.newTreatment.price);
 
-    this.employeeService.createEmployee(this.newTreatment).then(a => {
+    this.treatmentService.createTreatment(this.newTreatment).then(a => {
       console.log(a);
       this.treatmentService.getTreatments().then(data => {
+        console.log('-----> data')
+        console.log(data);
         this.treatments = data;
-        console.log(this.employees);
+        console.log(this.treatments);
       });
     });
   };
@@ -144,9 +147,12 @@ export class AdminComponent implements OnInit {
   onSelect(clickedItem) {
     switch(clickedItem) {
        case clickedItem: typeof User;
+          console.log('clicked User');
+          console.log(clickedItem)
          this.selectedEmployee = clickedItem;
          break;
        case clickedItem: typeof Treatment;
+       console.log('clicked Treatment');
          this.selectedTreatment = clickedItem;
          break;
        case clickedItem: typeof Event;

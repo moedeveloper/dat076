@@ -140,7 +140,10 @@ export class CalendarComponent implements OnInit {
   }
 
   getAvailableTimes(){
-    var events = $('#calendar').fullCalendar('clientEvents')
+    var events = $('#calendar').fullCalendar('clientEvents', function(evt){
+      return evt;
+    });
+    console.log(events);
     var d = new Date()
     console.log(events[0])
     d.setHours(d.getHours()+1)
