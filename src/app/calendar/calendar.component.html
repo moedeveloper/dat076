@@ -35,13 +35,13 @@
       <div class="col-md-6">
         <label for="employees">Select Employee</label>
         <select class="form-control" id="employee" [(ngModel)]="eventEmployee" required>
-          <option *ngFor="let employee of employees" [value]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
         </select>
       </div>
       <div class="col-md-6">
         <label for="treatment">Select Treatment</label>
         <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
-          <option *ngFor="let treatment of treatments" [value]=treatment>{{treatment.name}}</option>
+          <option *ngFor="let treatment of treatments" [ngValue]=treatment>{{treatment.name}}</option>
         </select>
       </div>
 

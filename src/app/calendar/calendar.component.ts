@@ -23,7 +23,7 @@ export class CalendarComponent implements OnInit {
   closeResult: string;
   startTime = {hour: 13, minute: 30};
   endTime = {hour: 13, minute: 30};
-  eventDate;
+  eventDate = {year: 2018, month: 3, day: 4}
   eventTitle: string;
   eventEmployee: User;
   eventTreatment: Treatment;
@@ -68,7 +68,7 @@ export class CalendarComponent implements OnInit {
           header: {
             left: 'today prev,next',
             center: 'title',
-            right: 'agendaDay,agendaWeek,month,listWeek'
+            right: 'agendaDay,agendaWeek,month'
           },
           allDaySlot: false,
           defaultView: 'agendaDay',
@@ -81,14 +81,19 @@ export class CalendarComponent implements OnInit {
           selectable: true,
           selectHelper: true,
           select: function(start, end, jsEvent, view, resource) {
-            //this opens in the wrong scope and the modal is not shown correctly
-            //self.open(self.content);
-            var title = prompt('Event Title:');
-
-            //TODO: ajax call to store event in DB
-
-            containerEl.fullCalendar('renderEvent', {title: "title", description: 'NEW FRESH TREATMENTS', resourceId: resource.id, start: start, end: end});
-            containerEl.fullCalendar('unselect');
+            self.eventDate.year = start.year()
+            self.eventDate.month = start.month()+1
+            self.eventDate.day = start.date()
+            self.startTime.hour = start.hour()
+            self.startTime.minute = start.minute()
+            self.endTime.hour = end.hour()
+            self.endTime.minute = end.minute()
+            self.employeeService.getEmployee(resource.id).then(data => {
+              self.eventEmployee = data; // check why this only happens in this scope
+              console.log(self.eventEmployee) // this gives correct employee
+            })
+            console.log(self.eventEmployee) // this gives nothing
+            self.open(self.content);
           },
           eventRender: function(event, element) {
             element.find('.fc-title').append("<br/>" + event.description);
@@ -134,26 +139,30 @@ export class CalendarComponent implements OnInit {
       endMinute = "0" + endMinute
     }
     var date = year+'-'+month+'-'+day+'T'
-    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: 'waddup',
-      resourceId: this.employees[0].id, start: date+startHour+':'+startMinute+':00',
+    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
+      resourceId: this.eventEmployee.id, start: date+startHour+':'+startMinute+':00',
       end: date+endHour+':'+endMinute+':00'});
+
+      // TODO: Ajax call to store event in DB
   }
 
   getAvailableTimes(){
     var events = $('#calendar').fullCalendar('clientEvents', function(evt){
       return evt;
     });
-    console.log(events);
     var d = new Date()
-    console.log(events[0])
     d.setHours(d.getHours()+1)
     var amount = 5
     var availableTimes = []
     while (availableTimes.length < amount){
       var available: boolean = true
-      for (var i in events){
-        if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
-          available = false
+      if (d.getHours() > 19 || d.getHours() < 8){ // If salon is closed
+        available = false
+      } else {
+        for (var i in events){ // If part of the next hour is occupied by another event
+          if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
+            available = false
+          }
         }
       }
       if (available == true){
