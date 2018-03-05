@@ -21,10 +21,12 @@ export class AdminComponent implements OnInit {
 
   closeResult: string;
   newUser = new User(null, "", "", "");
-  newTreatment = new Treatment(null, "", "", "")
+  newTreatment = new Treatment(null, "", "", 0)
   //dummy data
   employees : any;
   treatments : any;
+  events : any;
+
 
   customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
 
@@ -40,21 +42,20 @@ export class AdminComponent implements OnInit {
     id: "8c990364-ed4e-45bc-b3b4-1cd9d3b8a5aa"
   }
 
-  selectedCustomer;
   selectedTreatment;
-
-  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService, 
+  selectedEvent;
+  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService,
     private eventService: EventService) {}
 
   ngOnInit() {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
-    
+
       this.employeeService.getEmployees().then(data => {
         this.employees = data;
         this.selectedEmployee = this.employees[0];
-        
+
         console.log(this.employees)
-        
+
       })
 
       this.treatmentService.getTreatments().then(data => {
@@ -63,65 +64,9 @@ export class AdminComponent implements OnInit {
 
         console.log(this.treatments);
       });
-      
-    
-    /*
-    this.employees = [];
-    this.customers = [];
-    this.treatments = [];
-    */
   }
 
-   onSelect(clickedItem) {
-     switch(clickedItem) {
-        case clickedItem: typeof User;
-          this.selectedEmployee = clickedItem;
-          break;
-        case clickedItem=="Customer":
-          this.selectedCustomer = clickedItem;
-          break;
-        case clickedItem: typeof Treatment;
-          this.selectedTreatment = clickedItem;
-          break;
-        default:
-          break;
-    }
-  }
-
-  deleteEmployee(list, item){
-
-    this.employeeService.deleteEmployee(item.id);
-
-    let index = list.indexOf(item);
-    if (index > -1){
-      list.splice(index, 1);
-    }
-    item = list[index+1];
-    // TODO: AJAX call
-  }
-
-  deleteTreatment(list, item){
-    this.treatmentService.deleteTreatment(item.id);
-
-    let index = list.indexOf(item);
-    if (index > -1){
-      list.splice(index, 1);
-    }
-    item = list[index+1];
-    // TODO: AJAX call
-  }
-
-  updateEmployee(list, oldItem, newItem){
-    console.log(list);
-    console.log(oldItem)
-    console.log(newItem)
-    let index = list.indexOf(oldItem);
-    list[index] = newItem;
-  }
-
-  onSubmit(){
-    console.log("onSubmit");
-  }
+  // ---- Employee Methods ----
 
   createEmployee(){
     //this.employees.push(this.newUser);
@@ -134,10 +79,34 @@ export class AdminComponent implements OnInit {
         console.log(this.employees);
       });
     });    
-  }
+  };
 
+  updateEmployee(list, emp){
+
+    emp.firstname = (<HTMLInputElement>document.getElementById('employeeFirstName')).value;
+    emp.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
+    emp.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
+
+    this.employeeService.updateEmployee(emp).then(a => {
+      let index = list.indexOf(emp);
+      list[index] = emp;
+    });
+  };
+
+  deleteEmployee(list, item){
+
+    this.employeeService.deleteEmployee(item.id);
+
+    let index = list.indexOf(item);
+    if (index > -1){
+      list.splice(index, 1);
+    }
+    item = list[index+1];
+  };
+
+  // ---- Treatment Methods ----
   createTreatment(){
-    this.newTreatment = new Treatment(null, this.newTreatment.name, this.newTreatment.duration, this.newTreatment.description);
+    this.newTreatment = new Treatment(null, this.newTreatment.name, this.newTreatment.duration, this.newTreatment.price);
 
     this.employeeService.createEmployee(this.newTreatment).then(a => {
       console.log(a);
@@ -146,9 +115,47 @@ export class AdminComponent implements OnInit {
         console.log(this.employees);
       });
     });
+  };
+
+  updateTreatment(list, treatment){
+    treatment.name = (<HTMLInputElement>document.getElementById('treatmentName')).value;
+    treatment.price = (<HTMLInputElement>document.getElementById('treatmentPrice')).value;
+    treatment.duration = (<HTMLInputElement>document.getElementById('treatmentDuration')).value;
+
+    this.treatmentService.updateTreatment(treatment).then(a => {
+      let index = list.indexOf(treatment);
+      list[index] = treatment;
+    });
   }
 
-  
+  deleteTreatment(list, item){
+    this.treatmentService.deleteTreatment(item.id);
+
+    let index = list.indexOf(item);
+    if (index > -1){
+      list.splice(index, 1);
+    }
+    item = list[index+1];
+    // TODO: AJAX call
+  };
+
+  // ---------------------------
+
+  onSelect(clickedItem) {
+    switch(clickedItem) {
+       case clickedItem: typeof User;
+         this.selectedEmployee = clickedItem;
+         break;
+       case clickedItem: typeof Treatment;
+         this.selectedTreatment = clickedItem;
+         break;
+       case clickedItem: typeof Event;
+         this.selectedEvent = clickedItem;
+           break;
+       default:
+         break;
+   }
+ }
 
    //modal open
    open(content) {

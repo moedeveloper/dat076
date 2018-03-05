@@ -1,8 +1,8 @@
 export class Treatment {
   constructor(
-    public id: number,
+    public id: string,
     public name: string,
     public duration: string,
-    public description: string
+    public price: number
   ) { }
 }

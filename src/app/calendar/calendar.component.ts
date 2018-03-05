@@ -9,7 +9,8 @@ import 'fullcalendar';
 import 'fullcalendar/dist/locale/sv.js';
 import 'fullcalendar-scheduler';
 
-import { EmployeeService } from '../utils/employee.service'
+import { EmployeeService } from '../utils/employee.service';
+import { TreatmentService } from '../utils/treatment.service';
 
 @Component({
   selector: 'app-calendar',
@@ -29,18 +30,12 @@ export class CalendarComponent implements OnInit {
   calendar;
 
 
-  constructor(private modalService: NgbModal, private employeeService : EmployeeService) {  }
+  constructor(private modalService: NgbModal, private employeeService : EmployeeService, private treatmentService : TreatmentService) {  }
 
   //dummy data until backend connection
 
   employees : any;
-  treatments = [
-    new Treatment(1, "Haircut", "--", ""),
-    new Treatment(2, "Prep", "--", ""),
-    new Treatment(3, "Wash", "--", ""),
-    new Treatment(4, "Trim", "--", ""),
-    new Treatment(5, "Extensions", "--", "")
-  ];
+  treatments : any;
 
 
 
@@ -50,61 +45,65 @@ export class CalendarComponent implements OnInit {
       console.log(data);
       this.employees = data;
 
+      this.treatmentService.getTreatments().then(resData => {
+        console.log(resData);
+        this.treatments = resData;
 
-      var self = this;
-    	$(function() {
-      let containerEl: JQuery = $('#calendar');
-      self.setCalender(containerEl);
-      	//console.log(containerEl);
+        var self = this;
+        $(function() {
+        let containerEl: JQuery = $('#calendar');
+        self.setCalender(containerEl);
+          //console.log(containerEl);
 
-      containerEl.fullCalendar({
-      	schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-      	 // options here
-        locale: 'sv',
-      	timezone: 'local',
-        firstDay: 1,
-  	    editable: true, // enable draggable events
-  	    aspectRatio: 1.8,
-        minTime: '08:00',
-        maxTime: '20:00',
-  	    header: {
-  	      left: 'today prev,next',
-  	      center: 'title',
-  	      right: 'agendaDay,agendaWeek,month,listWeek'
-  	    },
-        allDaySlot: false,
-  	    defaultView: 'agendaDay',
-  	    resourceLabelText: 'Employees',
-  	    resources: [
-  	        { id: self.employees[0].id, title: self.employees[0].firstname },
-  	        { id: self.employees[1].id, title: self.employees[1].firstname },
-  	        { id: self.employees[2].id, title: self.employees[2].firstname }
-  	    ],
-        selectable: true,
-        selectHelper: true,
-        select: function(start, end, jsEvent, view, resource) {
-          //this opens in the wrong scope and the modal is not shown correctly
-          //self.open(self.content);
-          var title = prompt('Event Title:');
+        containerEl.fullCalendar({
+          schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+          // options here
+          locale: 'sv',
+          timezone: 'local',
+          firstDay: 1,
+          editable: true, // enable draggable events
+          aspectRatio: 1.8,
+          minTime: '08:00',
+          maxTime: '20:00',
+          header: {
+            left: 'today prev,next',
+            center: 'title',
+            right: 'agendaDay,agendaWeek,month,listWeek'
+          },
+          allDaySlot: false,
+          defaultView: 'agendaDay',
+          resourceLabelText: 'Employees',
+          resources: [
+              { id: self.employees[0].id, title: self.employees[0].firstname },
+              { id: self.employees[1].id, title: self.employees[1].firstname },
+              { id: self.employees[2].id, title: self.employees[2].firstname }
+          ],
+          selectable: true,
+          selectHelper: true,
+          select: function(start, end, jsEvent, view, resource) {
+            //this opens in the wrong scope and the modal is not shown correctly
+            //self.open(self.content);
+            var title = prompt('Event Title:');
 
-          //TODO: ajax call to store event in DB
+            //TODO: ajax call to store event in DB
 
-          containerEl.fullCalendar('renderEvent', {title: "title", description: 'NEW FRESH TREATMENTS', resourceId: resource.id, start: start, end: end});
-          containerEl.fullCalendar('unselect');
-        },
-        eventRender: function(event, element) {
-          element.find('.fc-title').append("<br/>" + event.description);
-          element.find(".fc-bg").css("pointer-events","none");
-          element.append("<div style='position:absolute;bottom:0px;right:0px' ><button type='button' id='btnDeleteEvent' class='btn btn-block btn-primary btn-flat'>X</button></div>" );
-          element.find("#btnDeleteEvent").click(function(){
+            containerEl.fullCalendar('renderEvent', {title: "title", description: 'NEW FRESH TREATMENTS', resourceId: resource.id, start: start, end: end});
+            containerEl.fullCalendar('unselect');
+          },
+          eventRender: function(event, element) {
+            element.find('.fc-title').append("<br/>" + event.description);
+            element.find(".fc-bg").css("pointer-events","none");
+            element.append("<div style='position:absolute;bottom:0px;right:0px' ><button type='button' id='btnDeleteEvent' class='btn btn-block btn-primary btn-flat'>X</button></div>" );
+            element.find("#btnDeleteEvent").click(function(){
 
-            //TODO: ajax call to remove event in DB
+              //TODO: ajax call to remove event in DB
 
-            $('#calendar').fullCalendar('removeEvents',event._id);
-          });
-        }
+              $('#calendar').fullCalendar('removeEvents',event._id);
+            });
+          }
+        });
       });
-    });
+      })
   })
   }
 
