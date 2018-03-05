@@ -37,12 +37,14 @@ export class TreatmentService {
   createTreatment(treatment){
 
   	let headers = new Headers();
-  	headers.append('Content-Type', 'application/json');
-
-  	this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
-  	.subscribe(res => {
-  		console.log(res.json());
-  	});
+	  headers.append('Content-Type', 'application/json');
+	  
+	return new Promise(resolve => {
+		this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
+  		.subscribe(res => {
+  			resolve(res.json());
+  		});
+	})
   };
 
   // Working request
@@ -54,10 +56,10 @@ export class TreatmentService {
   };
 
   //TODO: not working correctly
-  updateTreatment(employee){
+  updateTreatment(treatement){
 	
 	return new Promise( resolve => {
-		this.http.put(this.url + '/treatement', JSON.stringify(employee))
+		this.http.put(this.url + '/treatement', JSON.stringify(treatement))
 		.subscribe(data => {
 			resolve(data.json());
 		});

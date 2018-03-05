@@ -58,6 +58,9 @@ export class EmployeeService {
 
   //TODO: not working correctly
   updateEmployee(employee){
+
+	console.log('Update  Emp-->')
+	console.log(employee);
 	
 	return new Promise( resolve => {
 		this.http.put(this.url + '/user/', JSON.stringify(employee))
