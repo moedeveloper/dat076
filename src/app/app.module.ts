@@ -9,6 +9,8 @@ import { AdminComponent } from './admin/admin.component';
 
 import { EmployeeService } from './utils/employee.service';
 import { TreatmentService } from './utils/treatment.service';
+import { EventService } from './utils/event.service';
+
 import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from '@angular/http';
 
@@ -27,7 +29,7 @@ import {HttpModule} from '@angular/http';
     HttpClientModule, 
     HttpModule
   ],
-  providers: [EmployeeService, TreatmentService],
+  providers: [EmployeeService, TreatmentService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -60,7 +60,7 @@ export class EmployeeService {
   updateEmployee(employee){
 	
 	return new Promise( resolve => {
-		this.http.put(this.url + '/user', JSON.stringify(employee))
+		this.http.put(this.url + '/user/', JSON.stringify(employee))
 		.subscribe(data => {
 			resolve(data.json());
 		});

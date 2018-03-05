@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
 import {Treatment} from '../utils/treatment';
+
 import { EmployeeService } from '../utils/employee.service';
 import { TreatmentService } from '../utils/treatment.service';
+import { EventService} from '../utils/event.service';
 
 import {Db} from '../utils/db';
 import { timeout } from 'q';
@@ -41,7 +43,8 @@ export class AdminComponent implements OnInit {
   selectedCustomer;
   selectedTreatment;
 
-  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService) {}
+  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService, 
+    private eventService: EventService) {}
 
   ngOnInit() {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
@@ -54,6 +57,12 @@ export class AdminComponent implements OnInit {
         
       })
 
+      this.treatmentService.getTreatments().then(data => {
+        this.treatments = data;
+        this.selectedTreatment = this.treatments[0];
+
+        console.log(this.treatments);
+      });
       
     
     /*

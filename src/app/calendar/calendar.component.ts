@@ -33,11 +33,11 @@ export class CalendarComponent implements OnInit {
 
   employees : any;
   treatments = [
-    new Treatment(1, "Haircut", "--"),
-    new Treatment(2, "Prep", "--"),
-    new Treatment(3, "Wash", "--"),
-    new Treatment(4, "Trim", "--"),
-    new Treatment(5, "Extensions", "--")
+    new Treatment(1, "Haircut", "--", ""),
+    new Treatment(2, "Prep", "--", ""),
+    new Treatment(3, "Wash", "--", ""),
+    new Treatment(4, "Trim", "--", ""),
+    new Treatment(5, "Extensions", "--", "")
   ];
 
 
