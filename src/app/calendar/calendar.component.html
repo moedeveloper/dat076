@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
 
   <div class="row">
@@ -35,18 +36,32 @@
         <select class="form-control" id="employee" [(ngModel)]="eventEmployee" required>
           <option *ngFor="let employee of employees" [value]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
         </select>
-
       </div>
       <div class="col-md-6">
-
-
         <label for="treatment">Select Treatment</label>
         <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
           <option *ngFor="let treatment of treatments" [value]=treatment>{{treatment.name}}</option>
         </select>
-
       </div>
+
     </div>
+
+    <form class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="eventDate" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <hr/>
+
 
     <div class="row text-center">
       <div class="col-md-6 text-left">

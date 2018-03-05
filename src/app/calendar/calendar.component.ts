@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
 import {Treatment} from '../utils/treatment';
 import * as $ from 'jquery';
@@ -11,21 +12,22 @@ import 'fullcalendar-scheduler';
 import { EmployeeService } from '../utils/employee.service'
 
 @Component({
-  selector: 'app-caledar',
+  selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnInit {
   @ViewChild('content') private content;
   content2 = this.content;
   closeResult: string;
-  day: string = '2018-03-02T';
   startTime = {hour: 13, minute: 30};
   endTime = {hour: 13, minute: 30};
+  eventDate;
   eventTitle: string;
   eventEmployee: User;
   eventTreatment: Treatment;
   calendar;
+
 
   constructor(private modalService: NgbModal, private employeeService : EmployeeService) {  }
 
@@ -47,6 +49,7 @@ export class CalendarComponent implements OnInit {
     this.employeeService.getEmployees().then(data => {
       console.log(data);
       this.employees = data;
+
 
       var self = this;
     	$(function() {
@@ -106,14 +109,21 @@ export class CalendarComponent implements OnInit {
   }
 
   createEvent(){
-    console.log(this.eventTitle)
+    console.log(this.eventDate)
     console.log(this.employees[0].id)
     console.log(this.eventTreatment)
     console.log(this.startTime)
     console.log(this.endTime)
+    if (String(this.eventDate.month).length == 1){
+      this.eventDate.month = "0" + String(this.eventDate.month)
+    }
+    if (String(this.eventDate.day).length == 1){
+      this.eventDate.day = "0" + String(this.eventDate.day)
+    }
+    var day = String(this.eventDate.year)+'-'+this.eventDate.month+'-'+this.eventDate.day+'T'
     $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: 'waddup',
-      resourceId: this.employees[0].id, start: this.day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
-      end: this.day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
+      resourceId: this.employees[0].id, start: day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
+      end: day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
   }
 
   setCalender(calendar){
