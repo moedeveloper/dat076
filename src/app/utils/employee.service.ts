@@ -64,7 +64,7 @@ export class EmployeeService {
 	console.log(employee);
 	
 	return new Promise<User>( resolve => {
-		this.http.put(this.url + '/user/', JSON.stringify(employee))
+		this.http.put(this.url + '/user/', employee)
 		.subscribe(data => {
 			resolve(data.json());
 		});

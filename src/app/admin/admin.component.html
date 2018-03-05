@@ -12,7 +12,7 @@
               <div class="row" style="padding-top: 15px">
                 <div class="col-md-4">
                   <div class="list-group">
-                    <button type="button" *ngFor="let employee of employees" (click)="onSelect(employee)" [ngClass]="{'active': selectedEmployee == employee }" class="list-group-item list-group-item-action">
+                    <button type="button" *ngFor="let employee of employees" (click)="onSelect(employee, 'employee')" [ngClass]="{'active': selectedEmployee == employee }" class="list-group-item list-group-item-action">
                       {{ employee.firstname }}
                       {{ employee.lastname }}
                     </button>
@@ -69,7 +69,7 @@
               <div class="row" style="padding-top: 15px">
                 <div class="col-md-4">
                   <div class="list-group">
-                    <button type="button" *ngFor="let treatment of treatments" (click)="onSelect(treatment)" [ngClass]="{'active': selectedTreatment == treatment }" class="list-group-item list-group-item-action">
+                    <button type="button" *ngFor="let treatment of treatments" (click)="onSelect(treatment, 'treatment')" [ngClass]="{'active': selectedTreatment == treatment }" class="list-group-item list-group-item-action">
                       {{ treatment.name }}
                     </button>
                   </div>
@@ -97,7 +97,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text inputtext" id="inputGroup-sizing-default">Duration</span>
                     </div>
-                    <input id="treatmentDuration" type="text" [value]="selectedTreatment.description" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    <input id="treatmentDuration" type="text" [value]="selectedTreatment.duration" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                   </div>
                   <hr/>
 
@@ -105,7 +105,7 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-8 text-right">
                       <button type="button" (click)="deleteTreatment(treatments, selectedTreatment)" class="btn btn-danger btn">Délét</button>
-                      <button type="button" (click)="updateTreatment(treatment, selectedTreatment)" class="btn btn-secondary btn">Update</button>
+                      <button type="button" (click)="updateTreatment(treatments, selectedTreatment)" class="btn btn-secondary btn">Update</button>
                       <button type="button" (click)="open(treatmentModal)" class="btn btn-primary btn">Create new</button>
                     </div>
                     <div class="col-md-1">
@@ -122,7 +122,7 @@
               <div class="row" style="padding-top: 15px">
                 <div class="col-md-4">
                   <div class="list-group">
-                    <button type="button" *ngFor="let event of events" (click)="onSelect(event)" [ngClass]="{'active': selectedEvent == event }" class="list-group-item list-group-item-action">
+                    <button type="button" *ngFor="let event of events" (click)="onSelect(event, 'event')" [ngClass]="{'active': selectedEvent == event }" class="list-group-item list-group-item-action">
                       {{ event.customer }}
                       {{ event.treatment }}
                       {{ event.employee }}

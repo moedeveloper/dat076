@@ -51,7 +51,7 @@ export class EventService {
 
   updateEvent(event){
     return new Promise( resolve => {
-      this.http.put(this.url + '/uet', JSON.stringify(event))
+      this.http.put(this.url + '/uet', event)
       .subscribe(data => {
         resolve(data.json());
       });

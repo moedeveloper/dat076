@@ -88,9 +88,13 @@ export class AdminComponent implements OnInit {
     emp.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
     emp.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
 
+    console.log('emp --->')
+    console.log(emp);
+
     this.employeeService.updateEmployee(emp).then(a => {
       let index = list.indexOf(emp);
       list[index] = emp;
+      console.log(a);
     });
   };
 
@@ -125,9 +129,13 @@ export class AdminComponent implements OnInit {
     treatment.price = (<HTMLInputElement>document.getElementById('treatmentPrice')).value;
     treatment.duration = (<HTMLInputElement>document.getElementById('treatmentDuration')).value;
 
+    console.log('treat -->')
+    console.log(treatment);
+
     this.treatmentService.updateTreatment(treatment).then(a => {
       let index = list.indexOf(treatment);
       list[index] = treatment;
+      console.log(a);
     });
   }
 
@@ -144,20 +152,20 @@ export class AdminComponent implements OnInit {
 
   // ---------------------------
 
-  onSelect(clickedItem) {
-    switch(clickedItem) {
-       case clickedItem: typeof User;
-          console.log('clicked User');
-          console.log(clickedItem)
-         this.selectedEmployee = clickedItem;
+  onSelect(clickedItem, type) {
+    switch(type) {
+       case "employee": {
+        this.selectedEmployee = clickedItem;
          break;
-       case clickedItem: typeof Treatment;
-       console.log('clicked Treatment');
-         this.selectedTreatment = clickedItem;
+       } 
+       case "treatment": {
+        this.selectedTreatment = clickedItem;
          break;
-       case clickedItem: typeof Event;
-         this.selectedEvent = clickedItem;
-           break;
+       } 
+       case "event": {
+        this.selectedEvent = clickedItem;
+        break;
+       }
        default:
          break;
    }

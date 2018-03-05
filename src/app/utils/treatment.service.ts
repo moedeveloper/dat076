@@ -60,7 +60,7 @@ export class TreatmentService {
   updateTreatment(treatement){
 	
 	return new Promise<Treatment>( resolve => {
-		this.http.put(this.url + '/treatement', JSON.stringify(treatement))
+		this.http.put(this.url + '/treatement', treatement)
 		.subscribe(data => {
 			resolve(data.json());
 		});
