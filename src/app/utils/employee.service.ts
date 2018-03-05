@@ -40,10 +40,12 @@ export class EmployeeService {
   	let headers = new Headers();
   	headers.append('Content-Type', 'application/json');
 
-  	this.http.post(this.url + '/user', JSON.stringify(employee), {headers: headers})
-  	.subscribe(res => {
-  		console.log(res.json());
-  	});
+	return new Promise( resolve => {
+		this.http.post(this.url + '/user', JSON.stringify(employee), {headers: headers})
+		.subscribe(res => {
+			resolve(res.json());
+		});
+	});
   };
 
   // Working request
@@ -58,7 +60,7 @@ export class EmployeeService {
   updateEmployee(employee){
 	
 	return new Promise( resolve => {
-		this.http.put(this.url + '/user', JSON.stringify(employee))
+		this.http.put(this.url + '/user/', JSON.stringify(employee))
 		.subscribe(data => {
 			resolve(data.json());
 		});

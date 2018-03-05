@@ -16,7 +16,7 @@ export class TreatmentService {
   		this.http.get(this.url + "/treatements")
   		.map(res => res.json())
   		.subscribe(data => {
-  			resolve(data);
+  			resolve(data.treatApi);
   		});
 	  });
   };
@@ -39,7 +39,7 @@ export class TreatmentService {
   	let headers = new Headers();
   	headers.append('Content-Type', 'application/json');
 
-  	this.http.post(this.url + '/treatement', JSON.stringify(treatment), {headers: headers})
+  	this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
   	.subscribe(res => {
   		console.log(res.json());
   	});
