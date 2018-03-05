@@ -120,10 +120,52 @@ export class CalendarComponent implements OnInit {
     if (String(this.eventDate.day).length == 1){
       this.eventDate.day = "0" + String(this.eventDate.day)
     }
-    var day = String(this.eventDate.year)+'-'+this.eventDate.month+'-'+this.eventDate.day+'T'
+    if (String(this.startTime.hour).length == 1){
+      this.startTime.hour = "0" + String(this.startTime.hour)
+    }
+    if (String(this.startTime.minute).length == 1){
+      this.startTime.minute = "0" + String(this.startTime.minute)
+    }
+    if (String(this.endTime.hour).length == 1){
+      this.endTime.hour = "0" + String(this.endTime.hour)
+    }
+    if (String(this.endTime.minute).length == 1){
+      this.endTime.minute = "0" + String(this.endTime.minute)
+    }
+    var day = String(this.eventDate.year)+'-'+String(this.eventDate.month)+'-'+String(this.eventDate.day)+'T'
     $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: 'waddup',
       resourceId: this.employees[0].id, start: day+String(this.startTime.hour)+':'+String(this.startTime.minute+':00'),
       end: day+String(this.endTime.hour)+':'+String(this.endTime.minute+':00')});
+  }
+
+  getAvailableTimes(){
+    var events = $('#calendar').fullCalendar('clientEvents')
+    var d = new Date()
+    console.log(events[0])
+    d.setHours(d.getHours()+1)
+    var amount = 5
+    var availableTimes = []
+    while (availableTimes.length < amount){
+      var available: boolean = true
+      for (var i in events){
+        if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
+          available = false
+        }
+      }
+      if (available == true){
+        var start = new Date(d.getTime())
+        var end = new Date(d.getTime())
+        start.setMinutes(0)
+        end.setMinutes(0)
+        start.setSeconds(0)
+        end.setSeconds(0)
+        end.setHours(end.getHours() + 1)
+        availableTimes.push([start, end])
+      }
+      d.setHours(d.getHours()+1)
+    }
+    console.log(availableTimes)
+    return availableTimes
   }
 
   setCalender(calendar){
