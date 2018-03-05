@@ -25,6 +25,8 @@ export class AdminComponent implements OnInit {
   //dummy data
   employees : any;
   treatments : any;
+  events : any;
+
 
   customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
 
@@ -40,21 +42,20 @@ export class AdminComponent implements OnInit {
     id: "8c990364-ed4e-45bc-b3b4-1cd9d3b8a5aa"
   }
 
-  selectedCustomer;
   selectedTreatment;
-
-  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService, 
+  selectedEvent;
+  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService,
     private eventService: EventService) {}
 
   ngOnInit() {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
-    
+
       this.employeeService.getEmployees().then(data => {
         this.employees = data;
         this.selectedEmployee = this.employees[0];
-        
+
         console.log(this.employees)
-        
+
       })
 
       this.treatmentService.getTreatments().then(data => {
@@ -63,13 +64,7 @@ export class AdminComponent implements OnInit {
 
         console.log(this.treatments);
       });
-      
-    
-    /*
-    this.employees = [];
-    this.customers = [];
-    this.treatments = [];
-    */
+
   }
 
    onSelect(clickedItem) {
@@ -77,12 +72,12 @@ export class AdminComponent implements OnInit {
         case clickedItem: typeof User;
           this.selectedEmployee = clickedItem;
           break;
-        case clickedItem=="Customer":
-          this.selectedCustomer = clickedItem;
-          break;
         case clickedItem: typeof Treatment;
           this.selectedTreatment = clickedItem;
           break;
+        case clickedItem: typeof Event;
+          this.selectedEvent = clickedItem;
+            break;
         default:
           break;
     }
@@ -133,7 +128,7 @@ export class AdminComponent implements OnInit {
         this.employees = data;
         console.log(this.employees);
       });
-    });    
+    });
   }
 
   createTreatment(){
@@ -148,7 +143,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  
+
 
    //modal open
    open(content) {
