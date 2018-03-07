@@ -11,32 +11,32 @@ export class AppComponent {
   closeResult: string;
   isLoginVisible = false;
   isLoggedIn = false;
-  loginBtnText = "Log in";
+  loginBtnText = 'Log in';
 
-  toggleLogin(content){
-    if(this.isLoggedIn){
+  toggleLogin(content) {
+    if (this.isLoggedIn) {
       this.logout();
-    }else{
+    } else {
       this.open(content);
       this.isLoginVisible = true;
     }
   }
-  closeLoginModal(login){
-    document.getElementById("userinput").setAttribute("placeholder", "Username");
-    document.getElementById("passinput").setAttribute("placeholder", "Password");
+  closeLoginModal(login) {
+    document.getElementById('userinput').setAttribute('placeholder', 'Username');
+    document.getElementById('passinput').setAttribute('placeholder', 'Password');
 
-    if(login){
+    if (login) {
       this.login();
     }
     this.isLoginVisible = false;
   }
-  login(){
+  login() {
     this.isLoggedIn = true;
-    this.loginBtnText = "Log out";
+    this.loginBtnText = 'Log out';
   }
-  logout(){
+  logout() {
     this.isLoggedIn = false;
-    this.loginBtnText = "Log in";
+    this.loginBtnText = 'Log in';
   }
 
   constructor(private modalService: NgbModal) {}
@@ -44,7 +44,7 @@ export class AppComponent {
   open(content) {
     this.modalService.open(content).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      if(result=="Login"){
+      if (result === 'Login') {
         this.login();
       }
     }, (reason) => {

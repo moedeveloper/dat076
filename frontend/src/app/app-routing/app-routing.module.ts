@@ -8,7 +8,8 @@ import {AppComponent} from '../app.component';
 const routes: Routes = [
 	{path: 'calendar', component: CalendarComponent},
 	{path: 'admin', component: AdminComponent},
-	{path: '', redirectTo: '/calendar', pathMatch: 'full'}
+	{path: 'home', component: AppComponent},
+	{path: '', redirectTo: '/home', pathMatch: 'full'}
 ];
 
 @NgModule({
