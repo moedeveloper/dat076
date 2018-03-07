@@ -1,4 +1,5 @@
 import { OrmManager } from "typeorm-typedi-extensions";
+import { RoleEntity } from "./../entities/roles";
 import { EntityManager } from "typeorm";
 import {Service} from "typedi";
 import { Group } from "../entities/group";
@@ -21,5 +22,10 @@ export class GroupRepo{
 
     saveUserToRole(group:Group){
         return this.entityManager.getRepository(Group).save(group)
+    }
+
+    initiateRolesRepo(roles:RoleEntity):Promise<RoleEntity>{
+        console.log("in repo ", roles)
+        return this.entityManager.getRepository(RoleEntity).save(roles)
     }
 }

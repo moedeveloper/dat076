@@ -1,11 +1,13 @@
 import {Response, Request} from "express"
+import { Group } from "./../entities/Group";
+import { UserEntity } from "./../entities/UserEntity";
 import {UserRepository} from "../repositories/userRepo"
-import {UserEntity} from "../entities/UserEntity"
 import { Container } from "typedi";
 
 import {OrmRepository, OrmManager} from "typeorm-typedi-extensions";
 import {Service} from "typedi";
 import { Guid } from "./../Guid";
+
 @Service()
 export class UserRoute{
     repo: UserRepository;

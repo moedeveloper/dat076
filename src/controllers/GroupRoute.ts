@@ -3,6 +3,7 @@ import { Container } from "typedi";
 import {OrmRepository, OrmManager} from "typeorm-typedi-extensions";
 import {Service} from "typedi";
 import { GroupRepo } from "../repositories/GroupRepo";
+import { RoleEntity, roles } from "../entities/roles";
 
 @Service()
 export class GroupRoute{
@@ -36,5 +37,19 @@ export class GroupRoute{
         this.repo.removeUserRole(req.params["id"]).then(()=> {
             res.status(201).send()
         })
+    }
+
+    initiateRoles = async() =>{
+        let list: Array<roles> = [roles.admin, roles.customer, roles.employee]
+        console.log("lenght is ", list.length)
+        for(let i=0; i<list.length; i++){
+            let role = list[i]
+            let r = new RoleEntity()
+            r.role = role
+
+            this.repo.initiateRolesRepo(r).then((data)=>{
+                console.log("data is ",  data)
+            }).catch(error => console.log("error in initiating roles: ", error))
+        } 
     }
 }

@@ -21,7 +21,6 @@ import { UserGroupAuthRoute } from './controllers/UserGroupAuthRoute';
 import { GroupRoute } from './controllers/GroupRoute';
 
 
-
  
 /**
  * Create Express server.
@@ -49,9 +48,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * useContainr for DI
  */
 useContainer(Container);
+
 createConnection(appConfig.dbOptions).then(async connection => {
-  console.log("Connected to DB: ");
+  console.log("Connected to DB: ")
+  console.log("Creating roles..")
+  rolecontainer.initiateRoles().then((data)=> {
+  }).catch(error => console.log("roles found", error));
+  console.log("roles are created")
 }).catch(error => console.log("TypeORM connection error: ", error));
+
+
+
+
 
 /**
  * Primary app routes.
@@ -102,6 +110,7 @@ app.delete("/api/userGroupAuthRoute/:id", acontainer.deleteUserGroupAuthById)
 app.put("/api/userGroupAuthRoute", acontainer.updateUserGroupAuth)
 
 let rolecontainer = Container.get(GroupRoute)
+
 app.get("/api/role/:id", rolecontainer.getUserRole)
 app.post("/api/role/", rolecontainer.createUserRole)
 app.delete("/api/role/:id", rolecontainer.removeUserRole)

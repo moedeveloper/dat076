@@ -7,6 +7,7 @@ import { Treatement } from "../entities/Treatement";
 import { UET } from "../entities/UET";
 import { UserGroupAuth } from "../entities/UserGroupAuth";
 import { Group } from "../entities/group";
+import { RoleEntity } from "../entities/roles";
 
  export let dbOptions: ConnectionOptions = {
     type: "mysql",
@@ -16,7 +17,7 @@ import { Group } from "../entities/group";
     password: "89053fff",
     database: "mo3dat076",
     entities: [
-        UserEntity, UET, Customer, Treatement, EventCalendar, UserGroupAuth
+        UserEntity, UET, Customer, Treatement, EventCalendar, UserGroupAuth, Group, RoleEntity
     ],
     synchronize: true,
     dropSchema : true
