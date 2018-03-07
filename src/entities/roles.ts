@@ -13,6 +13,6 @@ export class RoleEntity extends BaseEntity{
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column("varchar")
-    role: string
+    @Column("enum", {enum: roles})
+    role: roles
 }
