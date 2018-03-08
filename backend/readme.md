@@ -27,20 +27,20 @@ Bellow is the documentation of the API:
 
 Verb   | API Url               | Return type                   | Parameters       
 -------|-----------------------|-------------------------------|------------------------------
-Get    | /api/users            | all users entities            |
-       | /api/user/:id         | one user entity               | user id
-       | /api/user/:query      | one user entity               | firstname, lastname or telefon
-       | /api/userrole/:roleId | one user entity               | roleId
-       | /api/uets/            | all users,events & treatements|
-       | /api/uet/:id          | one user,event & treatement   | uet Id
-       | /api/treatements/     | all treatements entities      | 
-       | /api/treatement/:id   | one treatement entity         | treatementId
-       | /api/roles            | roles entities                |
-POST   | /api/user             | new created user              | body request -> {"firstname",           
-       |                       |                               |"lastname", "telefon", "roleId"}
-       | /api/treatement       | new created treatement        | body req -> {"name", "duration"
-       |                       |                               |  "price"}
-       | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
+GET    | /api/users            | all users entities            |
+GET    | /api/user/:id         | one user entity               | user id
+GET    | /api/user/:query      | one user entity               | firstname, lastname or telefon
+GET    | /api/userrole/:roleId | one user entity               | roleId
+GET    | /api/uets/            | all users,events & treatements|
+GET    | /api/uet/:id          | one user,event & treatement   | uet Id
+GET    | /api/treatements/     | all treatements entities      | 
+GET    | /api/treatement/:id   | one treatement entity         | treatementId
+GET    | /api/roles            | roles entities                |
+POST   | /api/user             | new created user              | body request -> {"firstname","lastname" "telefon", "roleId"}          
+       |                       |                               |
+POST   | /api/treatement       | new created treatement        | body req -> {"name", "duration","price"}
+       |                       |                               |  
+POST   | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
        |                       |                               | "eventId", "treatementId"}
 DELETE | /api/user/:id         |                               | user id
        | /api/uet/:id          |                               | uet id
