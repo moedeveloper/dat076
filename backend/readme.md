@@ -45,6 +45,5 @@ DELETE | /api/treatement/:id   |                               | treatement id
 PUT    | /api/user/            | updated user                  | user entities to be updated
 PUT    | /api/uet              |                               | TODO
 PUT    | /api/treatement       | updated treatement            | treatment entities to be updated
-
-#Note: 
+### Note: 
 cascading is implemented manually, typorm cascading didnt work ordentling

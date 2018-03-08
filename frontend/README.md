@@ -1,37 +1,36 @@
-# dat076 frontend
-booking system
+# Group project DAT076
+This is a booking system for a group project in the Chalmers course DAT076
 
+## Getting Started
 
-ng serve to start the app: will run on http://localhost:4200
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### Prerequisites
+Both the CLI and generated project have dependencies that require Node 6.9.0 or higher, together with NPM 3 or higher.
 
-read more https://angular.io/tutorial/toh-pt0
+#### Installing Angular CLI
+```
+npm install -g @angular/cli
+```
 
+#### Serving the project via a development server
+```
+cd /PATH/TO/PROJECT
+npm install
+ng serve --open
+```
 
-# Frontend
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.8.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Project Structure
+src ->
+* app
+  * Components
+    * Component.html    - _Component template file._
+    * Component.css     - _Component decorator._
+    * Component.spec.ts - _Unit tests for your source files. Using the Jasmine javascript test framework through the Karma task runner when you use the 'ng test' command._
+    * Component.ts
+  * Models   - _Contains models of employees, events_ 
+  * Services - _Contains services for fetching data from REST-API_
+* assets
+* enviroments
+* index.html
+* index.ts
