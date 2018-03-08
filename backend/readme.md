@@ -1,42 +1,56 @@
 # API Documentation
 
-# User API
+This is a nodejs, typescript-es6 and typorm project. The service uses mysql database as an access layer.
+The project contains gulpfile.js script that compiles and reload the node server during developement.
 
-app.get("/api/users" -> returns a list of users (see user entities to se attributes)
+To run the project; clone the project from the master branch
+1- `cd bankend`
+2- `tsc && node dist/app.js` or just type
+ `gulp` so the server should run on port 3000. 
 
-app.post("/api/user" -> create a new user parameters to be sent as a json format {"firstname", "lastname", "telefon"}; returns new created user
+ Once server runs, the entities are going to be created in mysql db.
+ Please note that  `src/common/ormconfig.ts` contains db configuration, also `dropSchema : true` used will remove the old database and recreated at runtime (this attribute was used as a workaround to fix the timeout exception thrown by typeorm at startup and its used just for developement and not on the production server)
 
-app.get("/api/user/:id" -> returns one use, id should be sent as parameter ex : 57e9c601-913f-4851-9794-722a95d1867d
+ bellow is the structure of the project: 
+ * src
+    * common: mysql database configuration and entity registration
+    * controllers: contains the controllers
+    * entities: contains all the entities
+    * repositories: contains all the entity manager logic
+    * app: contains all node configuration and middleware
 
-app.delete("/api/user/:id" -> no return, id sent as parameter in url
-
-app.put("/api/user/" -> update an old user, the whole user entities should be sent, returns new updated user
-
-app.get("/api/user/:query" -> search one use by using firstname, lastname, telefon as query-> returns one user.
-
-
-# User/Customer, Treatement and event API Join Table
-
-app.get("/api/uets"  -> returns all uets "UserEventTreatement". (see )
-
-app.get("/api/uet/:id" -> returns one uet by using its id as parameter.
-
-app.post("/api/uet/" -> create new uet: the customerId, the event entities and treatmentid should be sent as parameters the api handle cascading. it retuns the new created uet
-
-app.delete("/api/uet/:id" -> remove uet. uet id should be sent as a parameter, the api handle cascading  it removes the one event but not customer and treatement.
-
-app.put("/api/uet" -> update one uet, the whole uet should be sent in body as json format, it returns the new updated uet. - TODO discuss with the team
+In this project, typdi was used for dependency injection; `typdi` and `typeorm-typedi-extensions` are required.
+The controllers are decorated as a `@Service` and the repository is injected in its constructor. to initialize dependencies at startup, the `Container` is capable to get it by typing `Container.get(controller)`. (Please see how depenencies are initilized in app.js)
 
 
-# Treatement
+Bellow is the documentation of the API:
 
-
-app.get("/api/treatements" -> returns all treamtents (see treatement entities for attributes)
-
-app.get("/api/treatement/:id" -> returns one treatement, treatement id should be sent as parameter
-
-app.post("/api/treatement/" -> create one treatment and returns it.
-
-app.delete("/api/treatement/:id" -> remove one treatement, no return
-
-app.put("/api/treatement" -> update one treatement and returns it.
+Verb   | API Url               | Return type                   | Parameters       
+-------|-----------------------|-------------------------------|------------------------------
+Get    | /api/users            | all users entities            |
+       | /api/user/:id         | one user entity               | user id
+       | /api/user/:query      | one user entity               | firstname, lastname or telefon
+       | /api/userrole/:roleId | one user entity               | roleId
+       | /api/uets/            | all users,events & treatements|
+       | /api/uet/:id          | one user,event & treatement   | uet Id
+       | /api/treatements/     | all treatements entities      | 
+       | /api/treatement/:id   | one treatement entity         | treatementId
+       | /api/roles            | roles entities                |
+-------|-----------------------|-------------------------------|------------------------------
+POST   | /api/user             | new created user              | body request -> {"firstname",                  |                       |                               |"lastname", "telefon", "roleId"}
+       | /api/treatement       | new created treatement        | body req -> {"name", "duration"
+       |                       |                               |  "price"}
+       | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
+       |                       |                               | "eventId", "treatementId"}
+-------|-----------------------|-------------------------------|------------------------------
+DELETE | /api/user/:id         |                               | user id
+       | /api/uet/:id          |                               | uet id
+       | /api/treatement/:id   |                               | treatement id
+       |                       |                               | Note: cascading is implemented
+       |                       |                               | manually, typorm cascading didnt work
+       |                       |                               | ordentling
+-------|-----------------------|-------------------------------|------------------------------
+PUT    | /api/user/            | updated user                  | user entities to be updated
+       | /api/uet              |                               | TODO
+       | /api/treatement       | updated treatement            | treatment entities to be updated
+-------|-----------------------|-------------------------------|------------------------------

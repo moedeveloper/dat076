@@ -91,7 +91,7 @@ export class UserRoute{
         Promise.all(promises).then(function (values) {
             console.log("in all " + values[0])
             var result = JSON.stringify({
-                usersApi: values[0]
+                rolesApi: values[0]
             });
             res.end(result);
         });

@@ -59,7 +59,7 @@ export class GroupRoute{
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                usersApi: values[0]
+                roleApi: values[0]
             });
             res.end(result);
         });
