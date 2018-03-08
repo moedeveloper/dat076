@@ -28,29 +28,44 @@ Bellow is the documentation of the API:
 Verb   | API Url               | Return type                   | Parameters       
 -------|-----------------------|-------------------------------|------------------------------
 Get    | /api/users            | all users entities            |
-       | /api/user/:id         | one user entity               | user id
+-------|-----------------------|-------------------------------|------------------------------
+Get    | /api/user/:id         | one user entity               | user id
+-------|-----------------------|-------------------------------|------------------------------
        | /api/user/:query      | one user entity               | firstname, lastname or telefon
+-------|-----------------------|-------------------------------|------------------------------
        | /api/userrole/:roleId | one user entity               | roleId
+-------|-----------------------|-------------------------------|------------------------------
        | /api/uets/            | all users,events & treatements|
+-------|-----------------------|-------------------------------|------------------------------
        | /api/uet/:id          | one user,event & treatement   | uet Id
+-------|-----------------------|-------------------------------|------------------------------
        | /api/treatements/     | all treatements entities      | 
+-------|-----------------------|-------------------------------|------------------------------
        | /api/treatement/:id   | one treatement entity         | treatementId
+-------|-----------------------|-------------------------------|------------------------------
        | /api/roles            | roles entities                |
 -------|-----------------------|-------------------------------|------------------------------
-POST   | /api/user             | new created user              | body request -> {"firstname",                  |                       |                               |"lastname", "telefon", "roleId"}
+POST   | /api/user             | new created user              | body request -> {"firstname",           
+       |                       |                               |"lastname", "telefon", "roleId"}
+-------|-----------------------|-------------------------------|------------------------------       
        | /api/treatement       | new created treatement        | body req -> {"name", "duration"
        |                       |                               |  "price"}
+-------|-----------------------|-------------------------------|------------------------------       
        | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
        |                       |                               | "eventId", "treatementId"}
 -------|-----------------------|-------------------------------|------------------------------
 DELETE | /api/user/:id         |                               | user id
+-------|-----------------------|-------------------------------|------------------------------
        | /api/uet/:id          |                               | uet id
+-------|-----------------------|-------------------------------|------------------------------       
        | /api/treatement/:id   |                               | treatement id
        |                       |                               | Note: cascading is implemented
        |                       |                               | manually, typorm cascading didnt work
        |                       |                               | ordentling
 -------|-----------------------|-------------------------------|------------------------------
 PUT    | /api/user/            | updated user                  | user entities to be updated
+-------|-----------------------|-------------------------------|------------------------------
        | /api/uet              |                               | TODO
+-------|-----------------------|-------------------------------|------------------------------
        | /api/treatement       | updated treatement            | treatment entities to be updated
 -------|-----------------------|-------------------------------|------------------------------
