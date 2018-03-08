@@ -36,11 +36,9 @@ GET    | /api/uet/:id          | one user,event & treatement   | uet Id
 GET    | /api/treatements/     | all treatements entities      | 
 GET    | /api/treatement/:id   | one treatement entity         | treatementId
 GET    | /api/roles            | roles entities                |
-POST   | /api/user             | new created user              | body request -> {"firstname","lastname",       |                       |                               | "telefon", "roleId"}
+POST   | /api/user             | new created user              | body req -> (check entities)
 POST   | /api/treatement       | new created treatement        | body req -> {"name", "duration","price"}
-       |                       |                               |  
-POST   | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
-       |                       |                               | "eventId", "treatementId"}
+POST   | /api/uet              | new created uet               | body req -> (check entities)
 DELETE | /api/user/:id         |                               | user id
 DELETE | /api/uet/:id          |                               | uet id
 DELETE | /api/treatement/:id   |                               | treatement id
