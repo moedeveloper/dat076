@@ -28,13 +28,13 @@ Bellow is the documentation of the API:
 Verb   | API Url               | Return type                   | Parameters       
 -------|-----------------------|-------------------------------|------------------------------
 Get    | /api/users            | all users entities            |
--------|-----------------------|-------------------------------|------------------------------
-Get    | /api/user/:id         | one user entity               | user id
--------|-----------------------|-------------------------------|------------------------------
+
+       | /api/user/:id         | one user entity               | user id
+
        | /api/user/:query      | one user entity               | firstname, lastname or telefon
--------|-----------------------|-------------------------------|------------------------------
+
        | /api/userrole/:roleId | one user entity               | roleId
--------|-----------------------|-------------------------------|------------------------------
+
        | /api/uets/            | all users,events & treatements|
 -------|-----------------------|-------------------------------|------------------------------
        | /api/uet/:id          | one user,event & treatement   | uet Id
