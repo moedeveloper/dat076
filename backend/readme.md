@@ -36,7 +36,7 @@ GET    | /api/uet/:id          | one user,event & treatement   | uet Id
 GET    | /api/treatements/     | all treatements entities      | 
 GET    | /api/treatement/:id   | one treatement entity         | treatementId
 GET    | /api/roles            | roles entities                |
-POST   | /api/user             | new created user              | body request -> {"firstname","lastname",-      |-                      | -                             |    "telefon", "roleId"}
+POST   | /api/user             | new created user              | body request -> {"firstname","lastname",       |                       |                               | "telefon", "roleId"}
 POST   | /api/treatement       | new created treatement        | body req -> {"name", "duration","price"}
        |                       |                               |  
 POST   | /api/uet              | new created uet               | body req -> {"employeId", "customerId",
@@ -44,9 +44,9 @@ POST   | /api/uet              | new created uet               | body req -> {"e
 DELETE | /api/user/:id         |                               | user id
 DELETE | /api/uet/:id          |                               | uet id
 DELETE | /api/treatement/:id   |                               | treatement id
--      | -                     |-                              | Note: cascading is implemented
--      | -                     |-                              | manually, typorm cascading didnt work
--      | -                     |-                              | ordentling
 PUT    | /api/user/            | updated user                  | user entities to be updated
 PUT    | /api/uet              |                               | TODO
 PUT    | /api/treatement       | updated treatement            | treatment entities to be updated
+
+#Note: 
+cascading is implemented manually, typorm cascading didnt work ordentling
