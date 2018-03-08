@@ -112,6 +112,7 @@ app.put("/api/userGroupAuthRoute", acontainer.updateUserGroupAuth)
 
 let rolecontainer = Container.get(GroupRoute)
 app.get("/api/role/:id", rolecontainer.getUserRole)
+app.get("/api/roles", rolecontainer.getRoles)
 app.post("/api/role/", rolecontainer.createUserRole)
 app.delete("/api/role/:id", rolecontainer.removeUserRole)
 

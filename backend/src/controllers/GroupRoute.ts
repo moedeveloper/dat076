@@ -41,7 +41,6 @@ export class GroupRoute{
 
     initiateRoles = async() =>{
         let list: Array<roles> = [roles.admin, roles.customer, roles.employee]
-        console.log("lenght is ", list.length)
         for(let i=0; i<list.length; i++){
             let role = list[i]
             let r = new RoleEntity()
@@ -51,5 +50,18 @@ export class GroupRoute{
                 console.log("data is ",  data)
             }).catch(error => console.log("error in initiating roles: ", error))
         } 
+    }
+
+    getRoles = async(req: Request, res: Response) => {
+        var promises = [];
+        promises.push(this.repo.getRoles().then(function (data) {
+            return data;
+        }));
+        Promise.all(promises).then(function (values) {
+            var result = JSON.stringify({
+                usersApi: values[0]
+            });
+            res.end(result);
+        });
     }
 }

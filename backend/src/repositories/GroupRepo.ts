@@ -35,4 +35,8 @@ export class GroupRepo{
         .where("group.role = :role", {role: role})
         .getMany()
     }
+
+    getRoles():Promise<RoleEntity[]>{
+        return this.entityManager.getRepository(RoleEntity).find()
+    }
 }
