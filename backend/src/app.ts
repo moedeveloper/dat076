@@ -71,6 +71,7 @@ app.get("/api/user/:id", usercContainer.getuser)
 app.delete("/api/user/:id", usercContainer.removeuser)
 app.put("/api/user/", usercContainer.updateuser)
 app.get("/api/user/query/:query", usercContainer.getuserbyQuery)
+app.get("/api/usersrole/:role", usercContainer.getusersByRoleId)
 
 
 // Event is a user->Event-> treatement
@@ -110,7 +111,6 @@ app.delete("/api/userGroupAuthRoute/:id", acontainer.deleteUserGroupAuthById)
 app.put("/api/userGroupAuthRoute", acontainer.updateUserGroupAuth)
 
 let rolecontainer = Container.get(GroupRoute)
-
 app.get("/api/role/:id", rolecontainer.getUserRole)
 app.post("/api/role/", rolecontainer.createUserRole)
 app.delete("/api/role/:id", rolecontainer.removeUserRole)

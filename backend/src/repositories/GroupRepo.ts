@@ -12,7 +12,7 @@ export class GroupRepo{
         this.entityManager = entityManager;
     }
 
-    getUserRoleById(id:string):Promise<Group>{
+    getUserById(id:string):Promise<Group>{
         return this.entityManager.getRepository(Group).findOneById(id)
     }
 
@@ -25,7 +25,14 @@ export class GroupRepo{
     }
 
     initiateRolesRepo(roles:RoleEntity):Promise<RoleEntity>{
-        console.log("in repo ", roles)
+        console.log("in repo " + roles)
         return this.entityManager.getRepository(RoleEntity).save(roles)
+    }
+
+    getUsersByRoleId(role:string):Promise<Group[]>{
+        return this.entityManager.getRepository(Group)
+        .createQueryBuilder("group")
+        .where("group.role = :role", {role: role})
+        .getMany()
     }
 }

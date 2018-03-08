@@ -1,4 +1,5 @@
 import {Response, Request} from "express"
+import { GroupRepo } from "./../repositories/GroupRepo";
 import { Group } from "./../entities/Group";
 import { UserEntity } from "./../entities/UserEntity";
 import {UserRepository} from "../repositories/userRepo"
@@ -10,9 +11,11 @@ import { Guid } from "./../Guid";
 
 @Service()
 export class UserRoute{
-    repo: UserRepository;
-    constructor(repo:UserRepository){
+    repo: UserRepository
+    groupRepo: GroupRepo
+    constructor(repo:UserRepository, groupRepo:GroupRepo){
         this.repo = repo
+        this.groupRepo = groupRepo
     }
 
     getusers = async (req: Request, res: Response) => {
@@ -69,7 +72,20 @@ export class UserRoute{
     getuserbyQuery = async(req: Request, res: Response) => {
         var promises = [];
         promises.push(this.repo.getcuserbyquery(req.params["query"]).then(function (data) {
-            console.log("in promise request " + data)
+            return data;
+        }));
+        Promise.all(promises).then(function (values) {
+            console.log("in all " + values[0])
+            var result = JSON.stringify({
+                usersApi: values[0]
+            });
+            res.end(result);
+        });
+    }
+
+    getusersByRoleId = async(req: Request, res: Response) => {
+        var promises = [];
+        promises.push(this.repo.getusersbyroleid(req.params["role"]).then(function (data) {
             return data;
         }));
         Promise.all(promises).then(function (values) {

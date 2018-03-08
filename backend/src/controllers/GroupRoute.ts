@@ -14,7 +14,7 @@ export class GroupRoute{
 
     //getbyid
     getUserRole = async(req: Request, res: Response) => {
-        this.repo.getUserRoleById(req.params["id"]).then((data) =>{
+        this.repo.getUserById(req.params["id"]).then((data) =>{
             var result = JSON.stringify({
                 roleApi: data
             });
