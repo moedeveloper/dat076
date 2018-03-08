@@ -3,6 +3,7 @@ import { FormsModule }   from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
+import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
 import * as $ from 'jquery';
 import 'fullcalendar';
@@ -34,16 +35,23 @@ export class CalendarComponent implements OnInit {
 
   //dummy data until backend connection
 
-  employees : any;
-  treatments : any;
+  roles: Role[];
+  employees : User[];
+  treatments : Treatment[];
+  calendarResources = [];
 
 
 
   ngOnInit() {
 
-    this.employeeService.getEmployees().then(data => {
-      console.log(data);
-      this.employees = data;
+    this.employeeService.getRoles().then(data => {
+      this.roles = data
+      this.employeeService.getUsersByRole(this.roles[2].id).then(data =>{
+        this.employees = data
+        for(var i = 0; i < this.employees.length; i++){
+          this.calendarResources.push({id: this.employees[i].id, title: this.employees[i].firstname})
+        }
+      })
 
       this.treatmentService.getTreatments().then(resData => {
         console.log(resData);
@@ -73,11 +81,7 @@ export class CalendarComponent implements OnInit {
           allDaySlot: false,
           defaultView: 'agendaDay',
           resourceLabelText: 'Employees',
-          resources: [
-              { id: self.employees[0].id, title: self.employees[0].firstname },
-              { id: self.employees[1].id, title: self.employees[1].firstname },
-              { id: self.employees[2].id, title: self.employees[2].firstname }
-          ],
+          resources: self.calendarResources,
           selectable: true,
           selectHelper: true,
           select: function(start, end, jsEvent, view, resource) {
@@ -88,7 +92,7 @@ export class CalendarComponent implements OnInit {
             self.startTime.minute = start.minute()
             self.endTime.hour = end.hour()
             self.endTime.minute = end.minute()
-            self.employeeService.getEmployee(resource.id).then(data => {
+            self.employeeService.getUser(resource.id).then(data => {
               self.eventEmployee = data; // check why this only happens in this scope
               console.log(self.eventEmployee) // this gives correct employee
             })

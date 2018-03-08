@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
+import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
 
 import { EmployeeService } from '../utils/employee.service';
@@ -21,13 +22,14 @@ export class AdminComponent implements OnInit {
   selectedTreatment : Treatment;
   selectedEvent : Event;
 
+  roles: Role[];
   employees : User[];
   treatments : Treatment[];
   events : Event[];
 
   closeResult: string;
 
-  newUser = new User(null, "", "", "");
+  newUser = new User(null, "", "", "", "");
   newTreatment = new Treatment(null, "", "", 0);
 
   //dummy data
@@ -51,13 +53,14 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
 
-      this.employeeService.getEmployees().then(data => {
-        this.employees = data;
-        this.selectedEmployee = this.employees[0];
-
-        console.log(this.employees)
-
+      this.employeeService.getRoles().then(data => {
+        this.roles = data
+        this.employeeService.getUsersByRole(this.roles[2].id).then(data => {
+          this.employees = data
+          this.selectedEmployee = this.employees[0];
+        })
       })
+
 
       this.treatmentService.getTreatments().then(data => {
         this.treatments = data;
@@ -71,15 +74,15 @@ export class AdminComponent implements OnInit {
 
   createEmployee(){
     //this.employees.push(this.newUser);
-    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon);
+    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, 'employee');
     //add this newUser to db
-    this.employeeService.createEmployee(this.newUser).then(a => {
+    this.employeeService.createUser(this.newUser).then(a => {
       console.log(a);
-      this.employeeService.getEmployees().then(data => {
-        this.employees = data;
-        console.log(this.employees);
+      this.employeeService.getUsersByRole(this.roles[2].id).then(data => {
+        this.employees = data
+        this.selectedEmployee = this.employees[0];
       });
-    });    
+    });
   };
 
   updateEmployee(list, emp){
@@ -91,7 +94,7 @@ export class AdminComponent implements OnInit {
     console.log('emp --->')
     console.log(emp);
 
-    this.employeeService.updateEmployee(emp).then(a => {
+    this.employeeService.updateUser(emp).then(a => {
       let index = list.indexOf(emp);
       list[index] = emp;
       console.log(a);
@@ -100,7 +103,7 @@ export class AdminComponent implements OnInit {
 
   deleteEmployee(list, item){
 
-    this.employeeService.deleteEmployee(item.id);
+    this.employeeService.deleteUser(item.id);
 
     let index = list.indexOf(item);
     if (index > -1){
@@ -157,11 +160,11 @@ export class AdminComponent implements OnInit {
        case "employee": {
         this.selectedEmployee = clickedItem;
          break;
-       } 
+       }
        case "treatment": {
         this.selectedTreatment = clickedItem;
          break;
-       } 
+       }
        case "event": {
         this.selectedEvent = clickedItem;
         break;
