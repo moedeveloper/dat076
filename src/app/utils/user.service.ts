@@ -13,22 +13,24 @@ export class UserService {
   constructor(public http: Http) {
   }
 
+  // Working request
   getRoles(){
   	return new Promise<Role[]>(resolve => {
   		this.http.get(this.url + "/roles")
   		.map(res => res.json())
   		.subscribe(data => {
-  			resolve(data.usersApi);
+  			resolve(data.rolesApi);
   		});
 	  });
   };
 
+  // Working request
   getUsersByRole(roleId){
   	return new Promise<User[]>(resolve => {
   		this.http.get(this.url + "/usersrole/" + roleId)
   		.map(res => res.json())
   		.subscribe(data => {
-  			resolve(data.usersApi);
+  			resolve(data.rolesApi);
   		});
 	  });
   };
@@ -48,49 +50,43 @@ export class UserService {
 
   // Working request
   getUser(id){
-
   	return new Promise<User>(resolve => {
   		this.http.get(this.url + '/user/' + id)
+      .map(res => res.json())
   		.subscribe(data => {
-			  resolve(data.json());
+			  resolve(data.userApi);
   		});
   	});
   };
 
   // Working request
   createUser(user){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
 
-  	let headers = new Headers();
-  	headers.append('Content-Type', 'application/json');
-
-	return new Promise<User>( resolve => {
-		this.http.post(this.url + '/user', JSON.stringify(user), {headers: headers})
-		.subscribe(res => {
-			resolve(res.json());
-		});
-	});
+  	return new Promise<User>( resolve => {
+  		this.http.post(this.url + '/user', JSON.stringify(user), {headers: headers})
+      .map(res => res.json())
+  		.subscribe(data => {
+  			resolve(data.userApi);
+  		});
+  	});
   };
 
   // Working request
   deleteUser(id){
-
   	this.http.delete(this.url + '/user/' + id).subscribe(res => {
-  		console.log(res);
   	});
   };
 
   //TODO: not working correctly
   updateUser(user){
-
-	console.log('Update  Emp-->')
-	console.log(user);
-
-	return new Promise<User>( resolve => {
-		this.http.put(this.url + '/user/', user)
-		.subscribe(data => {
-			resolve(data.json());
-		});
-	});
+  	return new Promise<User>( resolve => {
+  		this.http.put(this.url + '/user/', user)
+  		.subscribe(data => {
+  			resolve(data.json());
+  		});
+  	});
   };
 
   //TODO: not working correctly
@@ -102,5 +98,4 @@ export class UserService {
 		  });
 	  });
   };
-
 }

@@ -23,7 +23,9 @@ export class AdminComponent implements OnInit {
   selectedTreatment : Treatment;
   selectedEvent : Event;
 
-  roles: Role[];
+  admRoleId: string;
+  custRoleId: string;
+  empRoleId: string;
   employees : User[];
   customers : User[];
   treatments : Treatment[];
@@ -56,12 +58,20 @@ export class AdminComponent implements OnInit {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
 
       this.userService.getRoles().then(data => {
-        this.roles = data
-        this.userService.getUsersByRole(this.roles[2].id).then(data => {
+        for (var i = 0; i < data.length; i++){
+          if (data[i].role == 'admin'){
+            this.admRoleId = data[i].id
+          } else if (data[i].role == 'customer'){
+            this.custRoleId = data[i].id
+          } else if (data[i].role == 'employee'){
+            this.empRoleId = data[i].id
+          }
+        }
+        this.userService.getUsersByRole(this.empRoleId).then(data => {
           this.employees = data
           this.selectedEmployee = this.employees[0];
         })
-        this.userService.getUsersByRole(this.roles[1].id).then(data => {
+        this.userService.getUsersByRole(this.custRoleId).then(data => {
           this.customers = data
           this.selectedCustomer = this.customers[0];
         })
@@ -72,13 +82,13 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  // ---- Employee Methods ----
+  // ---- User Methods ----
 
   createEmployee(){
-    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.roles[2].id);
+    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.empRoleId);
     //add this newUser to db
     this.userService.createUser(this.newUser).then(a => {
-      this.userService.getUsersByRole(this.roles[2].id).then(data => {
+      this.userService.getUsersByRole(this.empRoleId).then(data => {
         this.employees = data
         this.selectedEmployee = this.employees[0];
       });
@@ -86,10 +96,10 @@ export class AdminComponent implements OnInit {
   };
 
   createCustomer(){
-    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.roles[1].id);
+    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.custRoleId);
     //add this newUser to db
     this.userService.createUser(this.newUser).then(a => {
-      this.userService.getUsersByRole(this.roles[1].id).then(data => {
+      this.userService.getUsersByRole(this.custRoleId).then(data => {
         this.customers = data
         this.selectedCustomer = this.customers[0];
       });

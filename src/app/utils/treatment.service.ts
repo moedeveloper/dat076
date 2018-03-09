@@ -7,7 +7,7 @@ import { Treatment } from './treatment';
 @Injectable()
 export class TreatmentService {
 
-  url = 'http://nat-mo3-demo.hard.ware.fi:3000/api'; 
+  url = 'http://nat-mo3-demo.hard.ware.fi:3000/api';
 
   constructor(public http: Http) { }
 
@@ -17,7 +17,7 @@ export class TreatmentService {
   		this.http.get(this.url + "/treatements")
   		.map(res => res.json())
   		.subscribe(data => {
-  			resolve(data.treatApi);
+  			resolve(data.treatsApi);
   		});
 	  });
   };
@@ -39,7 +39,7 @@ export class TreatmentService {
 
   	let headers = new Headers();
 	  headers.append('Content-Type', 'application/json');
-	  
+
 	return new Promise<Treatment>(resolve => {
 		this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
   		.subscribe(res => {
@@ -58,7 +58,7 @@ export class TreatmentService {
 
   //TODO: not working correctly
   updateTreatment(treatement){
-	
+
 	return new Promise<Treatment>( resolve => {
 		this.http.put(this.url + '/treatement', treatement)
 		.subscribe(data => {

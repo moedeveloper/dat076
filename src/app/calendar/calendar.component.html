@@ -39,6 +39,12 @@
         </select>
       </div>
       <div class="col-md-6">
+        <label for="employees">Select Customer</label>
+        <select class="form-control" id="customer" [(ngModel)]="eventCustomer" required>
+          <option *ngFor="let customer of customers" [ngValue]=customer>{{ customer.firstname }} {{ customer.lastname }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
         <label for="treatment">Select Treatment</label>
         <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
           <option *ngFor="let treatment of treatments" [ngValue]=treatment>{{treatment.name}}</option>
