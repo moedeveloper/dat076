@@ -4,6 +4,6 @@ export class User {
     public firstname: string,
     public lastname: string,
     public telefon: string,
-    public role: string
+    public roleId: string
   ) { }
 }

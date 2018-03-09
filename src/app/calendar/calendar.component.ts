@@ -10,7 +10,7 @@ import 'fullcalendar';
 import 'fullcalendar/dist/locale/sv.js';
 import 'fullcalendar-scheduler';
 
-import { EmployeeService } from '../utils/employee.service';
+import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class CalendarComponent implements OnInit {
   calendar;
 
 
-  constructor(private modalService: NgbModal, private employeeService : EmployeeService, private treatmentService : TreatmentService) {  }
+  constructor(private modalService: NgbModal, private employeeService : UserService, private treatmentService : TreatmentService) {  }
 
   //dummy data until backend connection
 

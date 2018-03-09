@@ -4,7 +4,7 @@ import {User} from '../utils/user';
 import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
 
-import { EmployeeService } from '../utils/employee.service';
+import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
 import { EventService} from '../utils/event.service';
 
@@ -19,11 +19,13 @@ import { timeout } from 'q';
 export class AdminComponent implements OnInit {
 
   selectedEmployee : User;
+  selectedCustomer : User;
   selectedTreatment : Treatment;
   selectedEvent : Event;
 
   roles: Role[];
   employees : User[];
+  customers : User[];
   treatments : Treatment[];
   events : Event[];
 
@@ -47,69 +49,78 @@ export class AdminComponent implements OnInit {
     id: "8c990364-ed4e-45bc-b3b4-1cd9d3b8a5aa"
   }
 
-  constructor(private modalService: NgbModal, private employeeService: EmployeeService, private treatmentService: TreatmentService,
+  constructor(private modalService: NgbModal, private userService: UserService, private treatmentService: TreatmentService,
     private eventService: EventService) {}
 
   ngOnInit() {
     // TODO: either get all data at once or just employees and then the others if those tabs are opened
 
-      this.employeeService.getRoles().then(data => {
+      this.userService.getRoles().then(data => {
         this.roles = data
-        this.employeeService.getUsersByRole(this.roles[2].id).then(data => {
+        this.userService.getUsersByRole(this.roles[2].id).then(data => {
           this.employees = data
           this.selectedEmployee = this.employees[0];
         })
+        this.userService.getUsersByRole(this.roles[1].id).then(data => {
+          this.customers = data
+          this.selectedCustomer = this.customers[0];
+        })
       })
-
-
       this.treatmentService.getTreatments().then(data => {
         this.treatments = data;
         this.selectedTreatment = this.treatments[1];
-
-        console.log(this.treatments);
       });
   }
 
   // ---- Employee Methods ----
 
   createEmployee(){
-    //this.employees.push(this.newUser);
-    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, 'employee');
+    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.roles[2].id);
     //add this newUser to db
-    this.employeeService.createUser(this.newUser).then(a => {
-      console.log(a);
-      this.employeeService.getUsersByRole(this.roles[2].id).then(data => {
+    this.userService.createUser(this.newUser).then(a => {
+      this.userService.getUsersByRole(this.roles[2].id).then(data => {
         this.employees = data
         this.selectedEmployee = this.employees[0];
       });
     });
   };
 
-  updateEmployee(list, emp){
+  createCustomer(){
+    this.newUser = new User(null, this.newUser.firstname, this.newUser.lastname, this.newUser.telefon, this.roles[1].id);
+    //add this newUser to db
+    this.userService.createUser(this.newUser).then(a => {
+      this.userService.getUsersByRole(this.roles[1].id).then(data => {
+        this.customers = data
+        this.selectedCustomer = this.customers[0];
+      });
+    });
+  };
 
-    emp.firstname = (<HTMLInputElement>document.getElementById('employeeFirstName')).value;
-    emp.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
-    emp.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
+  updateUser(list, user){
+
+    user.firstname = (<HTMLInputElement>document.getElementById('employeeFirstName')).value;
+    user.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
+    user.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
 
     console.log('emp --->')
-    console.log(emp);
+    console.log(user);
 
-    this.employeeService.updateUser(emp).then(a => {
-      let index = list.indexOf(emp);
-      list[index] = emp;
+    this.userService.updateUser(user).then(a => {
+      let index = list.indexOf(user);
+      list[index] = user;
       console.log(a);
     });
   };
 
-  deleteEmployee(list, item){
+  deleteUser(list, user){
 
-    this.employeeService.deleteUser(item.id);
+    this.userService.deleteUser(user.id);
 
-    let index = list.indexOf(item);
+    let index = list.indexOf(user);
     if (index > -1){
       list.splice(index, 1);
     }
-    item = list[index+1];
+    user = list[index+1];
   };
 
   // ---- Treatment Methods ----
@@ -160,6 +171,9 @@ export class AdminComponent implements OnInit {
        case "employee": {
         this.selectedEmployee = clickedItem;
          break;
+       }
+       case "customer": {
+         this.selectedCustomer = clickedItem;
        }
        case "treatment": {
         this.selectedTreatment = clickedItem;

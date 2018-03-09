@@ -6,7 +6,7 @@ import { User } from './user';
 import { Role } from './role';
 
 @Injectable()
-export class EmployeeService {
+export class UserService {
 
   url = 'http://nat-mo3-demo.hard.ware.fi:3000/api';
 

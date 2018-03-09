@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { AdminComponent } from './admin/admin.component';
 
-import { EmployeeService } from './utils/employee.service';
+import { UserService } from './utils/user.service';
 import { TreatmentService } from './utils/treatment.service';
 import { EventService } from './utils/event.service';
 
@@ -26,10 +26,10 @@ import {HttpModule} from '@angular/http';
     AppRoutingModule,
     FormsModule,
     NgbModule.forRoot(),
-    HttpClientModule, 
+    HttpClientModule,
     HttpModule
   ],
-  providers: [EmployeeService, TreatmentService, EventService],
+  providers: [UserService, TreatmentService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
