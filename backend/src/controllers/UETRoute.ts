@@ -19,7 +19,7 @@ export class UETRoute{
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                usersApi: values[0]
+                uetsApi: values[0]
             });
             res.end(result);
         });
@@ -29,7 +29,7 @@ export class UETRoute{
     getuet = async(req: Request, res: Response) => {
         this.repo.getUETById(req.params["id"]).then((data) =>{
             var result = JSON.stringify({
-                usersApi: data
+                uetApi: data
             });
             res.end(result);
         })

@@ -18,7 +18,7 @@ export class TreatementRoute{
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                treatApi: values[0]
+                treatsApi: values[0]
             });
             res.end(result);
         });

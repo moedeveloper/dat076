@@ -36,7 +36,7 @@ export class UserRoute{
     getuser = async(req: Request, res: Response) => {
         this.repo.getUserById(req.params["id"]).then((data) =>{
             var result = JSON.stringify({
-                usersApi: data
+                userApi: data
             });
             res.end(result);
         })
@@ -56,7 +56,7 @@ export class UserRoute{
         this.repo.updateUser(req.body).then((data)=> {
             //res.status(201).send()
             var result = JSON.stringify({
-                usersApi: data
+                userApi: data
             });
             res.status(201).end(result);
         })
@@ -77,7 +77,7 @@ export class UserRoute{
         Promise.all(promises).then(function (values) {
             console.log("in all " + values[0])
             var result = JSON.stringify({
-                usersApi: values[0]
+                userApi: values[0]
             });
             res.end(result);
         });

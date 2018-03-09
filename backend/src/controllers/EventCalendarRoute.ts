@@ -17,7 +17,7 @@ export class EventCalendarRoute{
         }));
         Promise.all(promises).then(function (values) {
             var result = JSON.stringify({
-                evtApi: values[0]
+                evtsApi: values[0]
             });
             res.end(result);
         });
