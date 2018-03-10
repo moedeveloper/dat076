@@ -1,2 +1,128 @@
 
-<div id='calendar' class="fc fc-bootstrap3 fc-ltr"></div>
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-1"></div>
+
+
+    <div class="col-md-8 card bg-light">
+
+      <div class="card-body">
+        <div id='calendar' class="fc fc-bootstrap4 fc-ltr "></div>
+      </div>
+      <div class="card-footer text-right">
+        <button type="button" (click)="open(content)" class="btn btn-primary btn ButtonStyle">Create new event</button>
+      </div>
+
+    </div>
+    <!--available times -->
+    <div class="col-md-2">
+      <div class="card h-100 w-100 bg-light">
+        <div class="card-head">
+          <h5 class="card-title">Available times</h5>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <button type="button" *ngFor="let time of availableTimes" (click)="setPickedTime(time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
+              {{time}}
+            </button>
+          </div>
+
+        </div>
+        <div class="card-footer">
+        <label for="employees">Select Employee</label>
+        <select class="form-control" id="employee" [(ngModel)]="availablEmployee" (ngModelChange)="updateAvailableList()" required>
+          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+        </select>
+        </div>
+
+    </div>
+
+    </div>
+    <!--end availableTimes-->
+
+    <div class="col-md-1"></div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-right">
+
+      <button type="button" (click)="getAvailableTimes()" class="btn btn-primary btn ButtonStyle">Get Available Times</button>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<!-- Add eventmodal -->
+<ng-template #content let-c="close" let-d="dismiss" let-l="submit">
+  <div class="modal-header">
+    <h4 class="modal-title">Create Event</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6>Title</h6>
+
+    <div class="input-group input-group-sm mb-3">
+      <input type="text" [(ngModel)]="eventTitle" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-large">
+    </div>
+
+    <div class="row" style="padding-bottom: 20px">
+      <div class="col-md-6">
+        <label for="employees">Select Employee</label>
+        <select class="form-control" id="employee" [(ngModel)]="eventEmployee" required>
+          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="employees">Select Customer</label>
+        <select class="form-control" id="customer" [(ngModel)]="eventCustomer" required>
+          <option *ngFor="let customer of customers" [ngValue]=customer>{{ customer.firstname }} {{ customer.lastname }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="treatment">Select Treatment</label>
+        <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
+          <option *ngFor="let treatment of treatments" [ngValue]=treatment>{{treatment.name}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <form class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="eventDate" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <!--  <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <hr/>
+
+
+    <div class="row text-center">
+      <div class="col-md-6 text-left">
+        <h6>Starting time</h6>
+        <ngb-timepicker [(ngModel)]="startTime"></ngb-timepicker>
+      </div>
+      <div class="col-md-6 text-left">
+        <h6>Ending time</h6>
+        <ngb-timepicker [(ngModel)]="endTime"></ngb-timepicker>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    <button type="submit" (click)="c('Close click'); createEvent()" class="btn btn-primary btn">Add</button>
+  </div>
+
+
+</ng-template>

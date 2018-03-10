@@ -1,17 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule }   from '@angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { AdminComponent } from './admin/admin.component';
 
-// added by mo3
-// used to connect to api
-import {HttpClient} from '@angular/common/http';
-import 'rxjs/add/operator/map';
+import { UserService } from './utils/user.service';
+import { TreatmentService } from './utils/treatment.service';
+import { EventService } from './utils/event.service';
+
+import {HttpClientModule} from '@angular/common/http';
+import {HttpModule} from '@angular/http';
+
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import 'rxjs/add/operator/map';
     AdminComponent
   ],
   imports: [
-    HttpClient, // added by mo3 to connect to api
     BrowserModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    FormsModule,
+    NgbModule.forRoot(),
+    HttpClientModule,
+    HttpModule
   ],
-  providers: [],
+  providers: [UserService, TreatmentService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
