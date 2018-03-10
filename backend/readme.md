@@ -33,6 +33,7 @@ GET    | /api/user/:query      | one user entity               | firstname, last
 GET    | /api/userrole/:roleId | one user entity               | roleId
 GET    | /api/uets/            | all users,events & treatements|
 GET    | /api/uet/:id          | one user,event & treatement   | uet Id
+GET    | /api/uetevents/       | all user,event & treatement   | 
 GET    | /api/treatements/     | all treatements entities      | 
 GET    | /api/treatement/:id   | one treatement entity         | treatementId
 GET    | /api/roles            | roles entities                |
