@@ -25,9 +25,11 @@ export class CalendarComponent implements OnInit {
   @ViewChild('content') private content;
   content2 = this.content;
   closeResult: string;
-  startTime = {hour: 13, minute: 30};
-  endTime = {hour: 13, minute: 30};
+
+  startTime = {hour: 13, minute: 0o00};
+  endTime = {hour: 14, minute: 0o00};
   eventDate = {year: 2018, month: 3, day: 4}
+
   eventTitle: string;
   eventEmployee: User;
   eventCustomer: User;

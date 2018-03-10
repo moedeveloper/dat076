@@ -32,7 +32,7 @@
         <div class="card-footer">
         <label for="employees">Select Employee</label>
         <select class="form-control" id="employee" [(ngModel)]="availablEmployee" (ngModelChange)="updateAvailableList()" required>
-          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee?.firstname }} {{ employee?.lastname }}</option>
         </select>
         </div>
 

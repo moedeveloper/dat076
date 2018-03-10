@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 import {User} from '../utils/user';
 import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
+import { Events } from '../utils/events';
 
 import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
@@ -34,6 +36,7 @@ export class AdminComponent implements OnInit {
 
   newUser = new User(null, "", "", "", "");
   newTreatment = new Treatment(null, "", "", 0);
+  newEvent = new Events(null, "", "", "", "", null, null, null);
 
   //dummy data
   //customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
@@ -55,9 +58,9 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
 
-
-
       this.userService.getRoles().then(data => {
+        console.log('getRoles:')
+        console.log(data);
         for (var i = 0; i < data.length; i++){
           if (data[i].role == 'admin'){
             this.admRoleId = data[i].id
@@ -68,14 +71,21 @@ export class AdminComponent implements OnInit {
           }
         }
         this.userService.getUsersByRole(this.empRoleId).then(data => {
-          this.employees = data
+          console.log('emp')
+          console.log(data)
+          this.employees = data.filter(d => d);
+          console.log(this.employees);
           this.selectedEmployee = this.employees[0];
-        })
+        });
+
         this.userService.getUsersByRole(this.custRoleId).then(data => {
-          this.customers = data
+          console.log(data)
+          this.customers = data.filter(d => d);
           this.selectedCustomer = this.customers[0];
-        })
-      })
+        });
+      });
+
+
       this.treatmentService.getTreatments().then(data => {
         this.treatments = data;
         this.selectedTreatment = this.treatments[1];
@@ -107,11 +117,18 @@ export class AdminComponent implements OnInit {
     });
   };
 
-  updateUser(list, user){
+  updateUser(list, user, type){
+    console.log(user);
 
-    user.firstname = (<HTMLInputElement>document.getElementById('employeeFirstName')).value;
-    user.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
-    user.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
+    if(type === 'emp'){
+      user.firstname = (<HTMLInputElement>document.getElementById('employeeFirstName')).value;
+      user.lastname = (<HTMLInputElement>document.getElementById('employeeLastName')).value;
+      user.telefon = (<HTMLInputElement>document.getElementById('employeeTelefon')).value;
+    }else if(type === 'cust'){
+      user.firstname = (<HTMLInputElement>document.getElementById('customerFirstName')).value;
+      user.lastname = (<HTMLInputElement>document.getElementById('customerLastName')).value;
+      user.telefon = (<HTMLInputElement>document.getElementById('customerTelefon')).value;
+    }
 
     console.log('emp --->')
     console.log(user);
@@ -148,6 +165,8 @@ export class AdminComponent implements OnInit {
       });
     });
   };
+
+  
 
   updateTreatment(list, treatment){
     treatment.name = (<HTMLInputElement>document.getElementById('treatmentName')).value;
