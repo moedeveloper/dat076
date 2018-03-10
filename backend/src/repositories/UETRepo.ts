@@ -52,10 +52,10 @@ export class UETRepository {
 
         for(let i = 0; i < listOfUet.length; i++){
             let evt = new Event()
-            console.log("id is cus" + listOfUet[i].customerId)
-            console.log("id is cus" + listOfUet[i].employeeId)
-            console.log("id is cus" + listOfUet[i].eventId)
-            console.log("id is cus" + listOfUet[i].treatmentId)
+            // console.log("id is cus" + listOfUet[i].customerId)
+            // console.log("id is cus" + listOfUet[i].employeeId)
+            // console.log("id is cus" + listOfUet[i].eventId)
+            // console.log("id is cus" + listOfUet[i].treatmentId)
             try{
                 let ct = await this.getUserAsync(listOfUet[i].customerId)
                 let emp = await this.getUserAsync(listOfUet[i].employeeId)
@@ -63,20 +63,24 @@ export class UETRepository {
                 let treat = await this.treatRepo.gettreatement(listOfUet[i].treatmentId)
 
                 evt.customer = new UserEntity()
+                evt.customer.id = ct.id
                 evt.customer.firstname = ct.firstname
                 evt.customer.lastname = ct.lastname
                 evt.customer.telefon = ct.telefon
 
                 evt.employee = new UserEntity()
+                evt.employee.id = ct.id
                 evt.employee.firstname = emp.firstname
                 evt.employee.lastname = emp.lastname
                 evt.employee.telefon = emp.telefon
 
                 evt.event = new EventCalendar()
+                evt.event.id = ev.id
                 evt.event.starttime = ev.starttime
                 evt.event.endtime = ev.endtime
 
                 evt.treatment = new Treatement()
+                evt.treatment.id = treat.id
                 evt.treatment.duration = treat.duration
                 evt.treatment.name = treat.name
                 evt.treatment.price = treat.price
