@@ -3,7 +3,7 @@ export class UET {
     public id: string,
     public userId:string,
     public eventId:string,
-    public treatementId:string,
+    public treatmentId:string,
     public customerId: string
   ) { }
 }

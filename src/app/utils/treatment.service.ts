@@ -14,7 +14,7 @@ export class TreatmentService {
   // Working request
   getTreatments(){
   	return new Promise<Treatment[]>(resolve => {
-  		this.http.get(this.url + "/treatements")
+  		this.http.get(this.url + "/treatments")
   		.map(res => res.json())
   		.subscribe(data => {
   			resolve(data.treatsApi);
@@ -27,7 +27,7 @@ export class TreatmentService {
   getTreatment(id){
 
   	return new Promise<Treatment>(resolve => {
-  		this.http.get(this.url + '/treatement/' + id)
+  		this.http.get(this.url + '/treatment/' + id)
   		.subscribe(data => {
 			  resolve(data.json());
   		});
@@ -41,7 +41,7 @@ export class TreatmentService {
 	  headers.append('Content-Type', 'application/json');
 
 	return new Promise<Treatment>(resolve => {
-		this.http.post(this.url + '/treatement/', JSON.stringify(treatment), {headers: headers})
+		this.http.post(this.url + '/treatment/', JSON.stringify(treatment), {headers: headers})
   		.subscribe(res => {
   			resolve(res.json());
   		});
@@ -51,16 +51,16 @@ export class TreatmentService {
   // Working request
   deleteTreatment(id){
 
-  	this.http.delete(this.url + '/treatement/' + id).subscribe(res => {
+  	this.http.delete(this.url + '/treatment/' + id).subscribe(res => {
   		console.log(res);
   	});
   };
 
   //TODO: not working correctly
-  updateTreatment(treatement){
+  updateTreatment(treatment){
 
 	return new Promise<Treatment>( resolve => {
-		this.http.put(this.url + '/treatement', treatement)
+		this.http.put(this.url + '/treatment', treatment)
 		.subscribe(data => {
 			resolve(data.json());
 		});

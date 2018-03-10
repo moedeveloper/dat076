@@ -49,7 +49,9 @@ export class CalendarComponent implements OnInit {
   events = [];
   UETs : UET[];
   calendarResources = [];
-
+  availablEmployee: User;
+  pickedTime;
+  availableTimes;
 
 
   ngOnInit() {
@@ -67,7 +69,7 @@ export class CalendarComponent implements OnInit {
       this.userService.getUsersByRole(this.empRoleId).then(data =>{
         this.employees = data
         for(var i = 0; i < this.employees.length; i++){
-          this.calendarResources.push({id: this.employees[i].id, title: this.employees[i].firstname}) //tuples used by fullcalender to display the employee columns 
+          this.calendarResources.push({id: this.employees[i].id, title: this.employees[i].firstname}) //tuples used by fullcalender to display the employee columns
         }
       })
       this.userService.getUsersByRole(this.custRoleId).then(data =>{
@@ -80,7 +82,7 @@ export class CalendarComponent implements OnInit {
           this.eventService.getEvent(this.UETs[i].eventId).then(data => {
             var startTime = data.starttime
             var endTime = data.endtime
-            this.treatmentService.getTreatment(this.UETs[i].treatementId).then(data => {
+            this.treatmentService.getTreatment(this.UETs[i].treatmentId).then(data => {
               var treatmentName = data.name
               this.events.push({title: 'From DB', description: treatmentName, resourceId: this.UETs[i].userId, start: startTime, end: endTime})
             })
@@ -150,6 +152,7 @@ export class CalendarComponent implements OnInit {
       });
       })
   })
+
   }
 
   createEvent(){
@@ -195,11 +198,13 @@ export class CalendarComponent implements OnInit {
       })
   }
 
-  getAvailableTimes(){
+  getAvailableTimes(employeeID){
+    console.log(employeeID)
     var eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt){
       return evt;
     });
-    var empId = this.employees[0].id // To David: when implementing the gui of this later on, pass empId as a method parameter
+    var empId = employeeID;
+    //var empId = this.employees[0].id // To David: when implementing the gui of this later on, pass empId as a method parameter
     var events = []
     for (var i = 0; i < eventsAll.length; i++){
       if (eventsAll[i].resourceId == empId){
@@ -240,6 +245,14 @@ export class CalendarComponent implements OnInit {
   setCalender(calendar){
     this.calendar = calendar;
   }
+
+  updateAvailableList(){
+    this.availableTimes = this.getAvailableTimes(this.availablEmployee.id);
+  }
+  setPickedTime(time){
+    this.pickedTime = time;
+ }
+
 
   //modal open
   open(content) {

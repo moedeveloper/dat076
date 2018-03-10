@@ -8,7 +8,6 @@ import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
 import { EventService} from '../utils/event.service';
 
-import {Db} from '../utils/db';
 import { timeout } from 'q';
 
 @Component({
@@ -55,7 +54,8 @@ export class AdminComponent implements OnInit {
     private eventService: EventService) {}
 
   ngOnInit() {
-    // TODO: either get all data at once or just employees and then the others if those tabs are opened
+
+
 
       this.userService.getRoles().then(data => {
         for (var i = 0; i < data.length; i++){
@@ -80,6 +80,11 @@ export class AdminComponent implements OnInit {
         this.treatments = data;
         this.selectedTreatment = this.treatments[1];
       });
+
+      this.newTreatment.name="test"
+      this.newTreatment.duration="60"
+      this.newTreatment.price=60
+      this.createTreatment();
   }
 
   // ---- User Methods ----
