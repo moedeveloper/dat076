@@ -39,4 +39,12 @@ export class GroupRepo{
     getRoles():Promise<RoleEntity[]>{
         return this.entityManager.getRepository(RoleEntity).find()
     }
+
+    async getUserRoleId(id:string){
+        console.log("here in getUserRoleId") 
+        return await this.entityManager.getRepository(Group)
+        .createQueryBuilder("group")
+        .where("group.userId = :userId", {userId:id})
+        .getOne()
+    }
 }

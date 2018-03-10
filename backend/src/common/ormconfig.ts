@@ -17,7 +17,7 @@ import { RoleEntity } from "../entities/roles";
     password: "89053fff",
     database: "mo3dat076",
     entities: [
-        UserEntity, UET, Customer, Treatement, EventCalendar, UserGroupAuth, RoleEntity, Group
+        Group, UserEntity, UET, Customer, Treatement, EventCalendar, UserGroupAuth, RoleEntity
     ],
     synchronize: true,
     dropSchema : true

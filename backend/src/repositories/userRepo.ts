@@ -25,11 +25,17 @@ export class UserRepository {
         return this.entityManager.getRepository(UserEntity).findOneById(userId)
     }
 
-    removeUser(userId: string){
+    async removeUser(userId: string){
+        //1.get Id where userid=id
+        let gp = await this.groupRepo.getUserRoleId(userId)
+        //2. rmove role
+        this.groupRepo.removeUserRole(gp.id)
+        //3.remove user
         return this.entityManager.getRepository(UserEntity).removeById(userId)
     }
 
     updateUser(request: any) {
+        
         return this.entityManager.getRepository(UserEntity).save(request)
     }
 
@@ -70,14 +76,13 @@ export class UserRepository {
         // .getMany()
         let users = await this.getUsersByRoleIdAsync(roleId)
         var listToReturn: UserEntity[] = new Array()
-
-        for (let i = 0; i < users.length; i++){
-            let user = await this.getUserById(users[i].userId)
-            listToReturn.push(user)
+        if(users.length > 0){
+            for (let i = 0; i < users.length; i++){
+                let user = await this.getUserById(users[i].userId)
+                listToReturn.push(user)
+            }
         }
-        
-        console.log("list lentgh is " + listToReturn.length)
-        return listToReturn  
+        return listToReturn
     }
     getUsersByRoleIdAsync = async(id:string) => {
         return await this.group_getUsersByRoleId(id)
