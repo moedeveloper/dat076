@@ -57,10 +57,6 @@ createConnection(appConfig.dbOptions).then(async connection => {
   console.log("roles are created")
 }).catch(error => console.log("TypeORM connection error: ", error));
 
-
-
-
-
 /**
  * Primary app routes.
  */
@@ -71,7 +67,7 @@ app.get("/api/user/:id", usercContainer.getuser)
 app.delete("/api/user/:id", usercContainer.removeuser)
 app.put("/api/user/", usercContainer.updateuser)
 app.get("/api/user/query/:query", usercContainer.getuserbyQuery)
-app.get("/api/usersrole/:role", usercContainer.getusersByRoleId)
+app.get("/api/usersrole/:roleId", usercContainer.getusersByRoleId)
 
 
 // Event is a user->Event-> treatement
@@ -81,14 +77,15 @@ app.get("/api/uet/:id", uetcontainer.getuet)
 app.post("/api/uet/", uetcontainer.createuet)
 app.delete("/api/uet/:id", uetcontainer.deleteuet)
 app.put("/api/uet", uetcontainer.updateuet)
+app.get("/api/uetevents", uetcontainer.getCalendarEvents)
 
 //
 let tcontainer = Container.get(TreatementRoute)
-app.get("/api/treatements", tcontainer.getTreatements)
-app.get("/api/treatement/:id", tcontainer.gettreatement)
-app.post("/api/treatement/", tcontainer.createtreatement)
-app.delete("/api/treatement/:id", tcontainer.deletetreatement)
-app.put("/api/treatement", tcontainer.updatetreatement)
+app.get("/api/treatments", tcontainer.getTreatements)
+app.get("/api/treatment/:id", tcontainer.gettreatement)
+app.post("/api/treatment/", tcontainer.createtreatement)
+app.delete("/api/treatment/:id", tcontainer.deletetreatement)
+app.put("/api/treatment", tcontainer.updatetreatement)
 //
 let ccontainer = Container.get(CustomerRoute)
 app.get("/api/customers", ccontainer.getCustomers)

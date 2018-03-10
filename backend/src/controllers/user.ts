@@ -85,11 +85,10 @@ export class UserRoute{
 
     getusersByRoleId = async(req: Request, res: Response) => {
         var promises = [];
-        promises.push(this.repo.getusersbyroleid(req.params["role"]).then(function (data) {
+        promises.push(this.repo.getusersbyroleid(req.params["roleId"]).then(function (data) {
             return data;
         }));
         Promise.all(promises).then(function (values) {
-            console.log("in all " + values[0])
             var result = JSON.stringify({
                 rolesApi: values[0]
             });

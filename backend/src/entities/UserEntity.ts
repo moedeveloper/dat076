@@ -16,7 +16,4 @@ export class UserEntity extends BaseEntity{
 
     @Column("varchar", { nullable: false})
     telefon: string
-
-    @Column("varchar", {nullable: false})
-    roleId: string
 }

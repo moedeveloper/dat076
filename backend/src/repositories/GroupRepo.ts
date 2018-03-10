@@ -29,10 +29,10 @@ export class GroupRepo{
         return this.entityManager.getRepository(RoleEntity).save(roles)
     }
 
-    getUsersByRoleId(role:string):Promise<Group[]>{
+    getUsersByRoleId(roleId:string):Promise<Group[]>{
         return this.entityManager.getRepository(Group)
         .createQueryBuilder("group")
-        .where("group.role = :role", {role: role})
+        .where("group.roleId = :roleId", {roleId: roleId})
         .getMany()
     }
 

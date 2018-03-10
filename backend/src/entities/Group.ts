@@ -7,7 +7,7 @@ export class Group extends BaseEntity{
     id: string
 
     @Column()
-    role: string
+    roleId: string
     @Column()
     userId: string
 }

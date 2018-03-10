@@ -21,11 +21,11 @@ export class UET extends BaseEntity{
     // eventId: string
 
     @Column("varchar", { nullable: false})
-    userId:string
+    employeeId:string
     @Column("varchar", { nullable: false})
     eventId:string
     @Column("varchar", { nullable: false})
-    treatementId:string
+    treatmentId:string
     @Column("varchar", { nullable: false})
     customerId: string
 }

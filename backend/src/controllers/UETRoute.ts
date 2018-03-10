@@ -37,11 +37,12 @@ export class UETRoute{
 
     createuet = async(req: Request, res: Response) => {
         console.log(req.body)
-        //let userId = req.body.userId
+
         let event = req.body.event
         let customerId = req.body.customerId
         let treatId = req.body.treatId
-        this.repo.createUET(event, customerId, treatId).then((data) =>{
+        let empId = req.body.employeeId
+        this.repo.createUET(req.body).then((data) =>{
             var result = JSON.stringify({
                 uetApi: data
             });
@@ -66,5 +67,18 @@ export class UETRoute{
         this.repo.removeUet(req.params["id"]).then(()=> {
             res.status(201).send()
         })
+    }
+
+    getCalendarEvents = async(req:Request, res: Response) => {
+        var promises = [];
+        promises.push(this.repo.getCalendarEvents().then(function (data) {
+            return data;
+        }));
+        Promise.all(promises).then(function (values) {
+            var result = JSON.stringify({
+                evtsApi: values[0]
+            });
+            res.end(result);
+        });
     }
 }
