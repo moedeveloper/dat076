@@ -81,10 +81,6 @@ export class AdminComponent implements OnInit {
         this.selectedTreatment = this.treatments[1];
       });
 
-      this.newTreatment.name="test"
-      this.newTreatment.duration="60"
-      this.newTreatment.price=60
-      this.createTreatment();
   }
 
   // ---- User Methods ----
