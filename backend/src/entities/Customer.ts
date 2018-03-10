@@ -8,4 +8,5 @@ export class Customer extends BaseEntity{
 
     @Column("varchar", { nullable: false})
     userId: string
+    //TODO
 }

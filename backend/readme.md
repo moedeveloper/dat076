@@ -34,17 +34,17 @@ GET    | /api/userrole/:roleId | one user entity               | roleId
 GET    | /api/uets/            | all users,events & treatements|
 GET    | /api/uet/:id          | one user,event & treatement   | uet Id
 GET    | /api/uetevents/       | all user,event & treatement   | 
-GET    | /api/treatements/     | all treatements entities      | 
-GET    | /api/treatement/:id   | one treatement entity         | treatementId
+GET    | /api/treatments/     | all treatements entities      | 
+GET    | /api/treatment/:id   | one treatement entity         | treatementId
 GET    | /api/roles            | roles entities                |
 POST   | /api/user             | new created user              | body req -> (check entities)
-POST   | /api/treatement       | new created treatement        | body req -> {"name", "duration","price"}
+POST   | /api/treatment       | new created treatement        | body req -> {"name", "duration","price"}
 POST   | /api/uet              | new created uet               | body req -> (check entities)
 DELETE | /api/user/:id         |                               | user id
 DELETE | /api/uet/:id          |                               | uet id
-DELETE | /api/treatement/:id   |                               | treatement id
+DELETE | /api/treatment/:id   |                               | treatement id
 PUT    | /api/user/            | updated user                  | user entities to be updated
 PUT    | /api/uet              |                               | TODO
-PUT    | /api/treatement       | updated treatement            | treatment entities to be updated
+PUT    | /api/treatment       | updated treatement            | treatment entities to be updated
 ### Note: 
 cascading is implemented manually, typorm cascading didnt work ordentling
