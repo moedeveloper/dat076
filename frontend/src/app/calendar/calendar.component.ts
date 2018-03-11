@@ -55,7 +55,13 @@ export class CalendarComponent implements OnInit {
   availableTimes;
 
   constructor(private modalService: NgbModal, private userService: UserService,
-     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {}
+     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {
+      
+      var today = new Date();
+      this.eventDate.day = today.getDate();
+      this.eventDate.month = today.getMonth()+1; //January is 0!
+      this.eventDate.year = today.getFullYear();
+     }
   async ngOnInit() {
 
     const roles = await this.extenstion.service_getRoles();
@@ -73,7 +79,9 @@ export class CalendarComponent implements OnInit {
 
     // 2. init calendar
     this.calendarResources = this.extenstion.initEmployees(this.employees);
-    this.events = this.extenstion.initEvents(uetEvents);
+    console.log(uetEvents)
+    this.events = this.extenstion.initEvents(uetEvents); 
+    console.log(this.events)
 
     this.treatmentService.getTreatments().then(resData => {
       this.treatments = resData;
@@ -114,9 +122,11 @@ export class CalendarComponent implements OnInit {
           self.endTime.minute = end.minute();
           const userEmp = await self.extenstion.getUserById(resource.id);
           self.eventEmployee = userEmp;
-          self.open(self.content);
+          self.open(self.content, null);
         },
         eventRender: function(event, element) {
+          console.log('event')
+          console.log(event)
           element.find('.fc-title').append('<br/>' + event.description);
           element.find('.fc-bg').css('pointer-events', 'none');
           element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
@@ -164,25 +174,27 @@ export class CalendarComponent implements OnInit {
     this.availableTimes = this.extenstion.getAvailableTimes(this.availablEmployee.id, eventsAll);
   }
   setPickedTime(time) {
-  this.pickedTime = time;
+    this.pickedTime = time;
+    const startT = new Date(time[0]);
+    const endT = new Date(time[1]);
 
-  this.eventDate.year = time[0].getFullYear();
-  this.eventDate.month = time[0].getMonth()+1;
-  this.eventDate.day = time[0].getDate();
-  this.startTime.hour = time[0].getHours();
-  this.startTime.minute = time[0].getMinutes();
-  this.endTime.hour = time[1].getHours();
-  this.endTime.minute = time[1].getMinutes();
-  this.eventEmployee = this.availablEmployee;
-  this.open(this.content);
+    this.startTime.hour = startT.getHours();
+    this.endTime.hour = endT.getHours();
+    this.eventDate.month = startT.getMonth() + 1;
+    this.eventDate.day = startT.getDate();
   }
 
- open(content) {
+ open(content, time) {
+   if(time !== null){
+    this.setPickedTime(time);
+    this.eventEmployee = this.availablEmployee;
+   }
    this.modalService.open(content).result.then((result) => {
-     this.closeResult = `Closed with: ${result}`;
-   }, (reason) => {
-     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-   });
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+   
  }
 
   private getDismissReason(reason: any): string {

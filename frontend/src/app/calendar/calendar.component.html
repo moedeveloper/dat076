@@ -11,7 +11,7 @@
         <div id='calendar' class="fc fc-bootstrap4 fc-ltr "></div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" (click)="open(content)" class="btn btn-primary btn ButtonStyle">Create new event</button>
+        <button type="button" (click)="open(content, null)" class="btn btn-primary btn ButtonStyle">Create new event</button>
       </div>
 
     </div>
@@ -27,7 +27,7 @@
         </div>
         <div class="card-body">
           <div class="list-group">
-            <button type="button" *ngFor="let time of availableTimes" (click)="setPickedTime(time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
+            <button type="button" *ngFor="let time of availableTimes" (click)="open(content, time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
               <div>{{time[0] | date:'HH:mm'}}-{{time[1] | date:'HH:mm'}}, {{time[1] | date:'MM/dd'}}</div>
             </button>
           </div>
@@ -83,7 +83,7 @@
     <form class="form-inline">
       <div class="form-group">
         <div class="input-group">
-          <input class="form-control" placeholder="yyyy-mm-dd"
+          <input id="datePicker" class="form-control" placeholder="yyyy-mm-dd"
                  name="dp" [(ngModel)]="eventDate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
