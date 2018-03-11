@@ -17,7 +17,7 @@ npm install -g @angular/cli
 
 #### Serving the project via a development server
 ```
-cd /PATH/TO/PROJECT
+cd /PATH/TO/PROJECT/frontend
 npm install
 ng serve --open
 ```
@@ -50,3 +50,8 @@ src ->
   * app.component.spec.ts - _Tests for the main app component_
   * app.component.ts - _Model logic for the main app component_
   * app.module.ts - _Handles global imports and components_ 
+
+## Project description
+Angular 5 is a component and module based JS-framework described as using a "MV-whatever" structure and handles the value binding between the Model and the View of a component. This project is built upon Angular for the frontend and Node, Express and mySql for the backend. 
+
+The services running on the frontend uses @Angular/http for http-request to the server. 
