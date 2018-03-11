@@ -149,8 +149,56 @@ export class CalendarComponent implements OnInit {
       const newUet = this.eventService.createUET(this.uet);
   }
 
-  setCalender(calendar) {
+  setCalender(calendar){
     this.calendar = calendar;
+  }
+  
+  getAvailableTimes(employeeID){
+    console.log(employeeID)
+    var eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt){
+      return evt;
+    });
+    var empId = employeeID;
+    //var empId = this.employees[0].id // To David: when implementing the gui of this later on, pass empId as a method parameter
+    var events = []
+    for (var i = 0; i < eventsAll.length; i++){
+      if (eventsAll[i].resourceId == empId){
+        events.push(eventsAll[i])
+      }
+    }
+    var d = new Date()
+    d.setHours(d.getHours()+1)
+    var amount = 5
+    var availableTimes = []
+    while (availableTimes.length < amount){
+      var available: boolean = true
+      if (d.getHours() > 19 || d.getHours() < 8){ // If salon is closed
+        available = false
+      } else {
+        for (var i = 0; i < events.length; i++){ // If part of the next hour is occupied by another event
+          if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
+            available = false
+          }
+        }
+      }
+      if (available == true){
+        var start = new Date(d.getTime())
+        var end = new Date(d.getTime())
+        start.setMinutes(0)
+        end.setMinutes(0)
+        start.setSeconds(0)
+        end.setSeconds(0)
+        end.setHours(end.getHours() + 1)
+        availableTimes.push([start, end])
+      }
+      d.setHours(d.getHours()+1)
+    }
+    return availableTimes
+  }
+
+  formatTime(d) {
+    let temp = new Date(d);
+    return temp;
   }
 
   updateAvailableList() {

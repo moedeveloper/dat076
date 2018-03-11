@@ -2,10 +2,10 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-md-1"></div>
+    <!-- <div class="col-md-1"></div> -->
 
 
-    <div class="col-md-8 card bg-light">
+    <div class="col-md-9 card bg-light">
 
       <div class="card-body">
         <div id='calendar' class="fc fc-bootstrap4 fc-ltr "></div>
@@ -16,32 +16,31 @@
 
     </div>
     <!--available times -->
-    <div class="col-md-2">
+    <div class="col-md-3">
       <div class="card h-100 w-100 bg-light">
         <div class="card-head">
-          <h5 class="card-title">Available times</h5>
+          <h5 class="card-title avalibleTimesHeader">Available times</h5>
+          <label class="selectEmplyeeHeader" for="employees">Select Employee</label>
+          <select class="avalibleEmployessList form-control" id="employee" [(ngModel)]="availablEmployee" (ngModelChange)="updateAvailableList()" required>
+            <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee?.firstname }} {{ employee?.lastname }}</option>
+          </select>
         </div>
         <div class="card-body">
           <div class="list-group">
             <button type="button" *ngFor="let time of availableTimes" (click)="setPickedTime(time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
-              {{time}}
+              <div>Start: {{formatTime(time[0]) | date:'MM/dd h:mm'}}</div>
+              <div>End: {{formatTime(time[1]) | date:'MM/dd h:mm' }}</div>
+               
             </button>
           </div>
 
         </div>
-        <div class="card-footer">
-        <label for="employees">Select Employee</label>
-        <select class="form-control" id="employee" [(ngModel)]="availablEmployee" (ngModelChange)="updateAvailableList()" required>
-          <option *ngFor="let employee of employees" [ngValue]=employee>{{ employee?.firstname }} {{ employee?.lastname }}</option>
-        </select>
-        </div>
-
     </div>
 
     </div>
     <!--end availableTimes-->
 
-    <div class="col-md-1"></div>
+   <!--  <div class="col-md-1"></div> -->
 
   </div>
   <div class="row">
@@ -63,11 +62,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <h6>Title</h6>
-
-    <div class="input-group input-group-sm mb-3">
-      <input type="text" [(ngModel)]="eventTitle" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-large">
-    </div>
 
     <div class="row" style="padding-bottom: 20px">
       <div class="col-md-6">
