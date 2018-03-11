@@ -164,7 +164,17 @@ export class CalendarComponent implements OnInit {
     this.availableTimes = this.extenstion.getAvailableTimes(this.availablEmployee.id, eventsAll);
   }
   setPickedTime(time) {
-    this.pickedTime = time;
+  this.pickedTime = time;
+
+  this.eventDate.year = time[0].getFullYear();
+  this.eventDate.month = time[0].getMonth()+1;
+  this.eventDate.day = time[0].getDate();
+  this.startTime.hour = time[0].getHours();
+  this.startTime.minute = time[0].getMinutes();
+  this.endTime.hour = time[1].getHours();
+  this.endTime.minute = time[1].getMinutes();
+  this.eventEmployee = this.availablEmployee;
+  this.open(this.content);
   }
 
  open(content) {
