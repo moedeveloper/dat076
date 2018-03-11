@@ -17,3 +17,18 @@ body {
   .ButtonStyle {
     margin-top: 15px;
   }
+
+  .avalibleTimesHeader {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .avalibleEmployessList {
+    width: 90%;
+    margin-left: 10px;
+  }
+
+  .selectEmplyeeHeader {
+    margin-left: 10px;
+  }
+ 

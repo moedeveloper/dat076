@@ -220,8 +220,12 @@ export class CalendarComponent implements OnInit {
       }
       d.setHours(d.getHours()+1)
     }
-    console.log(availableTimes)
     return availableTimes
+  }
+
+  formatTime(d) {
+    let temp = new Date(d);
+    return temp;
   }
 
   setCalender(calendar){
