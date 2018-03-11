@@ -3,7 +3,8 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { resolve } from 'q';
 import { UET } from './userEventTreatment';
-import { EventCalendar } from './event'
+import { EventCalendar } from './event';
+import { EventEntities } from '../entities/event';
 
 @Injectable()
 export class EventService {
@@ -12,7 +13,15 @@ export class EventService {
 
   constructor(public http: Http) { }
 
-  getEvents(){
+  getUetEvents() {
+    return new Promise<EventEntities[]>((resolv) => {
+      this.http.get(this.url + '/uetevents').map(result => result.json()).subscribe((data) => {
+        resolv(data.evtsApi);
+      });
+    });
+  }
+
+  getEvents() {
     return new Promise<EventCalendar[]>(resolve => {
   		this.http.get(this.url + "/eventcalendars")
   		.map(res => res.json())
@@ -23,7 +32,6 @@ export class EventService {
   }
 
   getEvent(id){
-
     return new Promise<EventCalendar>(resolve => {
   		this.http.get(this.url + '/eventcalendar/' + id)
       .map(res => res.json())

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
@@ -15,6 +15,8 @@ import 'fullcalendar-scheduler';
 import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
 import { EventService } from '../utils/event.service';
+import {Roles} from '../entities/roles';
+import { EventEntities } from '../entities/event';
 
 @Component({
   selector: 'app-calendar',
@@ -25,79 +27,91 @@ export class CalendarComponent implements OnInit {
   @ViewChild('content') private content;
   content2 = this.content;
   closeResult: string;
-  startTime = {hour: 13, minute: 30};
-  endTime = {hour: 13, minute: 30};
-  eventDate = {year: 2018, month: 3, day: 4}
+
+  startTime = {hour: 13, minute: 0o00};
+  endTime = {hour: 14, minute: 0o00};
+  eventDate = {year: 2018, month: 3, day: 4};
+
   eventTitle: string;
   eventEmployee: User;
   eventCustomer: User;
   eventTreatment: Treatment;
   eventCalendar: EventCalendar;
-  uet : UET;
+  uet: UET;
   calendar;
+  constructor(private modalService: NgbModal, private userService: UserService,
+     private treatmentService: TreatmentService, private eventService: EventService) {}
 
-
-  constructor(private modalService: NgbModal, private userService : UserService, private treatmentService : TreatmentService, private eventService : EventService) {  }
-
-  //dummy data until backend connection
-  admRoleId: string;
-  custRoleId: string;
-  empRoleId: string;
-  employees : User[];
-  customers : User[];
-  treatments : Treatment[];
+  employees: User[];
+  customers: User[];
+  treatments: Treatment[];
   events = [];
-  UETs : UET[];
+  UETs: UET[];
   calendarResources = [];
   availablEmployee: User;
   pickedTime;
   availableTimes;
 
+  async service_getRoles() {
+    return await this.userService.getRoles();
+  }
 
-  ngOnInit() {
+  async getUsers(id: string) {
+    return await this.userService.getUsersByRole(id);
+  }
+
+  initEmployees(users: User[]) {
+    users.forEach((u) => {
+      this.calendarResources.push({id: u.id, title: u.firstname});
+    });
+  }
+
+  initEvents(evts: EventEntities[]) {
+    evts.forEach((e) => {
+      this.events.push({title: 'From DB', description: e.treatment.name,
+       resourceId: e.employee.id, start: e.event.starttime, end: e.event.endtime});
+    });
+  }
+
+  async getUets() {
+    return await this.eventService.getUETs();
+  }
+
+  async getuetEvents() {
+    return await this.eventService.getUetEvents();
+  }
+  async getTreatments() {
+    return await this.treatmentService.getTreatments();
+  }
+
+  async getUserById(id: string) {
+    return await this.userService.getUser(id);
+  }
+  async ngOnInit() {
+
+    const roles = await this.service_getRoles();
+    // 1. Resolve entities
+    const customer = roles.find( x => x.role === Roles.customer.toString());
+    const employee = roles.find( x => x.role === Roles.employee.toString());
+    const admin = roles.find( x => x.role === Roles.admin.toString());
+
+    const employees = await this.getUsers(employee.id);
+    const customers = await this.getUsers(customer.id);
+    const uetEvents = await this.getuetEvents();
+
+    // 2. init calendar
+    this.initEmployees(employees);
+    this.initEvents(uetEvents);
+
 
     this.userService.getRoles().then(data => {
-      for (var i = 0; i < data.length; i++){
-        if (data[i].role == 'admin'){
-          this.admRoleId = data[i].id
-        } else if (data[i].role == 'customer'){
-          this.custRoleId = data[i].id
-        } else if (data[i].role == 'employee'){
-          this.empRoleId = data[i].id
-        }
-      }
-      this.userService.getUsersByRole(this.empRoleId).then(data =>{
-        this.employees = data
-        for(var i = 0; i < this.employees.length; i++){
-          this.calendarResources.push({id: this.employees[i].id, title: this.employees[i].firstname}) //tuples used by fullcalender to display the employee columns
-        }
-      })
-      this.userService.getUsersByRole(this.custRoleId).then(data =>{
-        this.customers = data
-      })
-      this.eventService.getUETs().then(data => {
-        this.UETs = data
-        console.log(this.UETs) //TODO: these are empty except the ID.. same with calendarEvents
-        for (var i = 0; i < this.UETs.length; i++){
-          this.eventService.getEvent(this.UETs[i].eventId).then(data => {
-            var startTime = data.starttime
-            var endTime = data.endtime
-            this.treatmentService.getTreatment(this.UETs[i].treatmentId).then(data => {
-              var treatmentName = data.name
-              this.events.push({title: 'From DB', description: treatmentName, resourceId: this.UETs[i].userId, start: startTime, end: endTime})
-            })
-          })
-        }
-      })
 
       this.treatmentService.getTreatments().then(resData => {
         this.treatments = resData;
-
-        var self = this;
+        const self = this;
         $(function() {
-        let containerEl: JQuery = $('#calendar');
+        const containerEl: JQuery = $('#calendar');
         self.setCalender(containerEl);
-          //console.log(containerEl);
 
         containerEl.fullCalendar({
           schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
@@ -121,40 +135,36 @@ export class CalendarComponent implements OnInit {
           events: self.events,
           selectable: true,
           selectHelper: true,
-          select: function(start, end, jsEvent, view, resource) {
-            self.eventDate.year = start.year()
-            self.eventDate.month = start.month()+1
-            self.eventDate.day = start.date()
-            self.startTime.hour = start.hour()
-            self.startTime.minute = start.minute()
-            self.endTime.hour = end.hour()
-            self.endTime.minute = end.minute()
-            self.userService.getUser(resource.id).then(data => {
-              //self.eventEmployee = self.employees[0];
-              self.eventEmployee = data
-              //console.log(self.eventEmployee)   //this is maximum retardedness... it doesnt work when taking data from database, even though the ID is the same as if you use self.employees[0]
-              //console.log(self.employees[0])
-              self.open(self.content);
-            })
+          select: async (start, end, jsEvent, view, resource) => {
+            self.eventDate.year = start.year();
+            self.eventDate.month = start.month() + 1;
+            self.eventDate.day = start.date();
+            self.startTime.hour = start.hour();
+            self.startTime.minute = start.minute();
+            self.endTime.hour = end.hour();
+            self.endTime.minute = end.minute();
+            // TODO check what he want to do with user
+            const userEmp = await self.getUserById(resource.id);
+            self.open(self.content);
           },
           eventRender: function(event, element) {
-            element.find('.fc-title').append("<br/>" + event.description);
-            element.find(".fc-bg").css("pointer-events","none");
-            element.append("<div style='position:absolute;bottom:0px;right:0px' ><button type='button' id='btnDeleteEvent' class='btn btn-block btn-primary btn-flat'>X</button></div>" );
-            element.find("#btnDeleteEvent").click(function(){
-
-              //TODO: ajax call to remove event in DB
-
-              $('#calendar').fullCalendar('removeEvents',event._id);
+            element.find('.fc-title').append('<br/>' + event.description);
+            element.find('.fc-bg').css('pointer-events', 'none');
+            element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
+            '<button type=\'button\' id=\'btnDeleteEvent\' ' +
+            'class=\'btn btn-block btn-primary btn-flat\'>X</button></div>' );
+            element.find('#btnDeleteEvent').click(function() {
+              // TODO: ajax call to remove event in DB
+              $('#calendar').fullCalendar('removeEvents', event._id);
             });
           }
         });
       });
-      })
-  })
+      });
+  });
 
   }
-
+  
   createEvent(){
     var year: string = String(this.eventDate.year)
     var month: string = String(this.eventDate.month)
@@ -164,22 +174,22 @@ export class CalendarComponent implements OnInit {
     var endHour: string = String(this.endTime.hour)
     var endMinute: string = String(this.endTime.minute)
     if (month.length == 1){
-      month = "0" + month
+      month = '0' + month
     }
     if (day.length == 1){
-      day = "0" + day
+      day = '0' + day
     }
     if (startHour.length == 1){
-      startHour = "0" + startHour
+      startHour = '0' + startHour
     }
     if (startMinute.length == 1){
-      startMinute = "0" + startMinute
+      startMinute = '0' + startMinute
     }
     if (endHour.length == 1){
-      endHour = "0" + endHour
+      endHour = '0' + endHour
     }
     if (endMinute.length == 1){
-      endMinute = "0" + endMinute
+      endMinute = '0' + endMinute
     }
     var date = year+'-'+month+'-'+day+'T'
     var startTimeISO8601 = date+startHour+':'+startMinute+':00'

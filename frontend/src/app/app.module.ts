@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -29,7 +29,7 @@ import {HttpModule} from '@angular/http';
     HttpClientModule,
     HttpModule
   ],
-  providers: [UserService, TreatmentService, EventService],
+  providers: [UserService, TreatmentService, EventService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
