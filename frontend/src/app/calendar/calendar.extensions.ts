@@ -54,7 +54,7 @@ export class Extensions {
 
         getAvailableTimes(employeeId: string, eventsAll: any[]) {
             const events = [];
-            const amount = 5;
+            const amount = 10;
             const date = new Date();
 
             // tslint:disable-next-line:no-shadowed-variable

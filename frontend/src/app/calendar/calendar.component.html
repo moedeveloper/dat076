@@ -2,10 +2,10 @@
 <div class="container-fluid">
 
   <div class="row">
-    <!-- <div class="col-md-1"></div> -->
+     <div class="col-md-1"></div> 
 
 
-    <div class="col-md-9 card bg-light">
+    <div class="col-md-8 card bg-light">
 
       <div class="card-body">
         <div id='calendar' class="fc fc-bootstrap4 fc-ltr "></div>
@@ -16,7 +16,7 @@
 
     </div>
     <!--available times -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="card h-100 w-100 bg-light">
         <div class="card-head">
           <h5 class="card-title avalibleTimesHeader">Available times</h5>
@@ -28,9 +28,7 @@
         <div class="card-body">
           <div class="list-group">
             <button type="button" *ngFor="let time of availableTimes" (click)="setPickedTime(time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
-              <div>Start: {{formatTime(time[0]) | date:'MM/dd h:mm'}}</div>
-              <div>End: {{formatTime(time[1]) | date:'MM/dd h:mm' }}</div>
-               
+              <div>{{time[0] | date:'HH:mm'}}-{{time[1] | date:'HH:mm'}}, {{time[1] | date:'MM/dd'}}</div>
             </button>
           </div>
 
@@ -40,15 +38,12 @@
     </div>
     <!--end availableTimes-->
 
-   <!--  <div class="col-md-1"></div> -->
+   <div class="col-md-1"></div>
 
   </div>
   <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-8 text-right">
-
-      <button type="button" (click)="getAvailableTimes()" class="btn btn-primary btn ButtonStyle">Get Available Times</button>
-    </div>
+    <div class="col-md-8 text-right"></div>
     <div class="col-md-2"></div>
   </div>
 </div>
