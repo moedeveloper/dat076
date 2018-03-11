@@ -69,7 +69,7 @@ export class CalendarComponent implements OnInit {
         }
       }
       this.userService.getUsersByRole(this.empRoleId).then(data =>{
-        this.employees = data
+        this.employees = data.filter(d => d);
         for(var i = 0; i < this.employees.length; i++){
           if(this.employees[i] == null){
             this.employees.splice(i,1);
@@ -79,18 +79,20 @@ export class CalendarComponent implements OnInit {
         }
       })
       this.userService.getUsersByRole(this.custRoleId).then(data =>{
-        this.customers = data
+        this.customers = data.filter(d => d)
       })
       this.eventService.getUETs().then(data => {
         this.UETs = data
         console.log(this.UETs) //TODO: these are empty except the ID.. same with calendarEvents
         for (var i = 0; i < this.UETs.length; i++){
+          console.log(this.UETs[i].eventId);
           this.eventService.getEvent(this.UETs[i].eventId).then(data => {
+            console.log(data)
             var startTime = data.starttime
             var endTime = data.endtime
             this.treatmentService.getTreatment(this.UETs[i].treatmentId).then(data => {
               var treatmentName = data.name
-              this.events.push({title: 'From DB', description: treatmentName, resourceId: this.UETs[i].userId, start: startTime, end: endTime})
+              this.events.push({title: 'From DB', description: treatmentName, resourceId: this.UETs[i].employeeId, start: startTime, end: endTime})
             })
           })
         }
@@ -188,19 +190,29 @@ export class CalendarComponent implements OnInit {
       endMinute = "0" + endMinute
     }
     var date = year+'-'+month+'-'+day+'T'
+    console.log(date)
     var startTimeISO8601 = date+startHour+':'+startMinute+':00'
+    console.log(startTimeISO8601)
     var endTimeISO8601 = date+endHour+':'+endMinute+':00'
+    console.log(endTimeISO8601)
     $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
       resourceId: this.eventEmployee.id, start: startTimeISO8601,
       end: endTimeISO8601});
 
       //adds event to DB
       this.eventCalendar = new EventCalendar(null, startTimeISO8601, endTimeISO8601)
+      console.log('event calendar')
       console.log(this.eventCalendar)
       this.eventService.createEvent(this.eventCalendar).then(data => { //TODO: this fails.. the parameters are not registered correctly. same with calendarEvents
+        console.log('createEvent Promise:')
+        console.log(data);
         var evtId = data.id
         this.uet = new UET(null, this.eventEmployee.id, evtId, this.eventTreatment.id, this.eventCustomer.id)
-        this.eventService.createUET(this.uet)
+        console.log('This UET')
+        console.log(this.uet);
+        this.eventService.createUET(this.uet).then(d => {
+          console.log(d)
+        })
       })
   }
 

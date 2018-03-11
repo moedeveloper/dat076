@@ -4,6 +4,10 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
 import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
+<<<<<<< Updated upstream
+=======
+//import { Events } from '../utils/events';
+>>>>>>> Stashed changes
 
 import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
@@ -35,6 +39,13 @@ export class AdminComponent implements OnInit {
 
   newUser = new User(null, "", "", "", "");
   newTreatment = new Treatment(null, "", "", 0);
+<<<<<<< Updated upstream
+=======
+  //newEvent = new Events(null, "", "", "", "", null, null, null);
+
+  //dummy data
+  //customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
+>>>>>>> Stashed changes
 
   testUser = {
     firstname: "Krille",
