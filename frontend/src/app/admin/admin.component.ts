@@ -5,6 +5,7 @@ import {User} from '../utils/user';
 import {Role} from '../utils/role';
 import {Treatment} from '../utils/treatment';
 import { Events } from '../utils/events';
+import {EventCalendar, EventEntities} from '../entities/event';
 
 import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
@@ -22,7 +23,7 @@ export class AdminComponent implements OnInit {
   selectedEmployee : User;
   selectedCustomer : User;
   selectedTreatment : Treatment;
-  selectedEvent : Event;
+  selectedEvent : EventEntities;
 
   admRoleId: string;
   custRoleId: string;
@@ -30,16 +31,16 @@ export class AdminComponent implements OnInit {
   employees : User[];
   customers : User[];
   treatments : Treatment[];
-  events : Event[];
+  events : EventEntities[];
 
   closeResult: string;
 
   newUser = new User(null, "", "", "", "");
   newTreatment = new Treatment(null, "", "", 0);
   newEvent = new Events(null, "", "", "", "", null, null, null);
-
-  //dummy data
-  //customers = ["Mo", "David", "Simon", "Carl", "Joachim"];
+  startTime = {hour: 13, minute: 0o00};
+  endTime = {hour: 14, minute: 0o00};
+  eventDate = {year: 2018, month: 3, day: 13};
 
   testUser = {
     firstname: "Krille",
@@ -85,7 +86,12 @@ export class AdminComponent implements OnInit {
 
       this.treatmentService.getTreatments().then(data => {
         this.treatments = data;
-        this.selectedTreatment = this.treatments[1];
+        this.selectedTreatment = this.treatments[0];
+      });
+
+      this.eventService.getUetEvents().then(data => {
+        this.events = data;
+        this.selectedEvent = this.events[0];
       });
 
   }
@@ -108,7 +114,7 @@ export class AdminComponent implements OnInit {
     //add this newUser to db
     this.userService.createUser(this.newUser).then(a => {
       this.userService.getUsersByRole(this.custRoleId).then(data => {
-        this.customers = data
+        this.customers = data;
         this.selectedCustomer = this.customers[0];
       });
     });
@@ -163,7 +169,7 @@ export class AdminComponent implements OnInit {
     });
   };
 
-  
+
 
   updateTreatment(list, treatment){
     treatment.name = (<HTMLInputElement>document.getElementById('treatmentName')).value;
@@ -208,6 +214,22 @@ export class AdminComponent implements OnInit {
        }
        case "event": {
         this.selectedEvent = clickedItem;
+        let event = clickedItem.event;
+
+        let startTime = new Date(event.startTime);
+        let endTime = new Date(event.endTime);
+
+
+        this.startTime.hour, this.startTime.minute = startTime.getHours(), startTime.getMinutes();
+        this.endTime.hour, this.endTime.minute = endTime.getHours(), endTime.getMinutes();
+        this.eventDate = {year: startTime.getFullYear(), month: startTime.getMonth(),day: startTime.getDate()};
+
+
+        console.log(startTime.getFullYear())
+        console.log(this.startTime)
+        console.log(this.eventDate)
+        //  eventDate = {year: 2018, month: 3, day: 4};
+        console.log(event.starttime)
         break;
        }
        default:

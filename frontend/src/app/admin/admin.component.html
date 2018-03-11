@@ -182,48 +182,35 @@
                 <div class="col-md-4">
                   <div class="list-group">
                     <button type="button" *ngFor="let event of events" (click)="onSelect(event, 'event')" [ngClass]="{'active': selectedEvent == event }" class="list-group-item list-group-item-action">
-                      {{ event.customer }}
-                      {{ event.treatment }}
-                      {{ event.employee }}
+                      {{event.event.id}}
                     </button>
                   </div>
                 </div>
                 <div class="col-md-8">
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Title</span>
-                    </div>
-                    <input type="text" [value]="selectedEvent.title" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                  </div>
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text inputtext" id="inputGroup-sizing-default">Customer</span>
-                    </div>
-                    <input type="text" [value]="selectedEvent.customer" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                  </div>
+
                   <div class="row" style="padding-bottom: 20px">
                     <div class="col-md-6">
                       <label for="employees">Select Employee</label>
-                      <select class="form-control" id="employee" [(ngModel)]="eventEmployee" required>
-                        <option *ngFor="let employee of employees" [value]=employee>{{ employee.firstname }} {{ employee.lastname }}</option>
+                      <select class="form-control" id="employee" [(ngModel)]="selectedEvent.employee" required>
+                        <option *ngFor="let employee of employees" [value]=employee>{{ employee?.firstname }} {{ employee?.lastname }}</option>
+                      </select>
+                      <label for="treatment">Select Treatment</label>
+                      <select class="form-control" id="treatment" name="treatment" [(ngModel)]="selectedEvent.treatment" #treatment="ngModel" required>
+                        <option *ngFor="let treatment of treatments" [value]=treatment>{{treatment?.name}}</option>
+                      </select>
+                      <label for="customer">Select Customer</label>
+                      <select class="form-control" id="customer" name="customer" [(ngModel)]="selectedEvent.customer" #customer="ngModel" required>
+                        <option *ngFor="let customer of customers" [value]=customer>{{ customer?.firstname }} {{ customer?.lastname }}</option>
                       </select>
                     </div>
                     <div class="col-md-6">
-                      <label for="treatment">Select Treatment</label>
-                      <select class="form-control" id="treatment" name="treatment" [(ngModel)]="eventTreatment" #treatment="ngModel" required>
-                        <option *ngFor="let treatment of treatments" [value]=treatment>{{treatment?.name}}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="row text-center">
-                    <div class="col-md-6 text-left">
+                      <label >Select Date</label>
 
                       <form class="form-inline">
                         <div class="form-group">
                           <div class="input-group">
-                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="selectedEvent.eventDate" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="eventDate" ngbDatepicker #d="ngbDatepicker">
                               <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                           <!--  <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
                           </button>
@@ -231,17 +218,20 @@
                           </div>
                         </div>
                       </form>
-                    </div>
 
-                    <div class="col-md-3 text-left">
-                      <h6>Starting time</h6>
-                      <ngb-timepicker [(ngModel)]="selectedEvent.startTime"></ngb-timepicker>
-                    </div>
-                    <div class="col-md-3 text-left">
-                      <h6>Ending time</h6>
-                      <ngb-timepicker [(ngModel)]="selectedEvent.endTime"></ngb-timepicker>
+                      <div class="row text-center">
+                        <div class="col-md-6 text-left">
+                          <h6>Starting time</h6>
+                          <ngb-timepicker [(ngModel)]="startTime"></ngb-timepicker>
+                        </div>
+                        <div class="col-md-6 text-left">
+                          <h6>Ending time</h6>
+                          <ngb-timepicker [(ngModel)]="endTime"></ngb-timepicker>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
 
                   <hr/>
 
@@ -310,7 +300,6 @@
     </button>
   </div>
   <div class="modal-body">
-
     <div class="input-group input-group-sm mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text inputtext" id="inputGroup-sizing-default">First Name</span>
