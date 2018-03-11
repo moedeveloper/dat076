@@ -115,7 +115,7 @@ export class AdminComponent implements OnInit {
     this.userService.createUser(this.newUser).then(a => {
       this.userService.getUsersByRole(this.custRoleId).then(data => {
         this.customers = data;
-        this.selectedCustomer = this.customers[0];
+        this.selectedCustomer = this.customers[this.customers.length];
       });
     });
   };
