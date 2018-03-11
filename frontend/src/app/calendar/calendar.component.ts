@@ -55,7 +55,13 @@ export class CalendarComponent implements OnInit {
   availableTimes;
 
   constructor(private modalService: NgbModal, private userService: UserService,
-     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {}
+     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {
+      var today = new Date();
+      this.eventDate.day = today.getDate();
+      this.eventDate.month = today.getMonth()+1; //January is 0!
+      this.eventDate.year = today.getFullYear();
+  }
+
   async ngOnInit() {
 
     const roles = await this.extenstion.service_getRoles();
