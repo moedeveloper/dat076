@@ -5,7 +5,6 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../utils/user';
 import {Role} from '../utils/role';
 import {EventCalendar} from '../utils/event';
-import {UET} from '../utils/userEventTreatment';
 import {Treatment} from '../utils/treatment';
 import * as $ from 'jquery';
 import 'fullcalendar';
@@ -18,6 +17,8 @@ import { EventService } from '../utils/event.service';
 import {Roles} from '../entities/roles';
 import { EventEntities } from '../entities/event';
 import { Extensions } from './calendar.extensions';
+import { EventDate, Moment, TimeSlot } from './timeSlot';
+import { UET } from '../entities/userEventTreatment';
 
 @Component({
   selector: 'app-calendar',
@@ -40,23 +41,21 @@ export class CalendarComponent implements OnInit {
   eventCalendar: EventCalendar;
   uet: UET;
   calendar;
+  cadmRoleId: string;
+  custRoleId: string;
+  empRoleId: string;
+  employees: User[];
+  customers: User[];
+  treatments: Treatment[];
+  events = [];
+  UETs: UET[];
+  calendarResources = [];
+  availablEmployee: User;
+  pickedTime;
+  availableTimes;
+
   constructor(private modalService: NgbModal, private userService: UserService,
      private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {}
-
-    cadmRoleId: string;
-    custRoleId: string;
-    empRoleId: string;
-    employees: User[];
-    customers: User[];
-    treatments: Treatment[];
-    events = [];
-    UETs: UET[];
-    calendarResources = [];
-    availablEmployee: User;
-    pickedTime;
-    availableTimes;
-
-
   async ngOnInit() {
 
     const roles = await this.extenstion.service_getRoles();
@@ -115,8 +114,8 @@ export class CalendarComponent implements OnInit {
             self.startTime.minute = start.minute();
             self.endTime.hour = end.hour();
             self.endTime.minute = end.minute();
-            // TODO check what he want to do with user
-            //const userEmp = await self.getUserById(resource.id);
+            const userEmp = await self.extenstion.getUserById(resource.id);
+            self.eventEmployee = userEmp;
             self.open(self.content);
           },
           eventRender: function(event, element) {
@@ -134,97 +133,26 @@ export class CalendarComponent implements OnInit {
       });
       });
   });
-
-  }
-  
-  createEvent(){
-    var year: string = String(this.eventDate.year)
-    var month: string = String(this.eventDate.month)
-    var day: string = String(this.eventDate.day)
-    var startHour: string = String(this.startTime.hour)
-    var startMinute: string = String(this.startTime.minute)
-    var endHour: string = String(this.endTime.hour)
-    var endMinute: string = String(this.endTime.minute)
-    if (month.length == 1){
-      month = '0' + month
-    }
-    if (day.length == 1){
-      day = '0' + day
-    }
-    if (startHour.length == 1){
-      startHour = '0' + startHour
-    }
-    if (startMinute.length == 1){
-      startMinute = '0' + startMinute
-    }
-    if (endHour.length == 1){
-      endHour = '0' + endHour
-    }
-    if (endMinute.length == 1){
-      endMinute = '0' + endMinute
-    }
-    var date = year+'-'+month+'-'+day+'T'
-    var startTimeISO8601 = date + startHour +':'+ startMinute +':00'
-    var endTimeISO8601 = date+endHour+':'+endMinute+':00'
-    $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
-      resourceId: this.eventEmployee.id, start: startTimeISO8601,
-      end: endTimeISO8601});
-
-      //adds event to DB
-      this.eventCalendar = new EventCalendar(null, startTimeISO8601, endTimeISO8601)
-      console.log(this.eventCalendar)
-      this.eventService.createEvent(this.eventCalendar).then(data => { //TODO: this fails.. the parameters are not registered correctly. same with calendarEvents
-        var evtId = data.id
-        this.uet = new UET(null, this.eventEmployee.id, evtId, this.eventTreatment.id, this.eventCustomer.id)
-        this.eventService.createUET(this.uet)
-      })
   }
 
-  getAvailableTimes(employeeID){
-    console.log(employeeID)
-    var eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt){
-      return evt;
-    });
-    var empId = employeeID;
-    //var empId = this.employees[0].id // To David: when implementing the gui of this later on, pass empId as a method parameter
-    var events = []
-    for (var i = 0; i < eventsAll.length; i++){
-      if (eventsAll[i].resourceId == empId){
-        events.push(eventsAll[i])
-      }
-    }
-    var d = new Date()
-    d.setHours(d.getHours()+1)
-    var amount = 5
-    var availableTimes = []
-    while (availableTimes.length < amount){
-      var available: boolean = true
-      if (d.getHours() > 19 || d.getHours() < 8){ // If salon is closed
-        available = false
-      } else {
-        for (var i = 0; i < events.length; i++){ // If part of the next hour is occupied by another event
-          if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
-            available = false
-          }
-        }
-      }
-      if (available == true){
-        var start = new Date(d.getTime())
-        var end = new Date(d.getTime())
-        start.setMinutes(0)
-        end.setMinutes(0)
-        start.setSeconds(0)
-        end.setSeconds(0)
-        end.setHours(end.getHours() + 1)
-        availableTimes.push([start, end])
-      }
-      d.setHours(d.getHours()+1)
-    }
-    console.log(availableTimes)
-    return availableTimes
+  async createEvent() {
+    const _eventDate = new EventDate(this.eventDate.year, this.eventDate.month, this.eventDate.day);
+    const _startMoment = new Moment(this.startTime.hour, this.startTime.minute);
+    const _endMoment = new Moment(this.endTime.hour, this.endTime.minute);
+
+    const timeSlot = new TimeSlot(_startMoment, _endMoment, _eventDate);
+    const startTimeISO8601 = timeSlot.getStartTimeISO8601();
+    const endTimeISO8601 = timeSlot.getEndTimeISO8601();
+
+    $('#calendar').fullCalendar('renderEvent', {title: '', description: this.eventTreatment.name,
+      resourceId: this.eventEmployee.id, start: startTimeISO8601, end: endTimeISO8601});
+
+      this.uet = new UET(this.eventEmployee.id, this.eventTreatment.id, this.eventCustomer.id, startTimeISO8601, endTimeISO8601);
+      // add new uet event to db
+      const newUet = this.eventService.createUET(this.uet);
   }
 
-  setCalender(calendar){
+  setCalender(calendar) {
     this.calendar = calendar;
   }
 

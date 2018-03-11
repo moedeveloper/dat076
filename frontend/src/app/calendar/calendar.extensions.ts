@@ -28,6 +28,7 @@ export class Extensions {
         }
 
         initEvents(evts: EventEntities[]) {
+            const events = [];
             evts.forEach((e) => {
                 this.events.push({title: 'From DB', description: e.treatment.name,
                 resourceId: e.employee.id, start: e.event.starttime, end: e.event.endtime});
@@ -49,4 +50,48 @@ export class Extensions {
         async getUserById(id: string) {
             return await this.userService.getUser(id);
         }
+
+        getAvailableTimes(employeeID: string) {
+            const events = [];
+
+            const eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt){
+              return evt;
+            });
+
+            
+            for (var i = 0; i < eventsAll.length; i++){
+              if (eventsAll[i].resourceId == empId){
+                events.push(eventsAll[i])
+              }
+            }
+            var d = new Date()
+            d.setHours(d.getHours()+1)
+            var amount = 5
+            var availableTimes = []
+            while (availableTimes.length < amount){
+              var available: boolean = true
+              if (d.getHours() > 19 || d.getHours() < 8){ // If salon is closed
+                available = false
+              } else {
+                for (var i = 0; i < events.length; i++){ // If part of the next hour is occupied by another event
+                  if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
+                    available = false
+                  }
+                }
+              }
+              if (available == true){
+                var start = new Date(d.getTime())
+                var end = new Date(d.getTime())
+                start.setMinutes(0)
+                end.setMinutes(0)
+                start.setSeconds(0)
+                end.setSeconds(0)
+                end.setHours(end.getHours() + 1)
+                availableTimes.push([start, end])
+              }
+              d.setHours(d.getHours()+1)
+            }
+            console.log(availableTimes)
+            return availableTimes
+          }
 }

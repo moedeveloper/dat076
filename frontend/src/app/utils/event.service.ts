@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { resolve } from 'q';
-import { UET } from './userEventTreatment';
+import { UET } from '../entities/userEventTreatment';
 import { EventCalendar } from './event';
 import { EventEntities } from '../entities/event';
 
@@ -93,17 +93,14 @@ export class EventService {
   	});
   }
 
-  createUET(uet){
-
-    let headers = new Headers();
-  	headers.append('Content-Type', 'application/json');
-
-    return new Promise<UET>( resolve => {
-    	this.http.post(this.url + '/uet/', JSON.stringify(uet), {headers: headers})
-      .map(res => res.json())
-    	.subscribe(data => {
-    		resolve(data.uetApi);
-    	});
+  createUET(uet) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return new Promise<UET>( resolv => {
+      this.http.post(this.url + '/uet/', JSON.stringify(uet), {headers: headers})
+      .map(res => res.json()).subscribe(data => {
+        resolv(data.uetApi);
+      });
     });
   }
 
