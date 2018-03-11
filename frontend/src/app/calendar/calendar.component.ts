@@ -56,9 +56,9 @@ export class CalendarComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private userService: UserService,
      private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {
-      var today = new Date();
+      const today = new Date();
       this.eventDate.day = today.getDate();
-      this.eventDate.month = today.getMonth()+1; //January is 0!
+      this.eventDate.month = today.getMonth() + 1 ; // January is 0!
       this.eventDate.year = today.getFullYear();
   }
 
@@ -74,8 +74,12 @@ export class CalendarComponent implements OnInit {
     this.empRoleId = employee.id;
 
     this.treatments = await this.treatmentService.getTreatments();
-    this.employees = await this.extenstion.getUsers(employee.id);
-    this.customers = await this.extenstion.getUsers(customer.id);
+    if (employee.id !== undefined) {
+      this.employees = await this.extenstion.getUsers(employee.id);
+    }
+    if (customer.id !== undefined) {
+      this.customers = await this.extenstion.getUsers(customer.id);
+    }
     const uetEvents = await this.extenstion.getuetEvents();
   // let events = [
   //   {
@@ -131,13 +135,13 @@ export class CalendarComponent implements OnInit {
           self.eventEmployee = await self.extenstion.getUserById(resource.id);
           self.open(self.content, null);
         },
-        eventRender: function(event, element, view) {
-          element.find('.fc-title').append('<br/>' + event.description);
-          element.find('.fc-bg').css('pointer-events', 'none');
-          element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
+        eventRender: function(event, el, view) {
+          el.find('.fc-title').append('<br/>' + event.description);
+          el.find('.fc-bg').css('pointer-events', 'none');
+          el.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
           '<button type=\'button\' id=\'btnDeleteEvent\' ' +
           'class=\'btn btn-block btn-primary btn-flat\'>X</button></div>' );
-          element.find('#btnDeleteEvent').click(function() {
+          el.find('#btnDeleteEvent').click(function() {
             $('#calendar').fullCalendar('removeEvents', event._id);
             self.deleteEvent(event.id);
           });
@@ -189,15 +193,15 @@ export class CalendarComponent implements OnInit {
     this.pickedTime = time;
     const startT = new Date(time[0]);
     const endT = new Date(time[1]);
- 
+
     this.startTime.hour = startT.getHours();
     this.endTime.hour = endT.getHours();
     this.eventDate.month = startT.getMonth() + 1;
     this.eventDate.day = startT.getDate();
   }
- 
+
  open(content, time) {
-   if(time !== null){
+   if (time !== null) {
     this.setPickedTime(time);
     this.eventEmployee = this.availablEmployee;
    }
