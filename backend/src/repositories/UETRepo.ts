@@ -118,10 +118,10 @@ export class UETRepository {
         return this.entityManager.getRepository(UET).save(uet)
     }
  
-    removeUet(uetId: string){
-        this.getUETById(uetId).then((data)=>{
-            this.eventRepo.removeevent(data.eventId)
-        }).catch(error => console.log("error while removing event:" + error))
+    async removeUet(uetId: string){
+
+        const uet = await this.getUETById(uetId)
+        await this.eventRepo.removeevent(uet.eventId)
         return this.entityManager.getRepository(UET).removeById(uetId)
     }
 
