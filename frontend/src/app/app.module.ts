@@ -13,6 +13,7 @@ import { EventService } from './utils/event.service';
 
 import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from '@angular/http';
+import { Extensions } from './calendar/calendar.extensions';
 
 
 @NgModule({
@@ -29,7 +30,7 @@ import {HttpModule} from '@angular/http';
     HttpClientModule,
     HttpModule
   ],
-  providers: [UserService, TreatmentService, EventService ],
+  providers: [UserService, TreatmentService, EventService, Extensions ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

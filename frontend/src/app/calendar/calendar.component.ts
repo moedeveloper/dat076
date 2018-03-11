@@ -17,6 +17,7 @@ import { TreatmentService } from '../utils/treatment.service';
 import { EventService } from '../utils/event.service';
 import {Roles} from '../entities/roles';
 import { EventEntities } from '../entities/event';
+import { Extensions } from './calendar.extensions';
 
 @Component({
   selector: 'app-calendar',
@@ -40,69 +41,40 @@ export class CalendarComponent implements OnInit {
   uet: UET;
   calendar;
   constructor(private modalService: NgbModal, private userService: UserService,
-     private treatmentService: TreatmentService, private eventService: EventService) {}
+     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {}
 
-  employees: User[];
-  customers: User[];
-  treatments: Treatment[];
-  events = [];
-  UETs: UET[];
-  calendarResources = [];
-  availablEmployee: User;
-  pickedTime;
-  availableTimes;
+    cadmRoleId: string;
+    custRoleId: string;
+    empRoleId: string;
+    employees: User[];
+    customers: User[];
+    treatments: Treatment[];
+    events = [];
+    UETs: UET[];
+    calendarResources = [];
+    availablEmployee: User;
+    pickedTime;
+    availableTimes;
 
-  async service_getRoles() {
-    return await this.userService.getRoles();
-  }
 
-  async getUsers(id: string) {
-    return await this.userService.getUsersByRole(id);
-  }
-
-  initEmployees(users: User[]) {
-    users.forEach((u) => {
-      this.calendarResources.push({id: u.id, title: u.firstname});
-    });
-  }
-
-  initEvents(evts: EventEntities[]) {
-    evts.forEach((e) => {
-      this.events.push({title: 'From DB', description: e.treatment.name,
-       resourceId: e.employee.id, start: e.event.starttime, end: e.event.endtime});
-    });
-  }
-
-  async getUets() {
-    return await this.eventService.getUETs();
-  }
-
-  async getuetEvents() {
-    return await this.eventService.getUetEvents();
-  }
-  async getTreatments() {
-    return await this.treatmentService.getTreatments();
-  }
-
-  async getUserById(id: string) {
-    return await this.userService.getUser(id);
-  }
   async ngOnInit() {
 
-    const roles = await this.service_getRoles();
+    const roles = await this.extenstion.service_getRoles();
     // 1. Resolve entities
     const customer = roles.find( x => x.role === Roles.customer.toString());
     const employee = roles.find( x => x.role === Roles.employee.toString());
     const admin = roles.find( x => x.role === Roles.admin.toString());
+    this.custRoleId = customer.id;
+    this.cadmRoleId = admin.id;
+    this.empRoleId = employee.id;
 
-    const employees = await this.getUsers(employee.id);
-    const customers = await this.getUsers(customer.id);
-    const uetEvents = await this.getuetEvents();
+    this.employees = await this.extenstion.getUsers(employee.id);
+    this.customers = await this.extenstion.getUsers(customer.id);
+    const uetEvents = await this.extenstion.getuetEvents();
 
     // 2. init calendar
-    this.initEmployees(employees);
-    this.initEvents(uetEvents);
-
+    this.calendarResources = this.extenstion.initEmployees(this.employees);
+    this.events = this.extenstion.initEvents(uetEvents);
 
     this.userService.getRoles().then(data => {
 
@@ -144,7 +116,7 @@ export class CalendarComponent implements OnInit {
             self.endTime.hour = end.hour();
             self.endTime.minute = end.minute();
             // TODO check what he want to do with user
-            const userEmp = await self.getUserById(resource.id);
+            //const userEmp = await self.getUserById(resource.id);
             self.open(self.content);
           },
           eventRender: function(event, element) {
@@ -192,7 +164,7 @@ export class CalendarComponent implements OnInit {
       endMinute = '0' + endMinute
     }
     var date = year+'-'+month+'-'+day+'T'
-    var startTimeISO8601 = date+startHour+':'+startMinute+':00'
+    var startTimeISO8601 = date + startHour +':'+ startMinute +':00'
     var endTimeISO8601 = date+endHour+':'+endMinute+':00'
     $('#calendar').fullCalendar('renderEvent', {title: this.eventTitle, description: this.eventTreatment.name,
       resourceId: this.eventEmployee.id, start: startTimeISO8601,
