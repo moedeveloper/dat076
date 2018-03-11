@@ -178,16 +178,28 @@ export class CalendarComponent implements OnInit {
     });
     this.availableTimes = this.extenstion.getAvailableTimes(this.availablEmployee.id, eventsAll);
   }
+
   setPickedTime(time) {
     this.pickedTime = time;
+    const startT = new Date(time[0]);
+    const endT = new Date(time[1]);
+ 
+    this.startTime.hour = startT.getHours();
+    this.endTime.hour = endT.getHours();
+    this.eventDate.month = startT.getMonth() + 1;
+    this.eventDate.day = startT.getDate();
   }
-
- open(content) {
+ 
+ open(content, time) {
+   if(time !== null){
+    this.setPickedTime(time);
+    this.eventEmployee = this.availablEmployee;
+   }
    this.modalService.open(content).result.then((result) => {
-     this.closeResult = `Closed with: ${result}`;
-   }, (reason) => {
-     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-   });
+    this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
  }
 
   private getDismissReason(reason: any): string {
