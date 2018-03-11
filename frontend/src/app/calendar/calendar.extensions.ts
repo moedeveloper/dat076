@@ -2,7 +2,7 @@ import { UserService } from '../utils/user.service';
 import { TreatmentService } from '../utils/treatment.service';
 import { EventService } from '../utils/event.service';
 import { User } from '../entities/user';
-import { EventEntities } from '../entities/event';
+import { EventEntities, EventCalendarAttributes } from '../entities/event';
 import { Injectable } from '@angular/core';
 import { UET } from '../entities/userEventTreatment';
 
@@ -31,8 +31,15 @@ export class Extensions {
         initEvents(evts: EventEntities[]) {
             const events = [];
             evts.forEach((e) => {
-                this.events.push({title: 'From DB', description: e.treatment.name,
-                resourceId: e.employee.id, start: e.event.starttime, end: e.event.endtime});
+                this.events.push({
+                    id: e.event.id,
+                    title: e.customer.firstname,
+                    description: e.treatment.name,
+                    resourceId: e.employee.id,
+                    start: e.event.starttime,
+                    end: e.event.endtime,
+                    allDay: false,
+                });
             });
             return this.events;
         }
@@ -54,7 +61,7 @@ export class Extensions {
 
         getAvailableTimes(employeeId: string, eventsAll: any[]) {
             const events = [];
-            const amount = 10;
+            const amount = 5;
             const date = new Date();
 
             // tslint:disable-next-line:no-shadowed-variable

@@ -1,4 +1,5 @@
 export class UET {
+  public id: string;
 
   constructor(
     public employeeId: string,
@@ -6,5 +7,5 @@ export class UET {
     public customerId: string,
     public starttime: string,
     public endtime: string
-  ) { }
+  ) {}
 }

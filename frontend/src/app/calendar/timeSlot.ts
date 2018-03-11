@@ -45,11 +45,11 @@ export class TimeSlot {
     }
 
     getStartTimeISO8601() {
-        return this.getDate() + this._startHour + ':' + this._startMinute + ':00Z';
+        return this.getDate() + this._startHour + ':' + this._startMinute + ':00';
     }
 
     getEndTimeISO8601() {
-        return this.getDate() + this._endHour + ':' + this._endMinute + ':00Z';
+        return this.getDate() + this._endHour + ':' + this._endMinute + ':00';
     }
 }
 

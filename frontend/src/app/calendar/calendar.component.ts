@@ -19,6 +19,7 @@ import { EventEntities } from '../entities/event';
 import { Extensions } from './calendar.extensions';
 import { EventDate, Moment, TimeSlot } from './timeSlot';
 import { UET } from '../entities/userEventTreatment';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-calendar',
@@ -47,7 +48,6 @@ export class CalendarComponent implements OnInit {
   employees: User[];
   customers: User[];
   treatments: Treatment[];
-  events = [];
   UETs: UET[];
   calendarResources = [];
   availablEmployee: User;
@@ -55,13 +55,7 @@ export class CalendarComponent implements OnInit {
   availableTimes;
 
   constructor(private modalService: NgbModal, private userService: UserService,
-     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {
-      
-      var today = new Date();
-      this.eventDate.day = today.getDate();
-      this.eventDate.month = today.getMonth()+1; //January is 0!
-      this.eventDate.year = today.getFullYear();
-     }
+     private treatmentService: TreatmentService, private eventService: EventService, private extenstion: Extensions) {}
   async ngOnInit() {
 
     const roles = await this.extenstion.service_getRoles();
@@ -73,27 +67,34 @@ export class CalendarComponent implements OnInit {
     this.cadmRoleId = admin.id;
     this.empRoleId = employee.id;
 
+    this.treatments = await this.treatmentService.getTreatments();
     this.employees = await this.extenstion.getUsers(employee.id);
     this.customers = await this.extenstion.getUsers(customer.id);
     const uetEvents = await this.extenstion.getuetEvents();
+  // let events = [
+  //   {
+  //     id: '195471ca-2c96-42e7-84b3-2265db3a17e2',
+  //     title: 'Sara',
+  //     description: 'description',
+  //     resourceId: 'd4a2f9e0-46f7-4317-93ef-2e848106ae6b',
+  //     start: '2018-03-11T11:00:00Z',
+  //     end: '2018-03-11T14:00:00Z',
+  //     allDay: false
+  //   }
+  // ];
 
     // 2. init calendar
     this.calendarResources = this.extenstion.initEmployees(this.employees);
-    console.log(uetEvents)
-    this.events = this.extenstion.initEvents(uetEvents); 
-    console.log(this.events)
+    const arrayOfEvents = this.extenstion.initEvents(uetEvents);
 
-    this.treatmentService.getTreatments().then(resData => {
-      this.treatments = resData;
-      const self = this;
-      $(function() {
+    const self = this;
+    $(async function() {
       const containerEl: JQuery = $('#calendar');
       self.setCalender(containerEl);
-
       containerEl.fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        // options here
         locale: 'sv',
+        eventLimit: false,
         timezone: 'local',
         firstDay: 1,
         editable: false, // enable draggable events
@@ -105,11 +106,12 @@ export class CalendarComponent implements OnInit {
           center: 'title',
           right: 'agendaDay,agendaWeek,month'
         },
-        allDaySlot: false,
         defaultView: 'agendaDay',
         resourceLabelText: 'Employees',
         resources: self.calendarResources,
-        events: self.events,
+        allDayDefault: false,
+        allDaySlot: true,
+        events: arrayOfEvents,
         selectable: true,
         selectHelper: true,
         select: async (start, end, jsEvent, view, resource) => {
@@ -120,28 +122,27 @@ export class CalendarComponent implements OnInit {
           self.startTime.minute = start.minute();
           self.endTime.hour = end.hour();
           self.endTime.minute = end.minute();
-          const userEmp = await self.extenstion.getUserById(resource.id);
-          self.eventEmployee = userEmp;
-          self.open(self.content, null);
+          self.eventEmployee = await self.extenstion.getUserById(resource.id);
+          self.open(self.content);
         },
-        eventRender: function(event, element) {
-          console.log('event')
-          console.log(event)
+        eventRender: function(event, element, view) {
           element.find('.fc-title').append('<br/>' + event.description);
           element.find('.fc-bg').css('pointer-events', 'none');
           element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
           '<button type=\'button\' id=\'btnDeleteEvent\' ' +
           'class=\'btn btn-block btn-primary btn-flat\'>X</button></div>' );
           element.find('#btnDeleteEvent').click(function() {
-            // TODO: ajax call to remove event in DB
             $('#calendar').fullCalendar('removeEvents', event._id);
+            self.deleteEvent(event.id);
           });
-        }
+        },
       });
-    });
     });
   }
 
+  async deleteEvent(id) {
+    await this.eventService.deleteUET(id);
+  }
   async createEvent() {
     const _eventDate = new EventDate(this.eventDate.year, this.eventDate.month, this.eventDate.day);
     const _startMoment = new Moment(this.startTime.hour, this.startTime.minute);
@@ -150,13 +151,17 @@ export class CalendarComponent implements OnInit {
     const timeSlot = new TimeSlot(_startMoment, _endMoment, _eventDate);
     const startTimeISO8601 = timeSlot.getStartTimeISO8601();
     const endTimeISO8601 = timeSlot.getEndTimeISO8601();
-
-    $('#calendar').fullCalendar('renderEvent', {title: '', description: this.eventTreatment.name,
-      resourceId: this.eventEmployee.id, start: startTimeISO8601, end: endTimeISO8601});
-
-      this.uet = new UET(this.eventEmployee.id, this.eventTreatment.id, this.eventCustomer.id, startTimeISO8601, endTimeISO8601);
-      // add new uet event to db
-      const newUet = this.eventService.createUET(this.uet);
+    this.uet = new UET(this.eventEmployee.id, this.eventTreatment.id, this.eventCustomer.id, startTimeISO8601, endTimeISO8601);
+    // add new uet event to db
+    const newUet = await this.eventService.createUET(this.uet);
+    $('#calendar').fullCalendar('renderEvent', {
+      id: newUet.id,
+      title: this.eventCustomer.firstname + ' ' + this.eventCustomer.lastname,
+      description: this.eventTreatment.name,
+      resourceId: this.eventEmployee.id,
+      start: startTimeISO8601,
+      end: endTimeISO8601
+    }, true);
   }
 
   setCalender(calendar) {
@@ -175,26 +180,14 @@ export class CalendarComponent implements OnInit {
   }
   setPickedTime(time) {
     this.pickedTime = time;
-    const startT = new Date(time[0]);
-    const endT = new Date(time[1]);
-
-    this.startTime.hour = startT.getHours();
-    this.endTime.hour = endT.getHours();
-    this.eventDate.month = startT.getMonth() + 1;
-    this.eventDate.day = startT.getDate();
   }
 
- open(content, time) {
-   if(time !== null){
-    this.setPickedTime(time);
-    this.eventEmployee = this.availablEmployee;
-   }
+ open(content) {
    this.modalService.open(content).result.then((result) => {
-    this.closeResult = `Closed with: ${result}`;
-  }, (reason) => {
-    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  });
-   
+     this.closeResult = `Closed with: ${result}`;
+   }, (reason) => {
+     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+   });
  }
 
   private getDismissReason(reason: any): string {

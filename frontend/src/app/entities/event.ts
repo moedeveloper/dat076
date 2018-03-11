@@ -14,3 +14,12 @@ export class EventEntities {
     treatment: Treatment;
     event: EventCalendar;
 }
+
+export class EventCalendarAttributes {
+    public id: string;
+    public title: string;
+    public description: string;
+    public resourceId: string;
+    public start: any;
+    public end: any;
+}

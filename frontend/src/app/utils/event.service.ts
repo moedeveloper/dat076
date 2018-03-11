@@ -22,64 +22,61 @@ export class EventService {
   }
 
   getEvents() {
-    return new Promise<EventCalendar[]>(resolve => {
-  		this.http.get(this.url + "/eventcalendars")
-  		.map(res => res.json())
-  		.subscribe(data => {
-  			resolve(data.evtsApi);
-  		});
-	  });
-  }
-
-  getEvent(id){
-    return new Promise<EventCalendar>(resolve => {
-  		this.http.get(this.url + '/eventcalendar/' + id)
+    return new Promise<EventCalendar[]>(resolv => {
+      this.http.get(this.url + '/eventcalendars')
       .map(res => res.json())
-  		.subscribe(data => {
-			  resolve(data.evtApi);
-  		});
-  	});
-  }
-
-  createEvent(event){
-
-    let headers = new Headers();
-  	headers.append('Content-Type', 'application/json');
-
-    return new Promise<EventCalendar>( resolve => {
-    	this.http.post(this.url + '/eventcalendar/', JSON.stringify(event), {headers: headers})
-      .map(res => res.json())
-    	.subscribe(data => {
-    		resolve(data.evtApi);
-    	});
-    });
-  }
-
-  deleteEvent(id){
-
-    this.http.delete(this.url + '/eventcalendar/' + id).subscribe(res => {
-  		console.log(res);
-  	});
-  };
-
-  updateEvent(event){
-    return new Promise<EventCalendar>( resolve => {
-      this.http.put(this.url + '/eventcalendar/', event)
-      .map(res => res.json())
-  		.subscribe(data => {
-			  resolve(data.evtApi);
+      .subscribe(data => {
+        resolv(data.evtsApi);
       });
     });
-  };
+  }
 
-  getUETs(){
-    return new Promise<UET[]>(resolve => {
-  		this.http.get(this.url + "/uets")
-  		.map(res => res.json())
-  		.subscribe(data => {
-  			resolve(data.uetsApi);
-  		});
-	  });
+  getEvent(id) {
+    return new Promise<EventCalendar>(resolv => {
+      this.http.get(this.url + '/eventcalendar/' + id)
+      .map(res => res.json())
+      .subscribe(data => {
+        resolv(data.evtApi);
+      });
+    });
+  }
+
+  createEvent(event) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return new Promise<EventCalendar>( resolv => {
+      this.http.post(this.url + '/eventcalendar/', JSON.stringify(event), {headers: headers})
+      .map(res => res.json())
+      .subscribe(data => {
+        resolv(data.evtApi);
+      });
+    });
+  }
+
+  deleteEvent(id) {
+    this.http.delete(this.url + '/eventcalendar/' + id).subscribe(res => {
+      console.log(res.status);
+    });
+  }
+
+  updateEvent(event) {
+    return new Promise<EventCalendar>( resolv => {
+      this.http.put(this.url + '/eventcalendar/', event)
+      .map(res => res.json())
+      .subscribe(data => {
+        resolv(data.evtApi);
+      });
+    });
+  }
+
+  getUETs() {
+    return new Promise<UET[]>(resolv => {
+      this.http.get(this.url + '/uets')
+      .map(res => res.json())
+      .subscribe(data => {
+        resolv(data.uetsApi);
+      });
+    });
   }
 
   getUET(id){
@@ -104,12 +101,11 @@ export class EventService {
     });
   }
 
-  deleteUET(id){
-
+  deleteUET(id) {
     this.http.delete(this.url + '/uet/' + id).subscribe(res => {
-  		console.log(res);
-  	});
-  };
+      console.log(res);
+    });
+  }
 
   updateUET(uet){
     return new Promise<UET>( resolve => {
@@ -119,6 +115,6 @@ export class EventService {
         resolve(data.uetApi);
       });
     });
-  };
+  }
 
 }
