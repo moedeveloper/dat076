@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit {
           self.endTime.hour = end.hour();
           self.endTime.minute = end.minute();
           self.eventEmployee = await self.extenstion.getUserById(resource.id);
-          self.open(self.content);
+          self.open(self.content, null);
         },
         eventRender: function(event, element, view) {
           element.find('.fc-title').append('<br/>' + event.description);
