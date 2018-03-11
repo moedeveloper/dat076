@@ -1,7 +1,14 @@
+![alt text](https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/14322515_10154141366571888_3149685198997615427_n.jpg?oh=59353dd6b9c68214ef3ac63e4facb66b&oe=5B479C38 "Simon")
+![alt text](https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/1620458_10201792390748281_1557747149_n.jpg?oh=e3cb7fda96d2e69e40a01388d35b1310&oe=5B3F989A "Carl")
+![alt text](https://scontent-arn2-1.xx.fbcdn.net/v/t34.0-12/28832544_10210986474648974_1160171089_n.jpg?oh=18f3fa11839e6a2faaecb2b455b9860b&oe=5AA8561D "David")
+![alt text](http://moemortada.com/img/me2.jpg "Mo")
+
 # Group project DAT076
 This is a booking system for a group project in the Chalmers course DAT076
 
 This frontend is build using [Angular 5](https://angular.io/) for MVC and [ng-bootstrap](https://ng-bootstrap.github.io/#/home) + [bootstrap 4](https://getbootstrap.com/) for some visual elements.
+
+![alt text](https://scontent-arn2-1.xx.fbcdn.net/v/t35.0-12/s2048x2048/28945881_10210986506489770_942997736_o.png?oh=7e5c2b69b1c57d4fa65cbf8a62777f16&oe=5AA722EE)
 
 ## Getting Started
 
@@ -54,4 +61,11 @@ src ->
 ## Project description
 Angular 5 is a component and module based JS-framework described as using a "MV-whatever" structure and handles the value binding between the Model and the View of a component. This project is built upon Angular for the frontend and Node, Express and mySql for the backend. 
 
-The services running on the frontend uses @Angular/http for http-request to the server. 
+The services running on the frontend uses @Angular/http for http-request to the server.
+
+The starting page of the application is the calendar, which is controlled by calendar.ts. Here, we initialize data stored in the datebase and use it to display events on the calendar (fullcalendar.io). Fullcalendar has some default functions and expose an API for being able to define what happens when specific things are made with the calendar, such as adding an event to it, or selecting a timespan. We also have the toolbar at the top which is root component containing the others, and is constantly running. Here, we can switch between the calendar and the admin component. The admin component is intended for an admin and is used to manage tables of employees, and customers etc. Changes made here are also of course stored in the database.
+
+Most of the user interaction with the application is through modals, which are structured in the HTML-files for each component. The buttons map to functions in the components' typescript files.
+
+
+
