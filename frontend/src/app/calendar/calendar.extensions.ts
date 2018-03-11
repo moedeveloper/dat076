@@ -4,6 +4,7 @@ import { EventService } from '../utils/event.service';
 import { User } from '../entities/user';
 import { EventEntities } from '../entities/event';
 import { Injectable } from '@angular/core';
+import { UET } from '../entities/userEventTreatment';
 
 @Injectable()
 export class Extensions {
@@ -51,47 +52,46 @@ export class Extensions {
             return await this.userService.getUser(id);
         }
 
-        getAvailableTimes(employeeID: string) {
+        getAvailableTimes(employeeId: string, eventsAll: any[]) {
             const events = [];
+            const amount = 5;
+            const date = new Date();
 
-            const eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt){
-              return evt;
-            });
-
-            
-            for (var i = 0; i < eventsAll.length; i++){
-              if (eventsAll[i].resourceId == empId){
-                events.push(eventsAll[i])
+            // tslint:disable-next-line:no-shadowed-variable
+            for (let i = 0; i < eventsAll.length; i++) {
+              if (eventsAll[i].resourceId === employeeId) {
+                events.push(eventsAll[i]);
               }
             }
-            var d = new Date()
-            d.setHours(d.getHours()+1)
-            var amount = 5
-            var availableTimes = []
-            while (availableTimes.length < amount){
-              var available: boolean = true
-              if (d.getHours() > 19 || d.getHours() < 8){ // If salon is closed
-                available = false
+            date.setHours(date.getHours() + 1 );
+            const availableTimes = [];
+            while (availableTimes.length < amount) {
+              let available = true;
+
+              if (date.getHours() > 19 || date.getHours() < 8) { // If salon is closed
+                available = false;
               } else {
-                for (var i = 0; i < events.length; i++){ // If part of the next hour is occupied by another event
-                  if (d.getHours() >= events[i].start.hour() && (d.getHours() < events[i].end.hour() || (d.getHours() == events[i].end.hour() && events[i].end.minute() != 0))){
-                    available = false
+                // If part of the next hour is occupied by another event
+                for (let i = 0; i < events.length; i++) {
+                  if (date.getHours() >= events[i].start.hour() &&
+                  (date.getHours() < events[i].end.hour() || (date.getHours() === events[i].end.hour() &&
+                  events[i].end.minute() !== 0))) {
+                    available = false;
                   }
                 }
               }
-              if (available == true){
-                var start = new Date(d.getTime())
-                var end = new Date(d.getTime())
-                start.setMinutes(0)
-                end.setMinutes(0)
-                start.setSeconds(0)
-                end.setSeconds(0)
-                end.setHours(end.getHours() + 1)
-                availableTimes.push([start, end])
+              if (available === true) {
+                const start = new Date(date.getTime());
+                const end = new Date(date.getTime());
+                start.setMinutes(0);
+                end.setMinutes(0);
+                start.setSeconds(0);
+                end.setSeconds(0);
+                end.setHours(end.getHours() + 1);
+                availableTimes.push([start, end]);
               }
-              d.setHours(d.getHours()+1)
+              date.setHours(date.getHours() + 1);
             }
-            console.log(availableTimes)
-            return availableTimes
-          }
+            return availableTimes;
+        }
 }

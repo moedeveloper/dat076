@@ -75,64 +75,61 @@ export class CalendarComponent implements OnInit {
     this.calendarResources = this.extenstion.initEmployees(this.employees);
     this.events = this.extenstion.initEvents(uetEvents);
 
-    this.userService.getRoles().then(data => {
+    this.treatmentService.getTreatments().then(resData => {
+      this.treatments = resData;
+      const self = this;
+      $(function() {
+      const containerEl: JQuery = $('#calendar');
+      self.setCalender(containerEl);
 
-      this.treatmentService.getTreatments().then(resData => {
-        this.treatments = resData;
-        const self = this;
-        $(function() {
-        const containerEl: JQuery = $('#calendar');
-        self.setCalender(containerEl);
-
-        containerEl.fullCalendar({
-          schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-          // options here
-          locale: 'sv',
-          timezone: 'local',
-          firstDay: 1,
-          editable: false, // enable draggable events
-          aspectRatio: 1.8,
-          minTime: '08:00',
-          maxTime: '20:00',
-          header: {
-            left: 'today prev,next',
-            center: 'title',
-            right: 'agendaDay,agendaWeek,month'
-          },
-          allDaySlot: false,
-          defaultView: 'agendaDay',
-          resourceLabelText: 'Employees',
-          resources: self.calendarResources,
-          events: self.events,
-          selectable: true,
-          selectHelper: true,
-          select: async (start, end, jsEvent, view, resource) => {
-            self.eventDate.year = start.year();
-            self.eventDate.month = start.month() + 1;
-            self.eventDate.day = start.date();
-            self.startTime.hour = start.hour();
-            self.startTime.minute = start.minute();
-            self.endTime.hour = end.hour();
-            self.endTime.minute = end.minute();
-            const userEmp = await self.extenstion.getUserById(resource.id);
-            self.eventEmployee = userEmp;
-            self.open(self.content);
-          },
-          eventRender: function(event, element) {
-            element.find('.fc-title').append('<br/>' + event.description);
-            element.find('.fc-bg').css('pointer-events', 'none');
-            element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
-            '<button type=\'button\' id=\'btnDeleteEvent\' ' +
-            'class=\'btn btn-block btn-primary btn-flat\'>X</button></div>' );
-            element.find('#btnDeleteEvent').click(function() {
-              // TODO: ajax call to remove event in DB
-              $('#calendar').fullCalendar('removeEvents', event._id);
-            });
-          }
-        });
+      containerEl.fullCalendar({
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        // options here
+        locale: 'sv',
+        timezone: 'local',
+        firstDay: 1,
+        editable: false, // enable draggable events
+        aspectRatio: 1.8,
+        minTime: '08:00',
+        maxTime: '20:00',
+        header: {
+          left: 'today prev,next',
+          center: 'title',
+          right: 'agendaDay,agendaWeek,month'
+        },
+        allDaySlot: false,
+        defaultView: 'agendaDay',
+        resourceLabelText: 'Employees',
+        resources: self.calendarResources,
+        events: self.events,
+        selectable: true,
+        selectHelper: true,
+        select: async (start, end, jsEvent, view, resource) => {
+          self.eventDate.year = start.year();
+          self.eventDate.month = start.month() + 1;
+          self.eventDate.day = start.date();
+          self.startTime.hour = start.hour();
+          self.startTime.minute = start.minute();
+          self.endTime.hour = end.hour();
+          self.endTime.minute = end.minute();
+          const userEmp = await self.extenstion.getUserById(resource.id);
+          self.eventEmployee = userEmp;
+          self.open(self.content);
+        },
+        eventRender: function(event, element) {
+          element.find('.fc-title').append('<br/>' + event.description);
+          element.find('.fc-bg').css('pointer-events', 'none');
+          element.append('<div style=\'position:absolute;bottom:0px;right:0px\' >' +
+          '<button type=\'button\' id=\'btnDeleteEvent\' ' +
+          'class=\'btn btn-block btn-primary btn-flat\'>X</button></div>' );
+          element.find('#btnDeleteEvent').click(function() {
+            // TODO: ajax call to remove event in DB
+            $('#calendar').fullCalendar('removeEvents', event._id);
+          });
+        }
       });
-      });
-  });
+    });
+    });
   }
 
   async createEvent() {
@@ -156,16 +153,17 @@ export class CalendarComponent implements OnInit {
     this.calendar = calendar;
   }
 
-  updateAvailableList(){
-    this.availableTimes = this.getAvailableTimes(this.availablEmployee.id);
+  updateAvailableList() {
+    const eventsAll = $('#calendar').fullCalendar('clientEvents', function(evt) {
+      return evt;
+    });
+    this.availableTimes = this.extenstion.getAvailableTimes(this.availablEmployee.id, eventsAll);
   }
-  setPickedTime(time){
+  setPickedTime(time) {
     this.pickedTime = time;
- }
+  }
 
-
-  //modal open
-  open(content) {
+ open(content) {
    this.modalService.open(content).result.then((result) => {
      this.closeResult = `Closed with: ${result}`;
    }, (reason) => {
@@ -173,13 +171,13 @@ export class CalendarComponent implements OnInit {
    });
  }
 
- private getDismissReason(reason: any): string {
-   if (reason === ModalDismissReasons.ESC) {
-     return 'by pressing ESC';
-   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-     return 'by clicking on a backdrop';
-   } else {
-     return  `with: ${reason}`;
-   }
- }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
 }
