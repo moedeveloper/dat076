@@ -71,6 +71,10 @@ export class CalendarComponent implements OnInit {
       this.userService.getUsersByRole(this.empRoleId).then(data =>{
         this.employees = data
         for(var i = 0; i < this.employees.length; i++){
+          if(this.employees[i] == null){
+            this.employees.splice(i,1);
+            break;
+          }
           this.calendarResources.push({id: this.employees[i].id, title: this.employees[i].firstname}) //tuples used by fullcalender to display the employee columns
         }
       })
@@ -253,6 +257,16 @@ export class CalendarComponent implements OnInit {
   }
   setPickedTime(time){
     this.pickedTime = time;
+
+    this.eventDate.year = time[0].getFullYear();
+    this.eventDate.month = time[0].getMonth()+1;
+    this.eventDate.day = time[0].getDate();
+    this.startTime.hour = time[0].getHours();
+    this.startTime.minute = time[0].getMinutes();
+    this.endTime.hour = time[1].getHours();
+    this.endTime.minute = time[1].getMinutes();
+    this.eventEmployee = this.availablEmployee;
+    this.open(this.content);
  }
 
 

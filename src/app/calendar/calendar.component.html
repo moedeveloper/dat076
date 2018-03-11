@@ -24,7 +24,7 @@
         <div class="card-body">
           <div class="list-group">
             <button type="button" *ngFor="let time of availableTimes" (click)="setPickedTime(time)" [ngClass]="{'active': pickedTime == time }" class="list-group-item list-group-item-action">
-              {{time}}
+              {{time[0]?.toLocaleTimeString()}}-{{time[1]?.toLocaleTimeString()}}, {{time[0]?.toLocaleDateString()}}
             </button>
           </div>
 
@@ -46,16 +46,13 @@
   </div>
   <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-8 text-right">
-
-      <button type="button" (click)="getAvailableTimes()" class="btn btn-primary btn ButtonStyle">Get Available Times</button>
-    </div>
+    <div class="col-md-8 text-right"></div>
     <div class="col-md-2"></div>
   </div>
 </div>
 
 <!-- Add eventmodal -->
-<ng-template #content let-c="close" let-d="dismiss" let-l="submit">
+<ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Create Event</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
